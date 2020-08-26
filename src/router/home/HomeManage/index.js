@@ -6,6 +6,6 @@ export default {
     meta: {
         title: "主页管理"
     },
-    children
-    // component:
+    children,
+    component: () => import("@/views/home/HomeManage/index.vue")
 };

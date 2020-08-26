@@ -13,6 +13,6 @@ export default {
     meta: {
         title: "首页"
     },
-    children: [HomeManage, ShippingManage, CoursewareManage, AuthManage, OrganizationManage, UserManage, MaterialManage]
-    // component:
+    children: [HomeManage, ShippingManage, CoursewareManage, AuthManage, OrganizationManage, UserManage, MaterialManage],
+    component: () => import("@/views/home/index.vue")
 };
