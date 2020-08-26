@@ -9,7 +9,7 @@ import MaterialManage from "./MaterialManage"; // 素材管理
 
 export default {
     path: "home",
-    name: "Home",
+    name: "home",
     meta: {
         title: "首页"
     },

@@ -1,31 +1,31 @@
 export default router = [
     {
-        path: "HomeManage",
-        name: "HomeManage",
+        path: "/banner",
+        name: "Banner",
         meta: {
             title: "主页轮播图"
         }
         // component:
     },
     {
-        path: "HomeManage",
-        name: "HomeManage",
+        path: "/news",
+        name: "News",
         meta: {
             title: "新闻资讯"
         }
         // component:
     },
     {
-        path: "HomeManage",
-        name: "HomeManage",
+        path: "/course",
+        name: "Course",
         meta: {
             title: "公众课件"
         }
         // component:
     },
     {
-        path: "HomeManage",
-        name: "HomeManage",
+        path: "/apps",
+        name: "Apps",
         meta: {
             title: "平台应用"
         }
