@@ -2,7 +2,7 @@
 
 const white = [
     {
-        path: "login",
+        path: "/login",
         name: "Login",
         meta: {
             title: "登录"
