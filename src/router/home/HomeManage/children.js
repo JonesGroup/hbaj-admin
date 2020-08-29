@@ -1,6 +1,6 @@
 const router = [
     {
-        path: "/banner",
+        path: "banner", // 子路由不能加/path/ 不然匹配不成功
         name: "Banner",
         meta: {
             title: "主页轮播图"
