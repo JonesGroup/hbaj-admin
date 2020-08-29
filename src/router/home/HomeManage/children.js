@@ -1,4 +1,4 @@
-export default router = [
+const router = [
     {
         path: "/banner",
         name: "Banner",
@@ -32,3 +32,5 @@ export default router = [
         component: () => import("@/views/home/HomeManage/Apps/index.vue")
     }
 ];
+
+export default router;
