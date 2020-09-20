@@ -31,28 +31,3 @@
 .w100 {
     width: 100% !important;
 }
-
-.pLeftRight30 {
-    padding-left: 0.3rem !important;
-    padding-right: 0.3rem !important;
-}
-
-.placeholder {
-    color: #b2b2b2;
-}
-
-.pLeft30 {
-    padding-left: 0.3rem !important;
-}
-
-.pRight30 {
-    padding-right: 0.3rem !important;
-}
-
-.menu-pBottom {
-    padding-bottom: 1.08rem;
-}
-
-.iphone-footer {
-    padding-bottom: 0.68rem;
-}

@@ -47,9 +47,9 @@ router.beforeEach((to, from, next) => {
     }
 });
 
-// router.afterEach(to => {
-//     document.title = to.meta.title;
-// });
+router.afterEach(to => {
+    document.title = to.meta.title;
+});
 
 new Vue({
     el: "#app",
