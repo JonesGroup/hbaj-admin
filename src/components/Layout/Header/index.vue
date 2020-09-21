@@ -28,6 +28,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~@/style/theme/index.less";
 header {
     width: 100%;
     height: 48px;
@@ -44,7 +45,11 @@ header {
         padding-left: 20px;
         display: flex;
         align-items: center;
-        background: RGBA(28, 85, 151, 1);
+        background: @theme-bg-01;
+        span {
+            color: #fff;
+            margin-left: 16px;
+        }
     }
     .header-operate {
         display: flex;
