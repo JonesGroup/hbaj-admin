@@ -23,7 +23,7 @@ Object.keys(filters).forEach(key => {
 });
 
 Vue.prototype.globalConfig = window.globalConfig;
-
+let firstFlag = false;
 router.beforeEach((to, from, next) => {
     if (window.localStorage.getItem("authorization")) {
         // 登录了情况
@@ -31,13 +31,19 @@ router.beforeEach((to, from, next) => {
             //解决登陆后 用户输入登录地址重定向到首页
             return next({ path: "/home" });
         } else {
-            store.dispatch("GenerateRoutes").then(() => {
-                // 注入vuex生成路由
-                next({
-                    ...to,
-                    replace: true
+            // 第一次登陆
+            if (!firstFlag) {
+                firstFlag = true;
+                store.dispatch("GenerateRoutes").then(() => {
+                    // 注入vuex生成路由
+                    next({
+                        ...to,
+                        replace: true
+                    });
                 });
-            });
+            } else {
+                next();
+            }
         }
     } else {
         // 未登录情况
@@ -45,7 +51,11 @@ router.beforeEach((to, from, next) => {
             // 在白名单中
             next();
         } else {
-            next("/login");
+            if (firstFlag) {
+                window.location.reload();
+            } else {
+                next("/login");
+            }
         }
     }
 });
