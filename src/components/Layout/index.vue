@@ -7,7 +7,7 @@
                 <div class="content">
                     <router-view></router-view>
                 </div>
-                <Footer></Footer>
+                <!-- <Footer></Footer> -->
             </div>
         </main>
     </div>
@@ -15,7 +15,7 @@
 
 <script>
 import Header from "./Header";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 
 export default {
@@ -24,7 +24,7 @@ export default {
     },
     components: {
         Header,
-        Footer,
+        // Footer,
         Sidebar
     }
 };
