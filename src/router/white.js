@@ -16,6 +16,14 @@ const white = [
             title: "忘记密码"
         },
         component: () => import("@/views/Forget/index.vue")
+    },
+    {
+        path: "/404",
+        name: "notFount",
+        component: () => import("@/views/404/index.vue"),
+        meta: {
+            title: "找不到页面"
+        }
     }
 ];
 
