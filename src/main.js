@@ -7,7 +7,7 @@
  */
 import Vue from "vue";
 import Application from "./App.vue";
-import router from "./router";
+import router, { whiteList } from "./router";
 import filters from "./filters";
 import store from "./store";
 import "@/widget/skeleton";
@@ -18,37 +18,35 @@ import "element-ui/lib/theme-chalk/index.css";
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
-console.log(router, "router");
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key]);
 });
 
 Vue.prototype.globalConfig = window.globalConfig;
 
-let firstFlag = false;
-
 router.beforeEach((to, from, next) => {
-    if (!firstFlag) {
-        store.dispatch("GenerateRoutes").then(res => {});
-        firstFlag = true;
-    }
-
-    if (to.name == "login" && window.localStorage.getItem("authorization")) {
-        //解决登陆后 用户输入登录地址重定向到首页
-        next({ path: "/home" });
-    }
-
-    if (to.meta.requireLogin) {
-        // 是需要登录的页面
-        if (window.localStorage.getItem("authorization")) {
-            // token存在 且token没有过期
-            next();
+    if (window.localStorage.getItem("authorization")) {
+        // 登录了情况
+        if (to.name == "Login") {
+            //解决登陆后 用户输入登录地址重定向到首页
+            return next({ path: "/home" });
         } else {
-            next({ path: "/login", query: { from: location.href } });
+            store.dispatch("GenerateRoutes").then(() => {
+                // 注入vuex生成路由
+                next({
+                    ...to,
+                    replace: true
+                });
+            });
         }
     } else {
-        // 不需要登录的直接next()
-        next();
+        // 未登录情况
+        if (whiteList.findIndex(item => item.path === to.path) !== -1) {
+            // 在白名单中
+            next();
+        } else {
+            next("/login");
+        }
     }
 });
 

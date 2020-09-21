@@ -16,6 +16,8 @@ Vue.use(Router);
 // 数组需要动态挂载
 export const routes = [home];
 
+export const whiteList = white;
+
 // 实例
 const router = new Router({
     mode: "history",
