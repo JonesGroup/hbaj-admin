@@ -8,12 +8,14 @@
                 <i class="iconfont icontubiao-30"></i>
                 <input type="text" placeholder="请输入手机号" v-model="mobile" />
             </div>
+            <div class="password code">
+                <i class="iconfont icontubiao-31"></i>
+                <input type="password" placeholder="请输入验证码" v-model="verifyCode" />
+                <button @click="send">{{ buttonText }}</button>
+            </div>
             <div class="password">
                 <i class="iconfont icontubiao-31"></i>
                 <input type="password" placeholder="请输入密码" v-model="password" />
-            </div>
-            <div class="forget">
-                <span @click="forget">忘记密码</span>
             </div>
             <div class="submit">
                 <el-button type="primary" @click="submit">登录</el-button>
@@ -30,34 +32,67 @@
 <script>
 import { user } from "@/model/api";
 import validate from "@/widget/validate";
-import store from "@/widget/store";
 export default {
     data() {
         return {
             loading: false, // 按钮状态
             mobile: "",
-            password: ""
+            password: "",
+            verifyCode: "",
+            isClickCode: false,
+            buttonText: "发送验证码",
+            time: 60
         };
     },
     methods: {
-        forget() {
-            this.$router.push("/forget");
-        },
-        submit() {
-            const { mobile, password } = this;
+        send() {
+            const sendCode = () => {
+                this.isClickCode = true;
+                let times = this.time;
+                this.buttonTextClone = this.buttonText;
+                this.buttonText = times + "s";
+                const countTimeTimer = setInterval(() => {
+                    times--;
+                    this.buttonText = times + "s";
+
+                    if (times == 0) {
+                        this.isClickCode = false;
+                        this.buttonText = this.buttonTextClone;
+                        clearInterval(countTimeTimer);
+                    }
+                }, 1000);
+                this.countTimeTimer = countTimeTimer;
+            };
+
+            const { mobile } = this;
             if (!validate.isMobile(mobile)) {
                 return this.$message.error("请输入正确的手机号");
             }
-            user({ type: "POST", data: { mobile, password } }, "login").then(res => {
-                const { from } = this.$route.query;
+            if (this.isClickCode) {
+                return false;
+            }
+            user({ type: "GET", data: { mobile } }, "verifyCode").then(res => {
                 if (res.suceeded) {
-                    const {
-                        suceeded,
-                        data: { authorization, id }
-                    } = res;
-                    store.set("authorization", authorization, "local");
-                    store.set("user", res.data, "local");
-                    this.$router.push({ path: "/home" });
+                    sendCode();
+                }
+            });
+        },
+        submit() {
+            const { mobile, verifyCode, password } = this;
+            if (!validate.isMobile(mobile)) {
+                return this.$message.error("请输入正确的手机号");
+            }
+            if (!verifyCode) {
+                return this.$message.error("请输入验证码");
+            }
+            if (!password) {
+                return this.$message.error("请输入密码");
+            }
+            user({ type: "POST", data: { mobile, password, verifyCode } }, "password/reset").then(res => {
+                if (res.suceeded) {
+                    this.$message.success("操作成功");
+                    this.close();
+                    this.$router.push({ path: "/" });
                 } else {
                     res.message && this.$message.error(res.message);
                 }
@@ -108,6 +143,18 @@ export default {
         }
         .password {
             margin-top: 24px;
+            &.code {
+                input {
+                    flex: 1;
+                }
+                button {
+                    width: 100px;
+                    height: 100%;
+                    background: #ffd51a;
+                    color: #fff;
+                    cursor: pointer;
+                }
+            }
         }
         .forget {
             margin: 24px 0px;
@@ -118,6 +165,7 @@ export default {
         }
         .submit {
             width: 100%;
+            margin-top: 24px;
             button {
                 width: 100%;
             }

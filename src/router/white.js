@@ -8,6 +8,14 @@ const white = [
             title: "登录"
         },
         component: () => import("@/views/Login/index.vue")
+    },
+    {
+        path: "/forget",
+        name: "Forget",
+        meta: {
+            title: "忘记密码"
+        },
+        component: () => import("@/views/Forget/index.vue")
     }
 ];
 
