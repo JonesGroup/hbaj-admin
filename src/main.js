@@ -29,7 +29,7 @@ router.beforeEach((to, from, next) => {
         // 登录了情况
         if (to.name == "Login") {
             //解决登陆后 用户输入登录地址重定向到首页
-            return next({ path: "/home" });
+            return next({ path: "/" });
         } else {
             // 第一次登陆
             if (!firstFlag) {

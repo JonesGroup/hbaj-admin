@@ -6,6 +6,20 @@
   "description": "海宝安检",
   "glyphs": [
     {
+      "icon_id": "1711399",
+      "name": "消息",
+      "font_class": "xiaoxi",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "7999913",
+      "name": "搜索",
+      "font_class": "sousuo",
+      "unicode": "e68e",
+      "unicode_decimal": 59022
+    },
+    {
       "icon_id": "16917352",
       "name": "图标-38",
       "font_class": "tubiao-381",

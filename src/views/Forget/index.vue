@@ -103,6 +103,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~@/style/theme/index.less";
 .login-container {
     width: 100%;
     height: 100%;
@@ -135,7 +136,7 @@ export default {
             align-items: center;
             padding-left: 12px;
             i {
-                color: rgba(24, 144, 255, 1);
+                color: @theme-bg-01;
             }
             input {
                 margin-left: 12px;
@@ -150,7 +151,7 @@ export default {
                 button {
                     width: 100px;
                     height: 100%;
-                    background: #ffd51a;
+                    background: @theme-bg-02;
                     color: #fff;
                     cursor: pointer;
                 }
