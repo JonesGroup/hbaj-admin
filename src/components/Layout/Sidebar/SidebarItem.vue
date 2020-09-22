@@ -45,7 +45,6 @@ export default {
     },
     methods: {
         resolvePath(childrenPath) {
-            console.log(childrenPath, "1");
             // 生成index唯一标识
             return `${this.rootPath}/${childrenPath}`;
         }

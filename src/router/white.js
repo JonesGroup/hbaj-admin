@@ -1,5 +1,7 @@
 // 路由白名单
 
+const asyncComponent = path => import(`/* webpackChunkName: ${path} */ "@/views${path}"`);
+
 const white = [
     {
         path: "/login",
@@ -7,7 +9,7 @@ const white = [
         meta: {
             title: "登录"
         },
-        component: () => import("@/views/Login/index.vue")
+        component: asyncComponent("/white/Login/index.vue")
     },
     {
         path: "/forget",
@@ -15,12 +17,12 @@ const white = [
         meta: {
             title: "忘记密码"
         },
-        component: () => import("@/views/Forget/index.vue")
+        component: asyncComponent("/white/Forget/index.vue")
     },
     {
         path: "/404",
         name: "notFount",
-        component: () => import("@/views/404/index.vue"),
+        component: asyncComponent("/white/404/index.vue"),
         meta: {
             title: "找不到页面"
         }

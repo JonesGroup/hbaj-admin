@@ -21,11 +21,11 @@ module.exports = {
     },
     configureWebpack: config => {
         config.devtool = "eval-source-map	";
-        config.externals = {
-            vue: "Vue",
-            vuex: "Vuex",
-            "vue-router": "VueRouter"
-        };
+        // config.externals = {
+        //     vue: "Vue",
+        //     vuex: "Vuex",
+        //     "vue-router": "VueRouter"
+        // };
         config.plugins.push(
             new HtmlWebpackPlugin({
                 template: "public/index.html",

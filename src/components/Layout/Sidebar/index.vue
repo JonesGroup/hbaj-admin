@@ -1,7 +1,9 @@
 <template>
-    <el-menu unique-opened class="el-menu-vertical" :default-active="$route.path" :router="true" :collapse="!opened">
-        <sidebar-item :routers="routers" :root-path="rootPath" />
-    </el-menu>
+    <div id="menu">
+        <el-menu unique-opened class="el-menu-vertical" :default-active="$route.path" :router="true" :collapse="!opened">
+            <sidebar-item :routers="routers" :root-path="rootPath" />
+        </el-menu>
+    </div>
 </template>
 
 <script>
@@ -22,7 +24,6 @@ export default {
 
         rootPath() {
             // 匹配路由钩子中参数
-            console.log(this.$route.matched[1].path);
             return this.$route.matched[1].path;
         },
 
@@ -53,3 +54,12 @@ export default {
     }
 };
 </script>
+
+<style lang="less">
+@import "~@/style/theme/index.less";
+#menu {
+    width: 208px;
+    height: 100%;
+    background: @theme-bg-01;
+}
+</style>

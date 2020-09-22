@@ -1,1 +1,3 @@
-// 机构管理
+<template>
+    <router-view></router-view>
+</template>

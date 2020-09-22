@@ -24,7 +24,7 @@ export const routes = [
             title: "首页"
         },
         component: Layout,
-        children: [home]
+        children: [home] // 这一级预留头部做一级导航
     },
     {
         path: "*",
