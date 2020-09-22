@@ -1,6 +1,6 @@
 // 路由白名单
 
-const asyncComponent = path => import(`/* webpackChunkName: ${path} */ "@/views${path}"`);
+import { asyncComponent } from "@/router/utils";
 
 const white = [
     {
