@@ -6,6 +6,7 @@
  * @Description:
  */
 import Vue from "vue";
+import "@/components/Global";
 import Application from "./App.vue";
 import router, { whiteList } from "./router";
 import filters from "./filters";
