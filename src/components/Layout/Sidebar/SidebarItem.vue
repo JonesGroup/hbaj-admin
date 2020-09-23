@@ -5,7 +5,7 @@
             <template v-if="item.children && !item.meta.hidden">
                 <el-submenu :index="resolvePath(item.path)" :key="item.path">
                     <template slot="title" :style="item.meta && item.meta.style">
-                        <i v-if="item.meta && item.meta.icon" :class="item.meta.icon"></i>
+                        <i v-if="item.meta && item.meta.icon" :class="item.meta.icon" class="iconfont"></i>
                         <span slot="title">{{ item.meta.title }}</span>
                     </template>
                     <sidebar-item :routers="item.children" :root-path="resolvePath(item.path)" @notice-parent="noticeParent(item)" />
@@ -51,3 +51,25 @@ export default {
     }
 };
 </script>
+
+<style lang="less" scoped>
+@import "~@/style/theme/index.less";
+.sidebar-item {
+    li {
+        color: #fff;
+        &:hover {
+            background: transparent;
+        }
+        &.is-opened {
+            ul {
+                .sidebar-item {
+                    background: #0e305f;
+                }
+            }
+        }
+    }
+}
+.el-menu-item.is-active {
+    background: @theme-bg-02 !important;
+}
+</style>

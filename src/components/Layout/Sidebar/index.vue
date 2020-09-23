@@ -58,8 +58,21 @@ export default {
 <style lang="less">
 @import "~@/style/theme/index.less";
 #menu {
-    width: 208px;
+    width: 209px;
     height: 100%;
     background: @theme-bg-01;
+    .el-menu {
+        background: transparent !important;
+        .el-submenu__title {
+            color: #fff;
+            i {
+                color: #fff;
+                padding-right: 10px;
+            }
+            &:hover {
+                background: transparent;
+            }
+        }
+    }
 }
 </style>

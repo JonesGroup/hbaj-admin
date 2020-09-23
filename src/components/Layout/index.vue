@@ -5,6 +5,7 @@
             <Sidebar></Sidebar>
             <div class="container-main">
                 <div class="content">
+                    <HeaderBg />
                     <router-view></router-view>
                 </div>
                 <!-- <Footer></Footer> -->
@@ -17,6 +18,7 @@
 import Header from "./Header";
 // import Footer from "./Footer";
 import Sidebar from "./Sidebar";
+import HeaderBg from "../common/Header-BG";
 
 export default {
     data() {
@@ -25,7 +27,8 @@ export default {
     components: {
         Header,
         // Footer,
-        Sidebar
+        Sidebar,
+        HeaderBg
     }
 };
 </script>
@@ -45,6 +48,7 @@ export default {
             flex: 1; // Sidebar中给了宽度
             background: rgba(240, 242, 245, 1);
             height: 100%;
+            padding: 24px 24px 0px 24px;
         }
     }
 }
