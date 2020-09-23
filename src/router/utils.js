@@ -11,7 +11,7 @@
  * @param {string} path 组件路径
  * @return 异步组件
  */
-export const asyncComponent = path => import(`/* webpackChunkName: ${path} */ "@/views${path}"`);
+export const asyncComponent = path => import(`@/views${path}`);
 
 // class Router extends Proxy {
 //     super()
