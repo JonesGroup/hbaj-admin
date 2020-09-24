@@ -18,7 +18,7 @@ Vue.use(Router);
 export const routes = [
     {
         path: "/",
-        redirect: "/home/HomeManage/banner",
+        redirect: "/home/homeManage/banner",
         name: "AppLayout",
         meta: {
             title: "首页"

@@ -9,7 +9,7 @@ const white = [
         meta: {
             title: "登录"
         },
-        component: asyncComponent("/white/Login/index.vue")
+        component: () => import("@/views/white/Login/index.vue")
     },
     {
         path: "/forget",
@@ -17,12 +17,12 @@ const white = [
         meta: {
             title: "忘记密码"
         },
-        component: asyncComponent("/white/Forget/index.vue")
+        component: () => import("@/views/white/Forget/index.vue")
     },
     {
         path: "/404",
         name: "notFount",
-        component: asyncComponent("/white/404/index.vue"),
+        component: () => import("@/views/white/404/index.vue"),
         meta: {
             title: "找不到页面"
         }

@@ -57,7 +57,7 @@ export default {
                     } = res;
                     store.set("authorization", authorization, "local");
                     store.set("user", res.data, "local");
-                    this.$router.push({ path: "/home" });
+                    this.$router.push({ path: "/" });
                 } else {
                     res.message && this.$message.error(res.message);
                 }
