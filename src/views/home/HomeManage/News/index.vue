@@ -1,5 +1,8 @@
 <template>
     <div class="main mgT24">
+        <div class="operate mgB24">
+            <el-button type="primary" @click="addNews">添加</el-button>
+        </div>
         <el-table :data="tableData">
             <el-table-column prop="date" label="序号" />
             <el-table-column prop="name" label="新闻标题" />
@@ -10,10 +13,16 @@
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
                     <el-button type="text">
+                        编辑
+                    </el-button>
+                    <el-button type="text">
                         发布
                     </el-button>
                     <el-button type="text">
                         撤销
+                    </el-button>
+                    <el-button type="text">
+                        处理评论
                     </el-button>
                 </template>
             </el-table-column>
@@ -70,6 +79,12 @@ export default {
         setPagination(p, v) {
             this.$set(this.pagination, p, v);
             this.getList();
+        },
+        addNews() {
+            this.$router.push({
+                path: "./news/create"
+            });
+            console.log("新建");
         }
     }
 };

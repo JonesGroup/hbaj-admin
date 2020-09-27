@@ -16,6 +16,14 @@ const router = [
         component: () => import("@/views/home/HomeManage/News/index.vue")
     },
     {
+        path: "news/:type",
+        name: "News",
+        meta: {
+            title: "新闻资讯"
+        },
+        component: () => import("@/views/home/HomeManage/News/detail/index.vue")
+    },
+    {
         path: "course",
         name: "Course",
         meta: {
