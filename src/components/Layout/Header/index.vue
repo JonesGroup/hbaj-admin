@@ -12,17 +12,44 @@
                 <i class="iconfont iconxiaoxi"></i>
             </div>
             <div class="person">
-                <img src="../../images/user_default.png" alt="" width="30" />
-                <span>用户名</span>
+                <img :src="src" alt="" width="30" />
+                <span>{{ user.sgname }}</span>
             </div>
         </div>
     </header>
 </template>
 
 <script>
+import { user } from "@/model/api";
+import store from "@/widget/store";
 export default {
     data() {
-        return {};
+        return {
+            user: {}, // 用户信息
+            src: ""
+        };
+    },
+    methods: {
+        getUserDetail() {
+            const User = store.get("user", "local");
+            const userId = User.id;
+            if (user) {
+                user(
+                    {
+                        type: "get"
+                    },
+                    userId
+                ).then(res => {
+                    if (res.suceeded) {
+                        this.user = res.data;
+                        this.src = user.avatar ? `${globalConfig.imagePath + user.avatar}` : "/img/user_default.4dbb6ba4.png";
+                    }
+                });
+            }
+        }
+    },
+    mounted() {
+        this.getUserDetail();
     }
 };
 </script>
