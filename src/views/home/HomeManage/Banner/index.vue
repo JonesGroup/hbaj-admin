@@ -1,5 +1,8 @@
 <template>
     <div class="main mgT24">
+        <div class="operate mgB24">
+            <el-button type="primary" @click="addBanner">添加</el-button>
+        </div>
         <el-table :data="tableData">
             <el-table-column prop="date" label="序号" />
             <el-table-column prop="name" label="图片名称" />
@@ -35,13 +38,19 @@
             :page-size="pagination.page_size"
             :total="pagination.total"
         />
+        <AddBanner :visible.sync="isOpenAddBanner" />
     </div>
 </template>
 
 <script>
+import AddBanner from "@/components/Dialog/AddBanner";
 export default {
+    components: {
+        AddBanner
+    },
     data() {
         return {
+            isOpenAddBanner: false,
             pagination: {
                 page: 1,
                 page_size: 10,
@@ -78,6 +87,10 @@ export default {
         setPagination(p, v) {
             this.$set(this.pagination, p, v);
             this.getList();
+        },
+        addBanner() {
+            console.log("111");
+            this.isOpenAddBanner = true;
         }
     }
 };
