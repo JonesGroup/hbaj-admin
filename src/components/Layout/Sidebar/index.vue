@@ -62,14 +62,17 @@ export default {
     height: 100%;
     flex-shrink: 0;
     background: @theme-bg-01;
+    li {
+        i {
+            color: #fff;
+            padding-right: 10px;
+        }
+    }
     .el-menu {
         background: transparent !important;
         .el-submenu__title {
             color: #fff;
-            i {
-                color: #fff;
-                padding-right: 10px;
-            }
+
             &:hover {
                 background: transparent;
             }

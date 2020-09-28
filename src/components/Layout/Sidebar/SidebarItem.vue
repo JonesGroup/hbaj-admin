@@ -14,7 +14,7 @@
             <!-- 不存在二级菜单 -->
             <template v-else>
                 <el-menu-item :key="item.path" :index="resolvePath(item.path)" v-if="!item.meta.hidden" :style="item.meta && item.meta.style">
-                    <i v-if="item.meta && item.meta.icon" :class="item.meta.icon"></i>
+                    <i v-if="item.meta && item.meta.icon" :class="item.meta.icon" class="iconfont"></i>
                     <el-badge :value="item.meta.msg > 0 ? item.meta.msg : ''" class="item">
                         <span size="small">{{ item.meta.title }}</span>
                     </el-badge>
