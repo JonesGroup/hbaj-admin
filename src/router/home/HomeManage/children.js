@@ -16,12 +16,20 @@ const router = [
         component: () => import("@/views/home/HomeManage/News/index.vue")
     },
     {
-        path: "news/:type",
+        path: "news/:type/:id?",
         name: "News",
         meta: {
             title: "新闻资讯"
         },
         component: () => import("@/views/home/HomeManage/News/detail/index.vue")
+    },
+    {
+        path: "news/comment/:id",
+        name: "News",
+        meta: {
+            title: "新闻资讯-处理评论"
+        },
+        component: () => import("@/views/home/HomeManage/News/comment/index.vue")
     },
     {
         path: "course",

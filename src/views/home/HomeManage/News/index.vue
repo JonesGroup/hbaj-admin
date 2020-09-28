@@ -21,7 +21,7 @@
                     <el-button type="text">
                         撤销
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" @click="comment(row.id)">
                         处理评论
                     </el-button>
                 </template>
@@ -84,7 +84,11 @@ export default {
             this.$router.push({
                 path: "./news/create"
             });
-            console.log("新建");
+        },
+        comment(id = "1") {
+            this.$router.push({
+                path: `./news/comment/${id}`
+            });
         }
     }
 };
