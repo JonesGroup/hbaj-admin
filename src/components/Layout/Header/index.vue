@@ -22,6 +22,7 @@
 <script>
 import { user } from "@/model/api";
 import store from "@/widget/store";
+import defaultImagePath from "../../images/user_default.png";
 export default {
     data() {
         return {
@@ -42,7 +43,7 @@ export default {
                 ).then(res => {
                     if (res.suceeded) {
                         this.user = res.data;
-                        this.src = user.avatar ? `${globalConfig.imagePath + user.avatar}` : "/img/user_default.4dbb6ba4.png";
+                        this.src = user.avatar ? `${globalConfig.imagePath + user.avatar}` : defaultImagePath;
                     }
                 });
             }

@@ -8,7 +8,7 @@
                     <HeaderBg />
                     <router-view></router-view>
                 </div>
-                <!-- <Footer></Footer> -->
+                <Footer></Footer>
             </div>
         </main>
     </div>
@@ -16,7 +16,7 @@
 
 <script>
 import Header from "./Header";
-// import Footer from "./Footer";
+import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 import HeaderBg from "../common/Header-BG";
 
@@ -26,7 +26,7 @@ export default {
     },
     components: {
         Header,
-        // Footer,
+        Footer,
         Sidebar,
         HeaderBg
     }
@@ -40,15 +40,20 @@ export default {
     display: flex;
     flex-direction: column;
     main {
-        flex: 1; // Header组件中给了高度
+        flex: 1; // Header组件中给了高度-高度flex
         display: flex;
         // height: 100%; // TODO:会有bug
         overflow: hidden;
         .container-main {
-            flex: 1; // Sidebar中给了宽度
+            flex: 1; // Sidebar中给了宽度-宽度flex
+            // height: 100%;
             background: rgba(240, 242, 245, 1);
-            height: 100%;
             padding: 24px 24px 0px 24px;
+            display: flex;
+            flex-direction: column;
+            .content {
+                flex: 1; // footer给了高度-高度flex
+            }
         }
     }
 }

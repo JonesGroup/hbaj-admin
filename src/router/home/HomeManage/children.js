@@ -16,21 +16,24 @@ const router = [
         component: () => import("@/views/home/HomeManage/News/index.vue")
     },
     {
-        path: "news/:type/:id?",
+        path: "news/comment/:id", // 这2个会有冲突-顺序换动
         name: "News",
         meta: {
-            title: "新闻资讯"
+            title: "新闻资讯-处理评论",
+            hidden: true
         },
         component: () => import("@/views/home/HomeManage/News/detail/index.vue")
     },
     {
-        path: "news/comment/:id",
+        path: "news/:type/:id?",
         name: "News",
         meta: {
-            title: "新闻资讯-处理评论"
+            title: "新闻资讯",
+            hidden: true
         },
-        component: () => import("@/views/home/HomeManage/News/comment/index.vue")
+        component: () => import("@/views/home/HomeManage/News/public/index.vue")
     },
+
     {
         path: "course",
         name: "Course",

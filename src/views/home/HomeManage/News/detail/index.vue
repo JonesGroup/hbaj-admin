@@ -1,115 +1,171 @@
 <template>
-    <div class="news-detail">
-        <el-form ref="form" :model="form" label-width="80px" label-position="left">
-            <el-form-item label="">
-                <el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                    <img v-if="form.imageUrl && staticPath" :src="globalConfig.imagePath + form.imageUrl" class="avatar" />
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-            <el-form-item label="标题">
-                <el-input v-model="form.name"></el-input>
-            </el-form-item>
-            <el-form-item label="作者">
-                <el-input v-model="form.name"></el-input>
-            </el-form-item>
-            <el-form-item label="机构">
-                <el-input v-model="form.name"></el-input>
-            </el-form-item>
-
-            <el-form-item label="发布时间">
-                <el-date-picker v-model="form.value1" type="date" placeholder="选择日期"> </el-date-picker>
-            </el-form-item>
-            <RichTextBox ref="RichTextBox" />
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="goback">返回</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
-        </span>
+    <div class="news_detail">
+        <div class="news_content" v-loading="loading">
+            <div class="detail">
+                <div class="title">
+                    <p class="ellipsisLineTwo">
+                        {{ data.title }}
+                    </p>
+                </div>
+                <div class="organization">
+                    <span>{{ data.author }}</span>
+                    <span>{{ data.publishTime | formaData }}</span>
+                </div>
+                <div class="content" v-html="data.contentHtml"></div>
+            </div>
+            <div class="news_detail_comment">
+                <div class="cmmment_title">
+                    <h2>评论区</h2>
+                </div>
+                <div class="comment_input">
+                    <input type="text" placeholder="写下您的评论……" v-model="content" />
+                    <button @click="addComment">评论</button>
+                </div>
+                <Comment ref="comment"></Comment>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import RichTextBox from "@/components/common/RichTextBox";
-
+import Comment from "./comment";
+import { newsDetail, addComment } from "@/model/api";
+import store from "@/widget/store";
 export default {
-    components: {
-        RichTextBox
-    },
     data() {
         return {
-            form: {
-                name: "", // 名称
-                imageUrl: "",
-                radio: "",
-                value1: ""
-            },
-            staticPath: ""
+            data: {},
+            loading: false,
+            content: ""
         };
     },
-    computed: {
-        uploadUrl() {
-            const url = `/api/file/upload?fileName=default&relatedId=111&fileType=PROJECT_IMAGE`;
-            return url;
+    components: {
+        Comment
+    },
+    watch: {
+        $route: function() {
+            this.getNewsDetail();
         }
     },
     methods: {
-        goback() {
-            this.$router.go(-1);
+        getNewsDetail() {
+            this.loading = true;
+            const { id } = this.$route.params;
+            newsDetail(
+                {
+                    type: "get"
+                },
+                id
+            ).then(res => {
+                this.loading = false;
+                if (res.suceeded) {
+                    this.data = res.data;
+                }
+            });
         },
-        save() {
-            console.log("保存");
-        },
-        handleAvatarSuccess(res, file) {
-            this.staticPath = res.data.path;
-            this.form.imageUrl = res.data.path;
-        },
-        beforeAvatarUpload(file) {
-            const isJPG = file.type === "image/jpeg";
-            const isLt2M = file.size / 1024 / 1024 < 2;
-
-            if (!isJPG) {
-                this.$message.error("上传头像图片只能是 JPG 格式!");
+        addComment() {
+            if (!window.localStorage.getItem("authorization")) {
+                this.$store.commit("TOGGLE_LOGIN");
+                return false;
             }
-            if (!isLt2M) {
-                this.$message.error("上传头像图片大小不能超过 2MB!");
-            }
-            return isJPG && isLt2M;
+            const { id } = this.$route.params;
+            const { content } = this;
+            addComment({
+                type: "POST",
+                data: {
+                    content,
+                    relatedId: id,
+                    type: "NEWS",
+                    userId: store.get("userId", "local")
+                }
+            }).then(res => {
+                this.$refs.comment.getComment();
+            });
         }
+    },
+    mounted() {
+        this.getNewsDetail();
     }
 };
 </script>
 
 <style lang="less">
-.avatar-uploader {
+.news_detail {
     display: flex;
-    // justify-content: center;
-    align-items: center;
-}
-.avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.avatar-uploader .el-upload:hover {
-    border-color: #409eff;
-}
-.avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    min-width: 478px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-}
-.avatar {
-    // width: 178px;
-    height: 178px;
-    display: block;
+    height: 100%;
+    .news_content {
+        flex: 1;
+        background: #fff;
+        margin-left: 16px;
+        padding: 25px;
+        height: 100%;
+        overflow-y: scroll;
+        .detail {
+            .title {
+                font-size: 18px;
+                font-family: MicrosoftYaHei;
+                color: rgba(0, 0, 0, 1);
+                line-height: 24px;
+            }
+            .organization {
+                font-size: 12px;
+                font-family: MicrosoftYaHei;
+                color: rgba(153, 153, 153, 1);
+                line-height: 16px;
+                margin-top: 16px;
+                margin-bottom: 24px;
+            }
+            .content {
+                p {
+                    font-size: 16px;
+                    font-family: MicrosoftYaHei;
+                    color: rgba(51, 51, 51, 1);
+                    line-height: 21px;
+                    letter-spacing: 1px;
+                }
+            }
+        }
+        .news_detail_comment {
+            margin-top: 50px;
+            .cmmment_title {
+                h2 {
+                    font-size: 18px;
+                    font-family: MicrosoftYaHei;
+                    color: rgba(0, 0, 0, 1);
+                    line-height: 24px;
+                    letter-spacing: 1px;
+                    position: relative;
+                    padding-left: 10px;
+                    &::before {
+                        content: "";
+                        width: 4px;
+                        height: 24px;
+                        background: rgba(15, 79, 168, 1);
+                        position: absolute;
+                        left: 0;
+                    }
+                }
+            }
+            .comment_input {
+                display: flex;
+                margin-top: 23px;
+                input {
+                    flex: 1;
+                    height: 49px;
+                    line-height: 49px;
+                    border: 1px solid rgba(221, 221, 221, 1);
+                    color: rgba(153, 153, 153, 1);
+                    font-size: 12px;
+                    padding-left: 10px;
+                }
+                button {
+                    width: 119px;
+                    height: 48px;
+                    background: rgba(22, 61, 163, 1);
+                    color: #fff;
+                }
+            }
+        }
+    }
 }
 </style>

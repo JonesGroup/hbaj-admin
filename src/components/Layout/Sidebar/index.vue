@@ -60,6 +60,7 @@ export default {
 #menu {
     width: 209px;
     height: 100%;
+    flex-shrink: 0;
     background: @theme-bg-01;
     .el-menu {
         background: transparent !important;
