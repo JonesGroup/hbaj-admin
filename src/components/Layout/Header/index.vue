@@ -16,11 +16,13 @@
                 <el-dropdown @command="handleCommand">
                     <span class="el-dropdown-link"> {{ user.sgname }}<i class="el-icon-arrow-down el-icon--right"></i> </span>
                     <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="resetPassword">重置密码</el-dropdown-item>
                         <el-dropdown-item command="logout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
         </div>
+        <ResetPassword :visible.sync="isOpenResetPasswoord" />
     </header>
 </template>
 
@@ -28,11 +30,16 @@
 import { user } from "@/model/api";
 import store from "@/widget/store";
 import defaultImagePath from "../../images/user_default.png";
+import ResetPassword from "@/components/Dialog/ResetPassword";
 export default {
+    components: {
+        ResetPassword
+    },
     data() {
         return {
             user: {}, // 用户信息
-            src: ""
+            src: "",
+            isOpenResetPasswoord: false
         };
     },
     methods: {
@@ -58,6 +65,9 @@ export default {
                 window.localStorage.removeItem("user");
                 window.localStorage.removeItem("authorization");
                 this.$router.push("/login");
+            }
+            if (command === "resetPassword") {
+                this.isOpenResetPasswoord = true;
             }
         }
     },

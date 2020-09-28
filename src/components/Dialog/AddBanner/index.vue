@@ -56,7 +56,6 @@ export default {
     },
     methods: {
         close() {
-            console.log("111");
             this.$emit("update:visible", false);
         },
         open() {
