@@ -104,6 +104,8 @@ export default {
             }
             input {
                 margin-left: 12px;
+                width: 100%;
+                height: 100%;
             }
         }
         .password {

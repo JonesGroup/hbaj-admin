@@ -140,6 +140,8 @@ export default {
             }
             input {
                 margin-left: 12px;
+                height: 100%;
+                width: 100%;
             }
         }
         .password {
