@@ -13,7 +13,12 @@
             </div>
             <div class="person">
                 <img :src="src" alt="" width="30" />
-                <span>{{ user.sgname }}</span>
+                <el-dropdown @command="handleCommand">
+                    <span class="el-dropdown-link"> {{ user.sgname }}<i class="el-icon-arrow-down el-icon--right"></i> </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </div>
         </div>
     </header>
@@ -46,6 +51,13 @@ export default {
                         this.src = user.avatar ? `${globalConfig.imagePath + user.avatar}` : defaultImagePath;
                     }
                 });
+            }
+        },
+        handleCommand(command) {
+            if (command === "logout") {
+                window.localStorage.removeItem("user");
+                window.localStorage.removeItem("authorization");
+                this.$router.push("/login");
             }
         }
     },

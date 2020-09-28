@@ -11,7 +11,7 @@
                     <span>{{ data.author }}</span>
                     <span>{{ data.publishTime | formaData }}</span>
                 </div>
-                <div class="content" v-html="data.contentHtml"></div>
+                <div class="content-news-detail" v-html="data.contentHtml"></div>
             </div>
             <div class="news_detail_comment">
                 <div class="cmmment_title">
@@ -91,14 +91,13 @@ export default {
 
 <style lang="less">
 .news_detail {
-    display: flex;
     height: 100%;
+    background: #fff;
+    overflow: hidden;
     .news_content {
-        flex: 1;
-        background: #fff;
+        overflow-y: scroll;
         padding: 25px;
         height: 100%;
-        // overflow-y: scroll;
         .detail {
             .title {
                 font-size: 18px;
@@ -114,7 +113,7 @@ export default {
                 margin-top: 16px;
                 margin-bottom: 24px;
             }
-            .content {
+            .content-news-detail {
                 p {
                     font-size: 16px;
                     font-family: MicrosoftYaHei;
