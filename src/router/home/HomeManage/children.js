@@ -20,7 +20,8 @@ const router = [
         name: "News",
         meta: {
             title: "新闻资讯-处理评论",
-            hidden: true
+            hidden: true,
+            hiddenBg: false
         },
         component: () => import("@/views/home/HomeManage/News/detail/index.vue")
     },
@@ -29,7 +30,8 @@ const router = [
         name: "News",
         meta: {
             title: "新闻资讯",
-            hidden: true
+            hidden: true,
+            hiddenBg: false
         },
         component: () => import("@/views/home/HomeManage/News/public/index.vue")
     },

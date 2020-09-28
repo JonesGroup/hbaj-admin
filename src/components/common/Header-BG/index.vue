@@ -1,5 +1,5 @@
 <template>
-    <div class="header-bg-container">
+    <div class="header-bg-container" v-if="isShowBg">
         <div class="bg"></div>
     </div>
 </template>
@@ -8,6 +8,12 @@
 export default {
     data() {
         return {};
+    },
+    props: {
+        isShowBg: {
+            type: Boolean,
+            default: true
+        }
     }
 };
 </script>

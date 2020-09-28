@@ -96,10 +96,9 @@ export default {
     .news_content {
         flex: 1;
         background: #fff;
-        margin-left: 16px;
         padding: 25px;
         height: 100%;
-        overflow-y: scroll;
+        // overflow-y: scroll;
         .detail {
             .title {
                 font-size: 18px;

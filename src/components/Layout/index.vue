@@ -5,7 +5,7 @@
             <Sidebar></Sidebar>
             <div class="container-main">
                 <div class="content">
-                    <HeaderBg />
+                    <HeaderBg :isShowBg="isShowBg" />
                     <router-view></router-view>
                 </div>
                 <Footer></Footer>
@@ -29,6 +29,11 @@ export default {
         Footer,
         Sidebar,
         HeaderBg
+    },
+    computed: {
+        isShowBg() {
+            return this.$route.meta.hiddenBg;
+        }
     }
 };
 </script>
@@ -48,11 +53,13 @@ export default {
             flex: 1; // Sidebar中给了宽度-宽度flex
             // height: 100%;
             background: rgba(240, 242, 245, 1);
-            padding: 24px 24px 0px 24px;
+
             display: flex;
             flex-direction: column;
             .content {
                 flex: 1; // footer给了高度-高度flex
+                padding: 24px 24px 0px 24px;
+                overflow-y: scroll;
             }
         }
     }
