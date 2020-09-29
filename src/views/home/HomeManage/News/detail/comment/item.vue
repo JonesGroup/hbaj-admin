@@ -12,6 +12,9 @@
             <div class="date">
                 <span>{{ item.createTime | formaData }}</span>
             </div>
+            <div class="operate">
+                <el-button type="text">删除</el-button>
+            </div>
             <!-- <div class="like_content">
                 <div class="like">
                     <i class="iconfont icondianzan"></i>

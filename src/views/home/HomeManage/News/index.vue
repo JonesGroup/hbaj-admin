@@ -4,22 +4,41 @@
             <el-button type="primary" @click="addNews">添加</el-button>
         </div>
         <el-table :data="tableData">
-            <el-table-column prop="date" label="序号" />
-            <el-table-column prop="name" label="新闻标题" />
-            <el-table-column prop="address" label="发布机构" />
-            <el-table-column prop="address" label="作者" />
-            <el-table-column prop="address" label="发布时间" />
-            <el-table-column prop="address" label="首页发布" />
+            <el-table-column prop="id" label="序号" />
+            <el-table-column prop="title" label="新闻标题" />
+            <el-table-column prop="institution" label="发布机构" />
+            <el-table-column prop="author" label="作者" />
+            <el-table-column prop="publishTime" label="发布时间">
+                <template slot-scope="{ row }">
+                    <span>{{ row.publishTime | formaData }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="发布状态">
+                <template slot-scope="{ row }">
+                    <span>{{ row.status === 1 ? "发布" : "待发布" }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="是否置顶">
+                <template slot-scope="{ row }">
+                    <span>{{ row.topFlg === 1 ? "置顶" : "-" }}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
-                    <el-button type="text">
+                    <el-button type="text" v-if="row.status !== 1">
                         编辑
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" v-if="row.status !== 1">
                         发布
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" v-if="row.status !== 1">
+                        删除
+                    </el-button>
+                    <el-button type="text" v-if="row.status === 1">
                         撤销
+                    </el-button>
+                    <el-button type="text" v-if="row.status === 1">
+                        置顶
                     </el-button>
                     <el-button type="text" @click="comment(row.id)">
                         处理评论
@@ -40,6 +59,7 @@
 </template>
 
 <script>
+import { newsAdmin } from "@/model/api";
 export default {
     data() {
         return {
@@ -48,33 +68,28 @@ export default {
                 page_size: 10,
                 total: 0
             },
-            tableData: [
-                {
-                    date: "2016-05-02",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1518 弄"
-                },
-                {
-                    date: "2016-05-04",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1517 弄"
-                },
-                {
-                    date: "2016-05-01",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1519 弄"
-                },
-                {
-                    date: "2016-05-03",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1516 弄"
-                }
-            ]
+            tableData: []
         };
     },
     methods: {
         getList() {
-            console.log("111");
+            const { page, page_size } = this.pagination;
+            newsAdmin({
+                type: "GET",
+                data: {
+                    page: page,
+                    size: page_size,
+                    status: ""
+                }
+            }).then(res => {
+                if (res.suceeded) {
+                    const { content, total, currentPage, pageSize } = res.data;
+                    this.pagination.total = total;
+                    this.pagination.page = currentPage;
+                    this.pagination.page_size = pageSize;
+                    this.tableData = content;
+                }
+            });
         },
         setPagination(p, v) {
             this.$set(this.pagination, p, v);
@@ -89,7 +104,13 @@ export default {
             this.$router.push({
                 path: `./news/comment/${id}`
             });
+        },
+        backout() {
+            // 撤销
         }
+    },
+    created() {
+        this.getList();
     }
 };
 </script>

@@ -14,13 +14,13 @@
                 <div class="content-news-detail" v-html="data.contentHtml"></div>
             </div>
             <div class="news_detail_comment">
-                <div class="cmmment_title">
+                <!-- <div class="cmmment_title">
                     <h2>评论区</h2>
                 </div>
                 <div class="comment_input">
                     <input type="text" placeholder="写下您的评论……" v-model="content" />
                     <button @click="addComment">评论</button>
-                </div>
+                </div> -->
                 <Comment ref="comment"></Comment>
             </div>
         </div>

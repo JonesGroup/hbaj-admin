@@ -3,12 +3,23 @@
         <div class="operate mgB24">
             <el-button type="primary" @click="addBanner">添加</el-button>
         </div>
-        <el-table :data="tableData">
-            <el-table-column prop="date" label="序号" />
-            <el-table-column prop="name" label="图片名称" />
-            <el-table-column prop="address" label="链接类别" />
-            <el-table-column prop="address" label="项目编号" />
-            <el-table-column prop="address" label="项目链接" />
+        <el-table :data="tableData" :v-loading="loading">
+            <el-table-column prop="id" label="ID" />
+            <el-table-column prop="detail" label="图片名称" />
+            <el-table-column label="链接类别">
+                <template slot-scope="{ row }">{{ row.value.type === "NEWS" ? "新闻" : "课件" }}</template>
+            </el-table-column>
+            <el-table-column label="项目编号">
+                <template slot-scope="{ row }">{{ row.value.aim_id }}</template>
+            </el-table-column>
+            <el-table-column label="项目标题">
+                <template slot-scope="{ row }">{{ row.value.aim_id }}</template>
+            </el-table-column>
+            <el-table-column prop="url" label="项目封面" width="200">
+                <template slot-scope="{ row }">
+                    <img :src="globalConfig.imagePath + row.value.url" alt="" height="100" />
+                </template>
+            </el-table-column>
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
                     <el-button type="text">
@@ -29,7 +40,6 @@
                 </template>
             </el-table-column>
         </el-table>
-
         <app-pagination
             @size-change="setPagination('page_size', $event)"
             @current-change="setPagination('page', $event)"
@@ -38,12 +48,14 @@
             :page-size="pagination.page_size"
             :total="pagination.total"
         />
+
         <AddBanner :visible.sync="isOpenAddBanner" />
     </div>
 </template>
 
 <script>
 import AddBanner from "@/components/Dialog/AddBanner";
+import { appConst } from "@/model/api";
 export default {
     components: {
         AddBanner
@@ -51,47 +63,45 @@ export default {
     data() {
         return {
             isOpenAddBanner: false,
+            loading: false,
+            tableData: [],
             pagination: {
                 page: 1,
                 page_size: 10,
                 total: 0
-            },
-            tableData: [
-                {
-                    date: "2016-05-02",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1518 弄"
-                },
-                {
-                    date: "2016-05-04",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1517 弄"
-                },
-                {
-                    date: "2016-05-01",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1519 弄"
-                },
-                {
-                    date: "2016-05-03",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1516 弄"
-                }
-            ]
+            }
         };
     },
     methods: {
         getList() {
-            console.log("111");
-        },
-        setPagination(p, v) {
-            this.$set(this.pagination, p, v);
-            this.getList();
+            const { page, page_size } = this.pagination;
+            appConst(
+                {
+                    type: "GET",
+                    data: {
+                        page,
+                        size: page_size,
+                        name: "HOME_NAV_IMAGE"
+                    }
+                },
+                "app/pageInfo"
+            ).then(res => {
+                if (res.suceeded) {
+                    const { content, total, currentPage, pageSize } = res.data;
+                    this.pagination.total = total;
+                    this.pagination.page = currentPage;
+                    this.pagination.page_size = pageSize;
+                    this.tableData = content.map(item => ({ ...item, value: JSON.parse(item.value) }));
+                    console.log(this.tableData, "ta");
+                }
+            });
         },
         addBanner() {
-            console.log("111");
             this.isOpenAddBanner = true;
         }
+    },
+    created() {
+        this.getList();
     }
 };
 </script>

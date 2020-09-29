@@ -14,6 +14,7 @@ export const home = (data, url) => request(`${baseUrl}/home/${url}`, data);
 export const user = (data, url) => request(`${baseUrl}/user/${url}`, data);
 
 export const news = data => request(`${baseUrl}/home/news`, data);
+export const newsAdmin = data => request(`${baseUrl}/news`, data);
 
 export const newsDetail = (data, url) => request(`${baseUrl}/home/news/${url}`, data);
 
@@ -26,3 +27,5 @@ export const task = data => request(`${baseUrl}/task`, data);
 export const comment = data => request(`${baseUrl}/comment`, data);
 
 export const addComment = data => request(`${baseUrl}/comment`, data);
+
+export const appConst = data => request(`${baseUrl}/appConst`, data);
