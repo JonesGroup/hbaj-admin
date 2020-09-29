@@ -1,19 +1,20 @@
 const router = [
     {
-        path: "luxuryBoat", // 子路由不能加/path/ 不然匹配不成功
-        name: "luxuryBoat",
+        path: "shippList", // 子路由不能加/path/ 不然匹配不成功
+        name: "shippList",
         meta: {
-            title: "豪华游轮"
+            title: "船舶列表"
         },
-        component: () => import("@/views/home/HomeManage/Banner/index.vue")
+        component: () => import("@/views/home/ShippingManage/shippingList/index.vue")
     },
     {
-        path: "bulkBoat",
-        name: "bulkBoat",
+        path: "shippDetail/:id", // 子路由不能加/path/ 不然匹配不成功
+        name: "shippDetail",
         meta: {
-            title: "散货船"
+            title: "船舶详情",
+            hidden: true
         },
-        component: () => import("@/views/home/HomeManage/News/index.vue")
+        component: () => import("@/views/home/ShippingManage/shippDetail/index.vue")
     }
 ];
 

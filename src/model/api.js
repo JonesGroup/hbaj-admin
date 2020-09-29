@@ -29,3 +29,7 @@ export const comment = data => request(`${baseUrl}/comment`, data);
 export const addComment = data => request(`${baseUrl}/comment`, data);
 
 export const appConst = data => request(`${baseUrl}/appConst`, data);
+
+export const block = data => request(`${baseUrl}/block`, data);
+
+export const scene = data => request(`${baseUrl}/scene`, data);
