@@ -1,35 +1,20 @@
 const router = [
     {
-        path: "banner", // 子路由不能加/path/ 不然匹配不成功
-        name: "Banner",
+        path: "list", // 子路由不能加/path/ 不然匹配不成功
+        name: "list",
         meta: {
-            title: "主页轮播图"
+            title: "机构管理列表"
         },
-        component: () => import("@/views/home/HomeManage/Banner/index.vue")
+        component: () => import("@/views/home/OrganizationManage/organization/list/index.vue")
     },
     {
-        path: "news",
-        name: "News",
+        path: "detail/:id",
+        name: "detail",
         meta: {
-            title: "新闻资讯"
+            title: "机构管理-详情",
+            hidden: true
         },
-        component: () => import("@/views/home/HomeManage/News/index.vue")
-    },
-    {
-        path: "course",
-        name: "Course",
-        meta: {
-            title: "公众课件"
-        },
-        component: () => import("@/views/home/HomeManage/Course/index.vue")
-    },
-    {
-        path: "apps",
-        name: "Apps",
-        meta: {
-            title: "平台应用"
-        },
-        component: () => import("@/views/home/HomeManage/Apps/index.vue")
+        component: () => import("@/views/home/OrganizationManage/organization/detail/index.vue")
     }
 ];
 
