@@ -33,3 +33,5 @@ export const appConst = data => request(`${baseUrl}/appConst`, data);
 export const block = data => request(`${baseUrl}/block`, data);
 
 export const scene = data => request(`${baseUrl}/scene`, data);
+
+export const project = data => request(`${baseUrl}/project`, data);
