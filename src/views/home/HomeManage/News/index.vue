@@ -3,7 +3,7 @@
         <div class="operate mgB24">
             <el-button type="primary" @click="addNews">添加</el-button>
         </div>
-        <el-table :data="tableData">
+        <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="序号" />
             <el-table-column prop="title" label="新闻标题" />
             <el-table-column prop="institution" label="发布机构" />
@@ -68,11 +68,13 @@ export default {
                 page_size: 10,
                 total: 0
             },
-            tableData: []
+            tableData: [],
+            loading: false
         };
     },
     methods: {
         getList() {
+            this.loading = true;
             const { page, page_size } = this.pagination;
             newsAdmin({
                 type: "GET",
@@ -83,6 +85,7 @@ export default {
                 }
             }).then(res => {
                 if (res.suceeded) {
+                    this.loading = false;
                     const { content, total, currentPage, pageSize } = res.data;
                     this.pagination.total = total;
                     this.pagination.page = currentPage;

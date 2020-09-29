@@ -3,7 +3,7 @@
         <div class="operate mgB24">
             <el-button type="primary" @click="addBanner">添加</el-button>
         </div>
-        <el-table :data="tableData" :v-loading="loading">
+        <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="ID" />
             <el-table-column prop="detail" label="图片名称" />
             <el-table-column label="链接类别">
@@ -30,9 +30,6 @@
                     </el-button>
                     <el-button type="text">
                         编辑
-                    </el-button>
-                    <el-button type="text">
-                        发布
                     </el-button>
                     <el-button type="text">
                         删除
@@ -75,6 +72,7 @@ export default {
     methods: {
         getList() {
             const { page, page_size } = this.pagination;
+            this.loading = true;
             appConst(
                 {
                     type: "GET",
@@ -87,17 +85,21 @@ export default {
                 "app/pageInfo"
             ).then(res => {
                 if (res.suceeded) {
+                    this.loading = false;
                     const { content, total, currentPage, pageSize } = res.data;
                     this.pagination.total = total;
                     this.pagination.page = currentPage;
                     this.pagination.page_size = pageSize;
                     this.tableData = content.map(item => ({ ...item, value: JSON.parse(item.value) }));
-                    console.log(this.tableData, "ta");
                 }
             });
         },
         addBanner() {
             this.isOpenAddBanner = true;
+        },
+        setPagination(p, v) {
+            this.$set(this.pagination, p, v);
+            this.getList();
         }
     },
     created() {

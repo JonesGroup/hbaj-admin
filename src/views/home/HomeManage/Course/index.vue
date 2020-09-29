@@ -1,18 +1,12 @@
 <template>
     <div class="main mgT24">
-        <el-table :data="tableData">
-            <el-table-column prop="date" label="序号" />
-            <el-table-column prop="name" label="课件标题" />
-            <el-table-column prop="address" label="简介" />
-            <el-table-column prop="address" label="发布机构" />
-            <el-table-column prop="address" label="作者" />
+        <el-table :data="tableData" v-loading="loading">
+            <el-table-column prop="value" label="课件标题" />
+            <el-table-column prop="value" label="课件图片" />
+            <el-table-column prop="values" label="简介" />
             <el-table-column prop="address" label="发布时间" />
-            <el-table-column prop="address" label="首页发布" />
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
-                    <el-button type="text">
-                        发布
-                    </el-button>
                     <el-button type="text">
                         撤销
                     </el-button>
@@ -32,46 +26,51 @@
 </template>
 
 <script>
+import { appConst } from "@/model/api";
 export default {
     data() {
         return {
+            loading: false,
+            tableData: [],
             pagination: {
                 page: 1,
                 page_size: 10,
                 total: 0
-            },
-            tableData: [
-                {
-                    date: "2016-05-02",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1518 弄"
-                },
-                {
-                    date: "2016-05-04",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1517 弄"
-                },
-                {
-                    date: "2016-05-01",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1519 弄"
-                },
-                {
-                    date: "2016-05-03",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1516 弄"
-                }
-            ]
+            }
         };
     },
     methods: {
         getList() {
-            console.log("111");
+            const { page, page_size } = this.pagination;
+            this.loading = true;
+            appConst(
+                {
+                    type: "GET",
+                    data: {
+                        page,
+                        size: page_size,
+                        name: "HOME_RECOMMEND_PROJECT"
+                    }
+                },
+                "app/pageInfo"
+            ).then(res => {
+                if (res.suceeded) {
+                    this.loading = false;
+                    const { content, total, currentPage, pageSize } = res.data;
+                    this.pagination.total = total;
+                    this.pagination.page = currentPage;
+                    this.pagination.page_size = pageSize;
+                    this.tableData = content.map(item => ({ ...item, value: JSON.parse(item.value) }));
+                }
+            });
         },
         setPagination(p, v) {
             this.$set(this.pagination, p, v);
             this.getList();
         }
+    },
+    created() {
+        this.getList();
     }
 };
 </script>
