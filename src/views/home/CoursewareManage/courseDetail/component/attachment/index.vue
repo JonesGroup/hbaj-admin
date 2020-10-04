@@ -2,8 +2,8 @@
     <div class="main mgT24">
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="附件ID" />
-            <el-table-column prop="detail" label="附件编码" />
-            <el-table-column prop="detail" label="附件名称" />
+            <el-table-column prop="code" label="附件编码" />
+            <el-table-column prop="title" label="附件名称" />
 
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
@@ -13,14 +13,6 @@
                 </template>
             </el-table-column>
         </el-table>
-        <app-pagination
-            @size-change="setPagination('page_size', $event)"
-            @current-change="setPagination('page', $event)"
-            :current-page="pagination.page"
-            :page-sizes="[10, 20, 50]"
-            :page-size="pagination.page_size"
-            :total="pagination.total"
-        />
 
         <AddBanner :visible.sync="isOpenAddBanner" />
     </div>
@@ -28,7 +20,7 @@
 
 <script>
 import AddBanner from "@/components/Dialog/AddBanner";
-import { appConst } from "@/model/api";
+import { projectDetail } from "@/model/api";
 export default {
     components: {
         AddBanner
@@ -37,45 +29,27 @@ export default {
         return {
             isOpenAddBanner: false,
             loading: false,
-            tableData: [],
-            pagination: {
-                page: 1,
-                page_size: 10,
-                total: 0
-            }
+            tableData: []
         };
     },
     methods: {
         getList() {
-            const { page, page_size } = this.pagination;
+            const projectId = this.$route.params.id;
             this.loading = true;
-            appConst(
+            projectDetail(
                 {
-                    type: "GET",
-                    data: {
-                        page,
-                        size: page_size,
-                        name: "HOME_NAV_IMAGE"
-                    }
+                    type: "GET"
                 },
-                "app/pageInfo"
+                projectId
             ).then(res => {
                 if (res.suceeded) {
                     this.loading = false;
-                    const { content, total, currentPage, pageSize } = res.data;
-                    this.pagination.total = total;
-                    this.pagination.page = currentPage;
-                    this.pagination.page_size = pageSize;
-                    this.tableData = content.map(item => ({ ...item, value: JSON.parse(item.value) }));
+                    this.tableData = res.data.attachments || [];
                 }
             });
         },
         addBanner() {
             this.isOpenAddBanner = true;
-        },
-        setPagination(p, v) {
-            this.$set(this.pagination, p, v);
-            this.getList();
         }
     },
     created() {
