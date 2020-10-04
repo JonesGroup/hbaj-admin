@@ -17,10 +17,13 @@
         </div>
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="序号" />
-            <el-table-column prop="title" label="角色名称" />
+            <el-table-column prop="name" label="角色名称" />
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
                     <el-button type="text" @click="toDetail(row.id)">
+                        查看
+                    </el-button>
+                    <el-button type="text" @click="editRole(row)">
                         编辑
                     </el-button>
                 </template>
@@ -35,33 +38,44 @@
             :page-size="pagination.page_size"
             :total="pagination.total"
         />
+
+        <EditRole :visible.sync="isOpenRole" :roleId="roleId" :blockId="blockId" :name="name" :onSuccess="getList" />
     </div>
 </template>
 
 <script>
-import { newsAdmin } from "@/model/api";
+import { role } from "@/model/api";
+import EditRole from "../Dialog/EditRole";
 export default {
+    components: {
+        EditRole
+    },
     data() {
         return {
+            tableData: [],
+            loading: false,
+            isOpenRole: false,
+            roleId: "",
+            blockId: "",
+            name: "",
             pagination: {
                 page: 1,
                 page_size: 10,
                 total: 0
-            },
-            tableData: [],
-            loading: false
+            }
         };
     },
     methods: {
         getList() {
             this.loading = true;
             const { page, page_size } = this.pagination;
-            newsAdmin({
+            role({
                 type: "GET",
                 data: {
+                    enterpriseId: "1",
+                    blockId: "25",
                     page: page,
-                    size: page_size,
-                    status: ""
+                    size: page_size
                 }
             }).then(res => {
                 if (res.suceeded) {
@@ -74,13 +88,19 @@ export default {
                 }
             });
         },
-        setPagination(p, v) {
-            this.$set(this.pagination, p, v);
-            this.getList();
-        },
         toDetail(id) {
             this.$router.push(`./detail/1`);
+        },
+        editRole(data) {
+            this.name = data.name;
+            this.roleId = data.id;
+            this.blockId = "25";
+            this.isOpenRole = true;
         }
+    },
+    setPagination(p, v) {
+        this.$set(this.pagination, p, v);
+        this.getList();
     },
     created() {
         this.getList();
