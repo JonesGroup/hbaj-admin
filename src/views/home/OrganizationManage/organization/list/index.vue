@@ -5,9 +5,9 @@
         </div>
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="序号" />
-            <el-table-column prop="title" label="部门" />
-            <el-table-column prop="title" label="部门负责人" />
-            <el-table-column prop="title" label="上级部门" />
+            <el-table-column prop="name" label="部门" />
+            <el-table-column prop="managerName" label="部门负责人" />
+            <el-table-column prop="parentName" label="上级部门" />
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
                     <el-button type="text" @click="toDetail(row.id)">
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { newsAdmin } from "@/model/api";
+import { department } from "@/model/api";
 export default {
     data() {
         return {
@@ -49,12 +49,12 @@ export default {
         getList() {
             this.loading = true;
             const { page, page_size } = this.pagination;
-            newsAdmin({
+            department({
                 type: "GET",
                 data: {
                     page: page,
                     size: page_size,
-                    status: ""
+                    enterpriseId: "1"
                 }
             }).then(res => {
                 if (res.suceeded) {

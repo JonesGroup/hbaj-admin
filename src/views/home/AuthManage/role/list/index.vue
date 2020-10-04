@@ -30,21 +30,12 @@
             </el-table-column>
         </el-table>
 
-        <app-pagination
-            @size-change="setPagination('page_size', $event)"
-            @current-change="setPagination('page', $event)"
-            :current-page="pagination.page"
-            :page-sizes="[10, 20, 50]"
-            :page-size="pagination.page_size"
-            :total="pagination.total"
-        />
-
         <EditRole :visible.sync="isOpenRole" :roleId="roleId" :blockId="blockId" :name="name" :onSuccess="getList" />
     </div>
 </template>
 
 <script>
-import { role } from "@/model/api";
+import { roleDetail } from "@/model/api";
 import EditRole from "../Dialog/EditRole";
 export default {
     components: {
@@ -57,34 +48,25 @@ export default {
             isOpenRole: false,
             roleId: "",
             blockId: "",
-            name: "",
-            pagination: {
-                page: 1,
-                page_size: 10,
-                total: 0
-            }
+            name: ""
         };
     },
     methods: {
         getList() {
             this.loading = true;
-            const { page, page_size } = this.pagination;
-            role({
-                type: "GET",
-                data: {
-                    enterpriseId: "1",
-                    blockId: "25",
-                    page: page,
-                    size: page_size
-                }
-            }).then(res => {
+            roleDetail(
+                {
+                    type: "GET",
+                    data: {
+                        enterpriseId: "1",
+                        blockId: "25"
+                    }
+                },
+                "all"
+            ).then(res => {
                 if (res.suceeded) {
                     this.loading = false;
-                    const { content, total, currentPage, pageSize } = res.data;
-                    this.pagination.total = total;
-                    this.pagination.page = currentPage;
-                    this.pagination.page_size = pageSize;
-                    this.tableData = content;
+                    this.tableData = res.data;
                 }
             });
         },
