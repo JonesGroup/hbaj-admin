@@ -1,7 +1,7 @@
 <template>
     <div class="comment">
         <div class="comment_list">
-            <CommentItem v-for="(item, index) in list" :key="index" :item="item"></CommentItem>
+            <CommentItem v-for="(item, index) in list" :key="index" :item="item" :onSuccess="getComment"></CommentItem>
         </div>
     </div>
 </template>

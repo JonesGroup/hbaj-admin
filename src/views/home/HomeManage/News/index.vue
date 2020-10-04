@@ -31,7 +31,7 @@
                     <el-button type="text" v-if="row.status !== 1">
                         发布
                     </el-button>
-                    <el-button type="text" v-if="row.status !== 1">
+                    <el-button type="text" v-if="row.status !== 1" @click="delNews(row.id)">
                         删除
                     </el-button>
                     <el-button type="text" v-if="row.status === 1">
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { newsAdmin } from "@/model/api";
+import { newsAdmin, newsAdminDetail } from "@/model/api";
 export default {
     data() {
         return {
@@ -101,6 +101,17 @@ export default {
         addNews() {
             this.$router.push({
                 path: "./news/create"
+            });
+        },
+        delNews(newsId) {
+            newsAdminDetail(
+                {
+                    type: "delete"
+                },
+                newsId
+            ).then(res => {
+                this.$message.success("操作成功");
+                this.getList();
             });
         },
         comment(id = "1") {

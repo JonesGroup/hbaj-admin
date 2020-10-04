@@ -21,17 +21,17 @@
                 </template>
             </el-table-column>
             <el-table-column label="操作" fixed="right" width="220">
-                <template slot-scope="{ row }">
-                    <el-button type="text">
+                <template slot-scope="scope">
+                    <el-button type="text" @click="up(tableData, scope.$index)">
                         向上
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" @click="down(tableData, scope.$index)">
                         向下
                     </el-button>
                     <el-button type="text">
                         编辑
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" @click="delBanner(scope.row.id)">
                         删除
                     </el-button>
                 </template>
@@ -52,7 +52,7 @@
 
 <script>
 import AddBanner from "@/components/Dialog/AddBanner";
-import { appConst } from "@/model/api";
+import { appConst, appConstDetail } from "@/model/api";
 export default {
     components: {
         AddBanner
@@ -96,6 +96,47 @@ export default {
         },
         addBanner() {
             this.isOpenAddBanner = true;
+        },
+        delBanner(id) {
+            appConst(
+                {
+                    type: "delete"
+                },
+                id
+            ).then(res => {
+                this.$message.success("删除成功");
+                this.getList();
+            });
+        },
+        sort() {
+            const appConstIds = this.tableData.map(item => item.id);
+            appConstDetail(
+                {
+                    type: "post",
+                    data: {
+                        appConstIds
+                    }
+                },
+                "changeSeq"
+            ).then(res => {
+                this.getList();
+            });
+        },
+        up(arr, index) {
+            if (arr.length > 1 && index !== 0) {
+                this.newArr = this.swapItems(arr, index, index - 1);
+                this.sort();
+            }
+        },
+        down(arr, index) {
+            if (arr.length > 1 && index !== arr.length - 1) {
+                this.newArr = this.swapItems(arr, index, index + 1);
+                this.sort();
+            }
+        },
+        swapItems(arr, index1, index2) {
+            arr[index1] = arr.splice(index2, 1, arr[index1])[0];
+            return arr;
         },
         setPagination(p, v) {
             this.$set(this.pagination, p, v);

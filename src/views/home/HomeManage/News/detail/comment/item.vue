@@ -13,7 +13,7 @@
                 <span>{{ item.createTime | formaData }}</span>
             </div>
             <div class="operate">
-                <el-button type="text">删除</el-button>
+                <el-button type="text" @click="delCommon(item.id)">删除</el-button>
             </div>
             <!-- <div class="like_content">
                 <div class="like">
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { commentDetail } from "@/model/api";
+
 export default {
     data() {
         return {};
@@ -37,6 +39,23 @@ export default {
         item: {
             type: Object,
             default: {}
+        },
+        onSuccess: {
+            type: Function,
+            default: () => {}
+        }
+    },
+    methods: {
+        delCommon(id) {
+            commentDetail(
+                {
+                    type: "delete"
+                },
+                id
+            ).then(res => {
+                this.$message.success("删除成功");
+                this.onSuccess && this.onSuccess();
+            });
         }
     }
 };
