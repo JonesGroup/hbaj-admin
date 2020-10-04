@@ -2,10 +2,9 @@
     <div class="main mgT24">
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="热点ID" />
-            <el-table-column prop="id" label="热点编码" />
-            <el-table-column prop="detail" label="热点名称" />
-            <el-table-column prop="detail" label="热点所在场景" />
-            <el-table-column prop="detail" label="链接内容" />
+            <el-table-column prop="code" label="热点编码" />
+            <el-table-column prop="title" label="热点名称" />
+            <el-table-column prop="sceneId" label="热点所在场景" />
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
                     <el-button type="text">
