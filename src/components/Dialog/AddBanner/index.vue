@@ -7,62 +7,134 @@
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
-            <el-form-item label="名称">
-                <el-input v-model="form.name"></el-input>
+            <el-form-item label="图片名称">
+                <el-input v-model="form.detail"></el-input>
             </el-form-item>
             <el-form-item label="项目类型">
-                <el-radio-group v-model="form.radio">
-                    <el-radio :label="1">课件</el-radio>
-                    <el-radio :label="2">咨讯</el-radio>
+                <el-radio-group v-model="form.type">
+                    <el-radio label="PROJECT">课件</el-radio>
+                    <el-radio label="NEWS">咨讯</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="项目编号">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="form.aim_id"></el-input>
             </el-form-item>
             <el-form-item label="项目标题">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="form.title"></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
+            <el-button type="primary" @click="sumbit">确 定</el-button>
         </span>
     </el-dialog>
 </template>
 
 <script>
+import { appConst, appConstDetail } from "@/model/api";
 export default {
     props: {
         visible: {
             type: Boolean,
             default: false
+        },
+        onSuccess: {
+            type: Function
+        },
+        appConstId: {
+            type: [String, Number]
+        },
+        editData: {
+            type: Object,
+            default: function() {
+                return {};
+            }
         }
     },
     data() {
         return {
             form: {
-                name: "", // 名称
                 imageUrl: "",
-                radio: ""
+                type: "", // 类型
+                detail: "", //项目名称
+                aim_id: "", // 项目编号
+                title: "" // 项目标题
             },
             staticPath: ""
         };
     },
+    watch: {
+        appConstId: function(val) {
+            this.$nextTick(() => {
+                this.form = Object.assign(this.form, this.editData.value, { detail: this.editData.detail });
+                this.staticPath = this.editData.value.url;
+                this.form.imageUrl = this.staticPath;
+            });
+        }
+    },
     computed: {
         uploadUrl() {
-            const url = `/api/file/upload?fileName=default&relatedId=111&fileType=PROJECT_IMAGE`;
+            const url = `/api/file/upload?fileName=default&relatedId=1&fileType=ENTERPRIISE_IMAGE`;
             return url;
         }
     },
     methods: {
         close() {
+            this.$refs.form.resetFields();
             this.$emit("update:visible", false);
         },
         open() {
             console.log("打开");
         },
+        fomatParams() {
+            this.form.url = this.form.imageUrl;
+            const { type, aim_id, title, url } = this.form;
+            const data = {
+                name: "HOME_NAV_IMAGE",
+                detail: this.form.detail,
+                value: JSON.stringify({ type, aim_id, title, url })
+            };
+            return data;
+        },
+        sumbit() {
+            this.appConstId ? this.edit() : this.save();
+        },
         save() {
-            console.log("确定");
+            this.$refs.form.validate(valid => {
+                if (valid) {
+                    const data = this.fomatParams();
+                    appConst({
+                        type: "post",
+                        data
+                    }).then(res => {
+                        if (res.suceeded) {
+                            this.$message.success("新增成功");
+                            this.onSuccess && this.onSuccess();
+                            this.close();
+                        }
+                    });
+                }
+            });
+        },
+        edit() {
+            this.$refs.form.validate(valid => {
+                if (valid) {
+                    const data = this.fomatParams();
+                    appConstDetail(
+                        {
+                            type: "put",
+                            data
+                        },
+                        this.appConstId
+                    ).then(res => {
+                        if (res.suceeded) {
+                            this.$message.success("修改成功");
+                            this.onSuccess && this.onSuccess();
+                            this.close();
+                        }
+                    });
+                }
+            });
         },
         handleAvatarSuccess(res, file) {
             this.staticPath = res.data.path;

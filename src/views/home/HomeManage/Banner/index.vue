@@ -13,7 +13,7 @@
                 <template slot-scope="{ row }">{{ row.value.aim_id }}</template>
             </el-table-column>
             <el-table-column label="项目标题">
-                <template slot-scope="{ row }">{{ row.value.aim_id }}</template>
+                <template slot-scope="{ row }">{{ row.value.title }}</template>
             </el-table-column>
             <el-table-column prop="url" label="项目封面" width="200">
                 <template slot-scope="{ row }">
@@ -28,7 +28,7 @@
                     <el-button type="text" @click="down(tableData, scope.$index)">
                         向下
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" @click="edit(scope.row)">
                         编辑
                     </el-button>
                     <el-button type="text" @click="delBanner(scope.row.id)">
@@ -46,7 +46,7 @@
             :total="pagination.total"
         />
 
-        <AddBanner :visible.sync="isOpenAddBanner" />
+        <AddBanner :visible.sync="isOpenAddBanner" :onSuccess="getList" :appConstId="appConstId" :editData="editData" />
     </div>
 </template>
 
@@ -60,6 +60,8 @@ export default {
     data() {
         return {
             isOpenAddBanner: false,
+            appConstId: "",
+            editData: {},
             loading: false,
             tableData: [],
             pagination: {
@@ -95,6 +97,7 @@ export default {
             });
         },
         addBanner() {
+            this.appConstId = "";
             this.isOpenAddBanner = true;
         },
         delBanner(id) {
@@ -142,6 +145,11 @@ export default {
         setPagination(p, v) {
             this.$set(this.pagination, p, v);
             this.getList();
+        },
+        edit(data) {
+            this.isOpenAddBanner = true;
+            this.appConstId = data.id;
+            this.editData = data;
         }
     },
     created() {
