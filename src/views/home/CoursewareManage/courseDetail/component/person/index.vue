@@ -12,7 +12,7 @@
             </el-table-column>
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
-                    <el-button type="text">
+                    <el-button type="text" @click="delPerson(row)">
                         删除
                     </el-button>
                 </template>
@@ -55,6 +55,19 @@ export default {
         },
         addBanner() {
             this.isOpenAddBanner = true;
+        },
+        delPerson(data) {
+            const projectId = this.$route.params.id;
+            const userId = data.userId;
+            projectDetail(
+                {
+                    type: "delete"
+                },
+                `${projectId}/user/${userId}`
+            ).then(res => {
+                this.$message.success("操作成功");
+                this.getList();
+            });
         }
     },
     created() {
