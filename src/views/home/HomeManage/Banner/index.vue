@@ -114,7 +114,8 @@ export default {
                 {
                     type: "post",
                     data: {
-                        appConstIds
+                        appConstIds,
+                        name: "HOME_NAV_IMAGE"
                     }
                 },
                 "changeSeq"

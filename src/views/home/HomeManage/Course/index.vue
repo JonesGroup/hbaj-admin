@@ -1,14 +1,31 @@
 <template>
     <div class="main mgT24">
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="value" label="课件标题" />
-            <el-table-column prop="value" label="课件图片" />
-            <el-table-column prop="values" label="简介" />
-            <el-table-column prop="address" label="发布时间" />
+            <el-table-column label="课件标题">
+                <template slot-scope="{ row }" v-if="row.value && row.value.title">
+                    <span>{{ row.value.title }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="课件图片" width="200">
+                <template slot-scope="{ row }" v-if="row.value && row.value.url">
+                    <img :src="globalConfig.imagePath + row.value.url" alt="" height="100" />
+                </template>
+            </el-table-column>
+            <el-table-column label="课件简介">
+                <template slot-scope="{ row }" v-if="row.value && row.value.Detail">
+                    <span>{{ row.value.Detail }}</span>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" fixed="right" width="220">
-                <template slot-scope="{ row }">
-                    <el-button type="text">
+                <template slot-scope="scope">
+                    <el-button type="text" @click="downshelf(scope.row.id)">
                         撤销
+                    </el-button>
+                    <el-button type="text" @click="up(tableData, scope.$index)">
+                        向上
+                    </el-button>
+                    <el-button type="text" @click="down(tableData, scope.$index)">
+                        向下
                     </el-button>
                 </template>
             </el-table-column>
@@ -26,7 +43,7 @@
 </template>
 
 <script>
-import { appConst } from "@/model/api";
+import { appConst, appConstDetail } from "@/model/api";
 export default {
     data() {
         return {
@@ -63,6 +80,48 @@ export default {
                     this.tableData = content.map(item => ({ ...item, value: JSON.parse(item.value) }));
                 }
             });
+        },
+        downshelf(id) {
+            appConstDetail(
+                {
+                    type: "delete"
+                },
+                id
+            ).then(res => {
+                this.$message.success("操作成功");
+                this.getList();
+            });
+        },
+        sort() {
+            const appConstIds = this.tableData.map(item => item.id);
+            appConstDetail(
+                {
+                    type: "post",
+                    data: {
+                        appConstIds,
+                        name: "HOME_RECOMMEND_PROJECT"
+                    }
+                },
+                "changeSeq"
+            ).then(res => {
+                this.getList();
+            });
+        },
+        up(arr, index) {
+            if (arr.length > 1 && index !== 0) {
+                this.newArr = this.swapItems(arr, index, index - 1);
+                this.sort();
+            }
+        },
+        down(arr, index) {
+            if (arr.length > 1 && index !== arr.length - 1) {
+                this.newArr = this.swapItems(arr, index, index + 1);
+                this.sort();
+            }
+        },
+        swapItems(arr, index1, index2) {
+            arr[index1] = arr.splice(index2, 1, arr[index1])[0];
+            return arr;
         },
         setPagination(p, v) {
             this.$set(this.pagination, p, v);
