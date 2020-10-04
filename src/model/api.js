@@ -46,3 +46,5 @@ export const scene = data => request(`${baseUrl}/scene`, data);
 export const sceneDetail = (data, url) => request(`${baseUrl}/scene/${url}`, data);
 
 export const project = data => request(`${baseUrl}/project`, data);
+
+export const projectDetail = (data, url) => request(`${baseUrl}/project/${url}`, data);

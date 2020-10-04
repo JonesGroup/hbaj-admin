@@ -85,7 +85,7 @@ export default {
                             this.onSuccess && this.onSuccess();
                             this.close();
                         } else {
-                            this.$message.success("操作失败");
+                            this.$message.error("操作失败");
                         }
                     });
                 }

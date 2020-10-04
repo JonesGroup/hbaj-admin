@@ -58,19 +58,19 @@
             </el-table-column>
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
-                    <el-button type="text" v-if="[1, 2, 5].indexOf(row.status) !== -1">
+                    <el-button type="text" v-if="[1, 2, 5].indexOf(row.status) !== -1" @click="handler(row.id, 'patch', 'onshelf')">
                         发布
                     </el-button>
-                    <el-button type="text" v-if="[3].indexOf(row.status) !== -1">
+                    <el-button type="text" v-if="[3].indexOf(row.status) !== -1" @click="handler(row.id, 'patch', 'offshelf')">
                         下架
                     </el-button>
-                    <el-button type="text" v-if="[2].indexOf(row.status) !== -1">
+                    <el-button type="text" v-if="[2].indexOf(row.status) !== -1" @click="handler(row.id, 'patch', 'verify')">
                         审核撤回
                     </el-button>
-                    <el-button type="text" v-if="row.publicFlg !== 1">
+                    <el-button type="text" v-if="row.publicFlg !== 1" @click="handler(row.id, 'patch', 'public')">
                         公开
                     </el-button>
-                    <el-button type="text" v-if="row.publicFlg === 1">
+                    <el-button type="text" v-if="row.publicFlg === 1" @click="handler(row.id, 'patch', 'unpublic')">
                         取消公开
                     </el-button>
                     <el-button type="text" @click="toDetail(row.id)">
@@ -79,10 +79,10 @@
                     <el-button type="text">
                         编辑
                     </el-button>
-                    <el-button type="text" v-if="[0].indexOf(row.status) !== -1">
+                    <el-button type="text" v-if="[0].indexOf(row.status) !== -1" @click="dispathTask(row)">
                         下发任务
                     </el-button>
-                    <el-button type="text" v-if="[0].indexOf(row.status) !== -1">
+                    <el-button type="text" v-if="[0].indexOf(row.status) !== -1" @click="del(row.id)">
                         删除
                     </el-button>
                 </template>
@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { project } from "@/model/api";
+import { project, projectDetail } from "@/model/api";
 export default {
     data() {
         return {
@@ -186,6 +186,39 @@ export default {
         },
         toDetail(id) {
             this.$router.push(`./courseDetail/${id}`);
+        },
+        handler(id, type, url) {
+            projectDetail(
+                {
+                    type
+                },
+                `${id}/${url}`
+            ).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("操作成功");
+                    this.getList();
+                } else {
+                    this.$message.error("操作失败");
+                }
+            });
+        },
+        del(id) {
+            projectDetail(
+                {
+                    type: "delete"
+                },
+                id
+            ).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("操作成功");
+                    this.getList();
+                } else {
+                    this.$message.error("操作失败");
+                }
+            });
+        },
+        dispathTask(data) {
+            console.log(data, "下发任务");
         }
     },
     created() {
