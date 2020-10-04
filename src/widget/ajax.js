@@ -34,7 +34,7 @@ export default function ajax({ hostPath = location.origin, url, async = true, ti
                     resolve(xhr.response);
                 } else if (xhr.status === 401) {
                     window.localStorage.removeItem("authorization");
-                    // window.location.href = "/";
+                    window.location.href = "/";
                 } else {
                     resolve({
                         data: [],

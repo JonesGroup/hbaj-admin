@@ -5,6 +5,8 @@
             <el-table-column prop="name" label="场景名称" />
             <el-table-column prop="sceneTypeId" label="场景区域" />
             <el-table-column prop="detail" label="场景简介" />
+            <el-table-column prop="locationX" label="locationX" />
+            <el-table-column prop="locationY" label="locationY" />
             <el-table-column label="是否公开">
                 <template slot-scope="{ row }">
                     <span>{{ row.publicFlg === 1 ? "公开" : "非公开" }}</span>
@@ -15,8 +17,14 @@
                     <el-button type="text">
                         查看
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" @click="editScene(row)">
                         修改
+                    </el-button>
+                    <el-button type="text" @click="publicScene(row.id)" v-if="row.publicFlg !== 1">
+                        公开场景
+                    </el-button>
+                    <el-button type="text" @click="unpublic(row.id)" v-if="row.publicFlg === 1">
+                        取消公开场景
                     </el-button>
                 </template>
             </el-table-column>
@@ -30,11 +38,13 @@
             :page-size="pagination.page_size"
             :total="pagination.total"
         />
+        <EditScene :sceneId="sceneId" :editData="editSceneData" :visible.sync="isOpenEditScene" />
     </div>
 </template>
 
 <script>
-import { scene } from "@/model/api";
+import { scene, sceneDetail } from "@/model/api";
+import EditScene from "../shippingList/Dialog/editScene";
 export default {
     data() {
         return {
@@ -44,8 +54,14 @@ export default {
                 total: 0
             },
             tableData: [],
-            loading: false
+            loading: false,
+            isOpenEditScene: false,
+            editSceneData: {},
+            sceneId: ""
         };
+    },
+    components: {
+        EditScene
     },
     methods: {
         getList() {
@@ -74,6 +90,43 @@ export default {
         setPagination(p, v) {
             this.$set(this.pagination, p, v);
             this.getList();
+        },
+        unpublic(id) {
+            sceneDetail(
+                {
+                    type: "patch"
+                },
+                `${id}/unpublic`
+            ).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("操作成功");
+                    this.getList();
+                } else {
+                    this.$message.console.error();
+                    ("操作失败");
+                }
+            });
+        },
+        publicScene(id) {
+            sceneDetail(
+                {
+                    type: "patch"
+                },
+                `${id}/public`
+            ).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("操作成功");
+                    this.getList();
+                } else {
+                    this.$message.console.error();
+                    ("操作失败");
+                }
+            });
+        },
+        editScene(data) {
+            this.sceneId = data.id;
+            this.editSceneData = data;
+            this.isOpenEditScene = true;
         }
     },
     created() {
