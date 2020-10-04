@@ -98,7 +98,7 @@ export default {
             this.isOpenAddBanner = true;
         },
         delBanner(id) {
-            appConst(
+            appConstDetail(
                 {
                     type: "delete"
                 },
