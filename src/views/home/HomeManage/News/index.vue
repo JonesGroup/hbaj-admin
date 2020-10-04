@@ -28,16 +28,16 @@
                     <el-button type="text" v-if="row.status !== 1">
                         编辑
                     </el-button>
-                    <el-button type="text" v-if="row.status !== 1">
+                    <el-button type="text" v-if="row.status !== 1" @click="News(row.id, 'put', 'publish')">
                         发布
                     </el-button>
-                    <el-button type="text" v-if="row.status !== 1" @click="delNews(row.id)">
+                    <el-button type="text" v-if="row.status !== 1" @click="delNews(row.id, 'delete')">
                         删除
                     </el-button>
-                    <el-button type="text" v-if="row.status === 1">
+                    <el-button type="text" v-if="row.status === 1" @click="News(row.id, 'put', 'downshelf')">
                         撤销
                     </el-button>
-                    <el-button type="text" v-if="row.status === 1">
+                    <el-button type="text" v-if="row.status === 1" @click="News(row.id, 'put', 'settop')">
                         置顶
                     </el-button>
                     <el-button type="text" @click="comment(row.id)">
@@ -103,16 +103,30 @@ export default {
                 path: "./news/create"
             });
         },
-        delNews(newsId) {
+        handler(newsId, type, url) {
             newsAdminDetail(
                 {
-                    type: "delete"
+                    type
+                },
+                `${newsId}/${url}`
+            ).then(res => {
+                this.$message.success("操作成功");
+                this.getList();
+            });
+        },
+        delNews(newsId, type) {
+            newsAdminDetail(
+                {
+                    type
                 },
                 newsId
             ).then(res => {
                 this.$message.success("操作成功");
                 this.getList();
             });
+        },
+        News(newsId, type, url) {
+            this.handler(newsId, type, url);
         },
         comment(id = "1") {
             this.$router.push({
