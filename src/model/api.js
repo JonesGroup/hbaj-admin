@@ -54,3 +54,7 @@ export const role = data => request(`${baseUrl}/role`, data);
 export const roleDetail = (data, url) => request(`${baseUrl}/role/${url}`, data);
 
 export const department = data => request(`${baseUrl}/department`, data);
+
+export const projectModule = data => request(`${baseUrl}/projectModule`, data);
+
+export const projectClass = data => request(`${baseUrl}/projectClass`, data);

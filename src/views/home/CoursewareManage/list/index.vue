@@ -5,11 +5,22 @@
     justify-content: space-between;"
         >
             <div style="margin-bottom:24px">
-                <el-button-group>
+                <!-- <el-button-group>
                     <el-button type="primary">散货船</el-button>
                     <el-button type="primary">豪华邮轮</el-button>
                     <el-button type="primary">CIC专项船</el-button>
-                </el-button-group>
+                </el-button-group> -->
+                <el-radio-group v-model="blockId" @change="handleShipType">
+                    <el-radio-button :label="25" type="primary">
+                        散货船
+                    </el-radio-button>
+                    <el-radio-button :label="24" type="primary">
+                        豪华邮轮
+                    </el-radio-button>
+                    <el-radio-button :label="27" type="primary">
+                        CIC专项船
+                    </el-radio-button>
+                </el-radio-group>
             </div>
             <div>
                 <el-button type="primary">新增</el-button>
@@ -19,19 +30,17 @@
         <div>
             <el-form ref="form" :model="form" label-width="80px" inline label-position="left">
                 <el-form-item label="功能">
-                    <el-select v-model="form.region" placeholder="请选择">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                    <el-select v-model="form.moduleId" placeholder="请选择" @change="changeFun">
+                        <el-option :label="item.name" :value="item.id" v-for="item in funcList" :key="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="项目分类">
-                    <el-select v-model="form.region" placeholder="请选择活动区域">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                    <el-select v-model="form.classId" placeholder="请选择" @change="changeClass">
+                        <el-option :label="item.name" :value="item.id" v-for="item in moduleList" :key="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="状态">
-                    <el-select v-model="form.region" placeholder="请选择">
+                    <el-select v-model="form.status" placeholder="请选择" @change="getList">
                         <el-option :label="item.label" :value="item.value" v-for="item in statusList" :key="item.value"></el-option>
                     </el-select>
                 </el-form-item>
@@ -101,7 +110,7 @@
 </template>
 
 <script>
-import { project, projectDetail } from "@/model/api";
+import { project, projectDetail, projectModule, projectClass } from "@/model/api";
 export default {
     data() {
         return {
@@ -112,7 +121,14 @@ export default {
             },
             tableData: [],
             loading: false,
-            form: {},
+            form: {
+                moduleId: "",
+                classId: "",
+                status: ""
+            },
+            blockId: 25,
+            moduleList: [],
+            funcList: [],
             statusList: [
                 {
                     label: "创建中",
@@ -159,15 +175,15 @@ export default {
         getList() {
             this.loading = true;
             const { page, page_size } = this.pagination;
-            const blockId = this.$route.params.id;
             project({
                 type: "GET",
                 data: {
                     page: page,
                     size: page_size,
-                    blockId: "25",
-                    moduleId: "36",
-                    classId: "121"
+                    blockId: this.blockId,
+                    moduleId: this.form.moduleId,
+                    classId: this.form.classId,
+                    status: this.form.status
                 }
             }).then(res => {
                 if (res.suceeded) {
@@ -219,9 +235,50 @@ export default {
         },
         dispathTask(data) {
             console.log(data, "下发任务");
+        },
+        handleShipType() {
+            this.getFunList();
+            this.getList();
+            this.form.moduleId = "";
+            this.form.classId = "";
+        },
+        changeFun() {
+            this.getClassList();
+            this.form.classId = "";
+            this.getList();
+        },
+        changeClass() {
+            this.getList();
+        },
+        getFunList() {
+            // 获取功能列表
+            projectModule({
+                type: "get",
+                data: {
+                    blockId: this.blockId
+                }
+            }).then(res => {
+                if (res.suceeded) {
+                    this.funcList = res.data || [];
+                }
+            });
+        },
+        getClassList() {
+            projectClass({
+                type: "get",
+                data: {
+                    moduleId: this.form.moduleId,
+                    blockId: this.blockId
+                }
+            }).then(res => {
+                if (res.suceeded) {
+                    this.moduleList = res.data.content || [];
+                }
+            });
         }
     },
     created() {
+        this.getFunList();
         this.getList();
     }
 };
