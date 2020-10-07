@@ -77,12 +77,12 @@ export default {
             });
         },
         toDetail(id) {
-            this.$router.push(`./detail/1`);
+            this.$router.push(`./detail/${this.blockId}/${id}`);
         },
         editRole(data) {
             this.name = data.name;
             this.roleId = data.id;
-            this.blockId = "25";
+            this.blockId = this.blockId;
             this.isOpenRole = true;
         },
         setPagination(p, v) {
