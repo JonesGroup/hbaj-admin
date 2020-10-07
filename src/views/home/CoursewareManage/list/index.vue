@@ -5,11 +5,6 @@
     justify-content: space-between;"
         >
             <div style="margin-bottom:24px">
-                <!-- <el-button-group>
-                    <el-button type="primary">散货船</el-button>
-                    <el-button type="primary">豪华邮轮</el-button>
-                    <el-button type="primary">CIC专项船</el-button>
-                </el-button-group> -->
                 <el-radio-group v-model="blockId" @change="handleShipType">
                     <el-radio-button :label="25" type="primary">
                         散货船

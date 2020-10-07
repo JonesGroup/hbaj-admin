@@ -70,7 +70,7 @@ export default {
             // 富文本配置
             const projectId = this.$route.params.projectId;
             this.editor.customConfig.uploadImgShowBase64 = false; // 上传图片base64
-            this.editor.customConfig.uploadImgServer = `/api/file/upload?fileName=default&relatedId=${projectId}&fileType=HOTSPOT_HTML`;
+            this.editor.customConfig.uploadImgServer = `/api/file/upload?fileName=default&relatedId=1&fileType=NEWS_MEDIA`;
             this.editor.customConfig.uploadFileName = "file";
 
             this.editor.customConfig.pasteIgnoreImg = true; // 过滤直接粘贴进来的图片

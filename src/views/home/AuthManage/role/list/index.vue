@@ -5,11 +5,17 @@
     justify-content: space-between;"
         >
             <div style="margin-bottom:24px">
-                <el-button-group>
-                    <el-button type="primary">散货船</el-button>
-                    <el-button type="primary">豪华邮轮</el-button>
-                    <el-button type="primary">CIC专项船</el-button>
-                </el-button-group>
+                <el-radio-group v-model="blockId" @change="handleShipType">
+                    <el-radio-button :label="25" type="primary">
+                        散货船
+                    </el-radio-button>
+                    <el-radio-button :label="24" type="primary">
+                        豪华邮轮
+                    </el-radio-button>
+                    <el-radio-button :label="27" type="primary">
+                        CIC专项船
+                    </el-radio-button>
+                </el-radio-group>
             </div>
             <div>
                 <el-button type="primary">新增</el-button>
@@ -47,7 +53,7 @@ export default {
             loading: false,
             isOpenRole: false,
             roleId: "",
-            blockId: "",
+            blockId: 25,
             name: ""
         };
     },
@@ -59,7 +65,7 @@ export default {
                     type: "GET",
                     data: {
                         enterpriseId: "1",
-                        blockId: "25"
+                        blockId: this.blockId
                     }
                 },
                 "all"
@@ -78,12 +84,16 @@ export default {
             this.roleId = data.id;
             this.blockId = "25";
             this.isOpenRole = true;
+        },
+        setPagination(p, v) {
+            this.$set(this.pagination, p, v);
+            this.getList();
+        },
+        handleShipType() {
+            this.getList();
         }
     },
-    setPagination(p, v) {
-        this.$set(this.pagination, p, v);
-        this.getList();
-    },
+
     created() {
         this.getList();
     }
