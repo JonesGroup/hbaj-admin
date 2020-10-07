@@ -13,7 +13,7 @@
                     <el-button type="text" @click="toDetail(row.id)">
                         编辑
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" @click="delDepartmentId(row.id)">
                         删除
                     </el-button>
                 </template>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { department } from "@/model/api";
+import { department, departmentDetail } from "@/model/api";
 export default {
     data() {
         return {
@@ -73,6 +73,18 @@ export default {
         },
         toDetail(id) {
             this.$router.push(`./detail/1`);
+        },
+        delDepartmentId(id) {
+            departmentDetail(
+                {
+                    type: "delete"
+                },
+                id
+            ).then(res => {
+                if (res.suceeded) {
+                    this.getList();
+                }
+            });
         }
     },
     created() {
