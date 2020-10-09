@@ -72,7 +72,7 @@ export default {
             this.getList();
         },
         toDetail(id) {
-            this.$router.push(`./detail/1`);
+            this.$router.push(`./detail/${id}`);
         },
         delDepartmentId(id) {
             departmentDetail(
