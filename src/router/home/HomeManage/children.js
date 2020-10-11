@@ -21,6 +21,7 @@ const router = [
         meta: {
             title: "新闻资讯-处理评论",
             hidden: true,
+            isBack: true,
             hiddenBg: false
         },
         component: () => import("@/views/home/HomeManage/News/detail/index.vue")
@@ -31,6 +32,7 @@ const router = [
         meta: {
             title: "新闻资讯",
             hidden: true,
+            isBack: true,
             hiddenBg: false
         },
         component: () => import("@/views/home/HomeManage/News/public/index.vue")

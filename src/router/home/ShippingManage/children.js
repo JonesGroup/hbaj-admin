@@ -12,7 +12,8 @@ const router = [
         name: "shippDetail",
         meta: {
             title: "船舶详情",
-            hidden: true
+            hidden: true,
+            isBack: true
         },
         component: () => import("@/views/home/ShippingManage/shippDetail/index.vue")
     }

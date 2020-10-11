@@ -12,7 +12,8 @@ const router = [
         name: "detail",
         meta: {
             title: "角色授权管理详情",
-            hidden: true
+            hidden: true,
+            isBack: true
         },
         component: () => import("@/views/home/AuthManage/role/detail/index.vue")
     }
