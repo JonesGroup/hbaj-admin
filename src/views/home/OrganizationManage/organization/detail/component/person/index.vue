@@ -5,10 +5,10 @@
         </div>
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="ID" />
-            <el-table-column prop="id" label="用户名" />
+            <el-table-column prop="userSgname" label="用户名" />
             <el-table-column prop="detail" label="密码" />
-            <el-table-column prop="detail" label="电子邮件" />
-            <el-table-column prop="detail" label="个人简介" />
+            <el-table-column prop="userEmail" label="电子邮件" />
+            <el-table-column prop="userDescription" label="个人简介" />
             <el-table-column label="头像" width="220">
                 <template slot-scope="{ row }">
                     <img src="" alt="" />
@@ -34,14 +34,6 @@
                 </template>
             </el-table-column>
         </el-table>
-        <app-pagination
-            @size-change="setPagination('page_size', $event)"
-            @current-change="setPagination('page', $event)"
-            :current-page="pagination.page"
-            :page-sizes="[10, 20, 50]"
-            :page-size="pagination.page_size"
-            :total="pagination.total"
-        />
 
         <AddBanner :visible.sync="isOpenAddBanner" />
         <MessageList :visible.sync="isOpenMessageList" :userId="userId" />
@@ -53,7 +45,7 @@
 import AddBanner from "@/components/Dialog/AddBanner";
 import MessageList from "../../Dialog/Message";
 import TaskList from "../../Dialog/TaskList";
-import { appConst } from "@/model/api";
+import { departmentDetail } from "@/model/api";
 export default {
     components: {
         AddBanner,
@@ -66,51 +58,36 @@ export default {
             isOpenMessageList: false,
             isOpenTaskList: false,
             loading: false,
-            userId: 11,
-            tableData: [],
-            pagination: {
-                page: 1,
-                page_size: 10,
-                total: 0
-            }
+            userId: "",
+            tableData: []
         };
     },
     methods: {
         getList() {
-            const { page, page_size } = this.pagination;
+            const id = this.$route.params.id;
             this.loading = true;
-            appConst(
+            departmentDetail(
                 {
-                    type: "GET",
-                    data: {
-                        page,
-                        size: page_size,
-                        name: "HOME_NAV_IMAGE"
-                    }
+                    type: "GET"
                 },
-                "app/pageInfo"
+                id
             ).then(res => {
                 if (res.suceeded) {
                     this.loading = false;
-                    const { content, total, currentPage, pageSize } = res.data;
-                    this.pagination.total = total;
-                    this.pagination.page = currentPage;
-                    this.pagination.page_size = pageSize;
-                    this.tableData = content.map(item => ({ ...item, value: JSON.parse(item.value) }));
+                    const { userList } = res.data;
+                    this.tableData = userList || [];
                 }
             });
         },
         addBanner() {
             this.isOpenAddBanner = true;
         },
-        setPagination(p, v) {
-            this.$set(this.pagination, p, v);
-            this.getList();
-        },
         viewMessage(data) {
+            this.userId = data.id;
             this.isOpenMessageList = true;
         },
         viewTaskList(data) {
+            this.userId = data.id;
             this.isOpenTaskList = true;
         }
     },
