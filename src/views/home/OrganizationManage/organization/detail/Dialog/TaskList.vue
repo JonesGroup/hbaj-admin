@@ -1,34 +1,27 @@
 <template>
-    <el-dialog title="添加项目人员" :visible="visible" width="70%" @open="open" @close="close">
+    <el-dialog title="查看任务" :visible="visible" width="70%" @open="open" @close="close">
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="ID" />
-            <el-table-column prop="detail" label="图片名称" />
-            <el-table-column label="链接类别">
-                <template slot-scope="{ row }">{{ row.value.type === "NEWS" ? "新闻" : "课件" }}</template>
-            </el-table-column>
-            <el-table-column label="项目编号">
-                <template slot-scope="{ row }">{{ row.value.aim_id }}</template>
-            </el-table-column>
-            <el-table-column label="项目标题">
-                <template slot-scope="{ row }">{{ row.value.title }}</template>
-            </el-table-column>
-            <el-table-column prop="url" label="项目封面" width="200">
+            <el-table-column prop="id" label="任务Id" />
+            <el-table-column prop="name" label="任务名" />
+            <el-table-column label="任务开始时间">
                 <template slot-scope="{ row }">
-                    <img :src="globalConfig.imagePath + row.value.url" alt="" height="100" />
+                    {{ row.startDate | formaData }}
+                </template>
+            </el-table-column>
+            <el-table-column label="任务结束时间">
+                <template slot-scope="{ row }">
+                    {{ row.expireDate | formaData }}
+                </template>
+            </el-table-column>
+            <el-table-column label="类别" prop="type" />
+            <el-table-column label="状态">
+                <template slot-scope="{ row }">
+                    {{ row.status | formTaskText }}
                 </template>
             </el-table-column>
             <el-table-column label="操作" fixed="right" width="220">
-                <template slot-scope="scope">
-                    <el-button type="text" @click="up(tableData, scope.$index)">
-                        向上
-                    </el-button>
-                    <el-button type="text" @click="down(tableData, scope.$index)">
-                        向下
-                    </el-button>
-                    <el-button type="text" @click="edit(scope.row)">
-                        编辑
-                    </el-button>
-                    <el-button type="text" @click="delBanner(scope.row.id)">
+                <template slot-scope="{ row }">
+                    <el-button type="text" @click="del(row.id)">
                         删除
                     </el-button>
                 </template>
@@ -46,14 +39,11 @@
 </template>
 
 <script>
-import { appConst, appConstDetail } from "@/model/api";
+import { task, taskDetail } from "@/model/api";
 
 export default {
     data() {
         return {
-            isOpenAddBanner: false,
-            appConstId: "",
-            editData: {},
             loading: false,
             tableData: [],
             pagination: {
@@ -68,8 +58,8 @@ export default {
             type: Boolean,
             default: false
         },
-        onSuccess: {
-            type: Function
+        userId: {
+            type: [String, Number]
         }
     },
     methods: {
@@ -82,30 +72,41 @@ export default {
         getList() {
             const { page, page_size } = this.pagination;
             this.loading = true;
-            appConst(
-                {
-                    type: "GET",
-                    data: {
-                        page,
-                        size: page_size,
-                        name: "HOME_NAV_IMAGE"
-                    }
-                },
-                "app/pageInfo"
-            ).then(res => {
+            task({
+                type: "GET",
+                data: {
+                    page: page,
+                    userId: this.userId,
+                    size: page_size
+                }
+            }).then(res => {
                 if (res.suceeded) {
                     this.loading = false;
                     const { content, total, currentPage, pageSize } = res.data;
                     this.pagination.total = total;
                     this.pagination.page = currentPage;
                     this.pagination.page_size = pageSize;
-                    this.tableData = content.map(item => ({ ...item, value: JSON.parse(item.value) }));
+                    this.tableData = content;
+                    // console.log(this.tableData, "tabledata");
                 }
             });
         },
         setPagination(p, v) {
             this.$set(this.pagination, p, v);
             this.getList();
+        },
+        del(id) {
+            taskDetail(
+                {
+                    type: "delete"
+                },
+                id
+            ).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("删除成功");
+                    this.getList();
+                }
+            });
         }
     }
 };

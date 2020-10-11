@@ -1,34 +1,22 @@
 <template>
-    <el-dialog title="添加项目人员" :visible="visible" width="70%" @open="open" @close="close">
+    <el-dialog title="查看消息" :visible="visible" width="70%" @open="open" @close="close">
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="ID" />
-            <el-table-column prop="detail" label="图片名称" />
-            <el-table-column label="链接类别">
-                <template slot-scope="{ row }">{{ row.value.type === "NEWS" ? "新闻" : "课件" }}</template>
-            </el-table-column>
-            <el-table-column label="项目编号">
-                <template slot-scope="{ row }">{{ row.value.aim_id }}</template>
-            </el-table-column>
-            <el-table-column label="项目标题">
-                <template slot-scope="{ row }">{{ row.value.title }}</template>
-            </el-table-column>
-            <el-table-column prop="url" label="项目封面" width="200">
+            <el-table-column prop="id" label="Id" />
+            <el-table-column prop="title" label="消息标题" />
+            <el-table-column prop="content" label="详细内容" />
+            <el-table-column label="消息状态">
                 <template slot-scope="{ row }">
-                    <img :src="globalConfig.imagePath + row.value.url" alt="" height="100" />
+                    {{ row.status === 0 ? "未读" : "已读" }}
+                </template>
+            </el-table-column>
+            <el-table-column label="消息类别">
+                <template slot-scope="{ row }">
+                    {{ row.messageType | formMessageText }}
                 </template>
             </el-table-column>
             <el-table-column label="操作" fixed="right" width="220">
-                <template slot-scope="scope">
-                    <el-button type="text" @click="up(tableData, scope.$index)">
-                        向上
-                    </el-button>
-                    <el-button type="text" @click="down(tableData, scope.$index)">
-                        向下
-                    </el-button>
-                    <el-button type="text" @click="edit(scope.row)">
-                        编辑
-                    </el-button>
-                    <el-button type="text" @click="delBanner(scope.row.id)">
+                <template slot-scope="{ row }">
+                    <el-button type="text" @click="del(row.id)">
                         删除
                     </el-button>
                 </template>
@@ -46,14 +34,11 @@
 </template>
 
 <script>
-import { appConst, appConstDetail } from "@/model/api";
+import { messageDetail } from "@/model/api";
 
 export default {
     data() {
         return {
-            isOpenAddBanner: false,
-            appConstId: "",
-            editData: {},
             loading: false,
             tableData: [],
             pagination: {
@@ -68,8 +53,8 @@ export default {
             type: Boolean,
             default: false
         },
-        onSuccess: {
-            type: Function
+        userId: {
+            type: [String, Number]
         }
     },
     methods: {
@@ -82,16 +67,16 @@ export default {
         getList() {
             const { page, page_size } = this.pagination;
             this.loading = true;
-            appConst(
+            messageDetail(
                 {
-                    type: "GET",
+                    type: "get",
                     data: {
                         page,
                         size: page_size,
-                        name: "HOME_NAV_IMAGE"
+                        receiver: this.userId
                     }
                 },
-                "app/pageInfo"
+                "private"
             ).then(res => {
                 if (res.suceeded) {
                     this.loading = false;
@@ -99,13 +84,26 @@ export default {
                     this.pagination.total = total;
                     this.pagination.page = currentPage;
                     this.pagination.page_size = pageSize;
-                    this.tableData = content.map(item => ({ ...item, value: JSON.parse(item.value) }));
+                    this.tableData = content;
                 }
             });
         },
         setPagination(p, v) {
             this.$set(this.pagination, p, v);
             this.getList();
+        },
+        del(id) {
+            messageDetail(
+                {
+                    type: "delete"
+                },
+                id
+            ).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("删除成功");
+                    this.getList();
+                }
+            });
         }
     }
 };

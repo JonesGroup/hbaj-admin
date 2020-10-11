@@ -27,6 +27,8 @@ export const messageDetail = (data, url) => request(`${baseUrl}/message/${url}`,
 
 export const task = data => request(`${baseUrl}/task`, data);
 
+export const taskDetail = (data, url) => request(`${baseUrl}/task/${url}`, data);
+
 export const comment = data => request(`${baseUrl}/comment`, data);
 
 export const commentDetail = (data, url) => request(`${baseUrl}/comment/${url}`, data);

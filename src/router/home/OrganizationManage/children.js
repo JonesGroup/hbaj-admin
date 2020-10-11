@@ -12,7 +12,8 @@ const router = [
         name: "detail",
         meta: {
             title: "机构管理-详情",
-            hidden: true
+            hidden: true,
+            isBack: true
         },
         component: () => import("@/views/home/OrganizationManage/organization/detail/index.vue")
     }

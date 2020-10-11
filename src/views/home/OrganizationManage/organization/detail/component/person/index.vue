@@ -44,8 +44,8 @@
         />
 
         <AddBanner :visible.sync="isOpenAddBanner" />
-        <MessageList :visible.sync="isOpenMessageList" />
-        <TaskList :visible.sync="isOpenTaskList" />
+        <MessageList :visible.sync="isOpenMessageList" :userId="userId" />
+        <TaskList :visible.sync="isOpenTaskList" :userId="userId" />
     </div>
 </template>
 
@@ -57,7 +57,8 @@ import { appConst } from "@/model/api";
 export default {
     components: {
         AddBanner,
-        TaskList
+        TaskList,
+        MessageList
     },
     data() {
         return {
@@ -65,6 +66,7 @@ export default {
             isOpenMessageList: false,
             isOpenTaskList: false,
             loading: false,
+            userId: 11,
             tableData: [],
             pagination: {
                 page: 1,
