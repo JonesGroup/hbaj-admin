@@ -18,7 +18,7 @@
                 </el-radio-group>
             </div>
             <div>
-                <el-button type="primary">新增</el-button>
+                <el-button type="primary" @click="addProject">新增</el-button>
             </div>
         </div>
 
@@ -82,7 +82,7 @@
                     <el-button type="text" @click="toDetail(row.id)">
                         查看
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" @click="editProject(row)">
                         编辑
                     </el-button>
                     <el-button type="text" v-if="[0].indexOf(row.status) !== -1" @click="dispathTask(row)">
@@ -103,14 +103,20 @@
             :page-size="pagination.page_size"
             :total="pagination.total"
         />
+        <AddProject :visible.sync="isOpenAddProject" />
     </div>
 </template>
 
 <script>
 import { project, projectDetail, projectModule, projectClass } from "@/model/api";
+import AddProject from "./Dialog/AddProject";
 export default {
+    components: {
+        AddProject
+    },
     data() {
         return {
+            isOpenAddProject: false,
             pagination: {
                 page: 1,
                 page_size: 10,
@@ -276,6 +282,12 @@ export default {
                     this.moduleList = this.moduleList.concat(res.data.content || []);
                 }
             });
+        },
+        addProject() {
+            this.isOpenAddProject = true;
+        },
+        editProject() {
+            this.isOpenAddProject = true;
         }
     },
     created() {
