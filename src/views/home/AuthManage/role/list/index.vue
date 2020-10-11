@@ -18,7 +18,7 @@
                 </el-radio-group>
             </div>
             <div>
-                <el-button type="primary">新增</el-button>
+                <el-button type="primary" @click="addRole">新增</el-button>
             </div>
         </div>
         <el-table :data="tableData" v-loading="loading">
@@ -37,21 +37,26 @@
         </el-table>
 
         <EditRole :visible.sync="isOpenRole" :roleId="roleId" :blockId="blockId" :name="name" :onSuccess="getList" />
+
+        <AddRole :visible.sync="isOpenAddRole" :onSuccess="getList" />
     </div>
 </template>
 
 <script>
 import { roleDetail } from "@/model/api";
 import EditRole from "../Dialog/EditRole";
+import AddRole from "../Dialog/AddRole";
 export default {
     components: {
-        EditRole
+        EditRole,
+        AddRole
     },
     data() {
         return {
             tableData: [],
             loading: false,
             isOpenRole: false,
+            isOpenAddRole: false,
             roleId: "",
             blockId: 25,
             name: ""
@@ -84,6 +89,9 @@ export default {
             this.roleId = data.id;
             this.blockId = this.blockId;
             this.isOpenRole = true;
+        },
+        addRole() {
+            this.isOpenAddRole = true;
         },
         setPagination(p, v) {
             this.$set(this.pagination, p, v);

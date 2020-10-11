@@ -48,7 +48,6 @@ export default {
                         this.visitList = permission.permissionList.filter(item => item.operation === 0);
                         this.buildList = permission.permissionList.filter(item => item.operation === 1);
                         this.authList = permission.userList || [];
-                        console.log(this.visitList, this.buildList, this.authList);
                     }
                 }
             });
