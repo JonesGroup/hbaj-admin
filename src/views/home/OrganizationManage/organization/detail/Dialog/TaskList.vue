@@ -1,35 +1,35 @@
 <template>
-    <div class="main mgT24">
-        <div class="operate mgB24">
-            <el-button type="primary" @click="addBanner">导入</el-button>
-        </div>
+    <el-dialog title="添加项目人员" :visible="visible" width="70%" @open="open" @close="close">
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="ID" />
-            <el-table-column prop="id" label="用户名" />
-            <el-table-column prop="detail" label="密码" />
-            <el-table-column prop="detail" label="电子邮件" />
-            <el-table-column prop="detail" label="个人简介" />
-            <el-table-column label="头像" width="220">
+            <el-table-column prop="detail" label="图片名称" />
+            <el-table-column label="链接类别">
+                <template slot-scope="{ row }">{{ row.value.type === "NEWS" ? "新闻" : "课件" }}</template>
+            </el-table-column>
+            <el-table-column label="项目编号">
+                <template slot-scope="{ row }">{{ row.value.aim_id }}</template>
+            </el-table-column>
+            <el-table-column label="项目标题">
+                <template slot-scope="{ row }">{{ row.value.title }}</template>
+            </el-table-column>
+            <el-table-column prop="url" label="项目封面" width="200">
                 <template slot-scope="{ row }">
-                    <img src="" alt="" />
+                    <img :src="globalConfig.imagePath + row.value.url" alt="" height="100" />
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="320">
-                <template slot-scope="{ row }">
-                    <el-button type="text" @click="viewMessage(row)">
-                        消息管理
+            <el-table-column label="操作" fixed="right" width="220">
+                <template slot-scope="scope">
+                    <el-button type="text" @click="up(tableData, scope.$index)">
+                        向上
                     </el-button>
-                    <el-button type="text" @click="viewTaskList(row)">
-                        任务管理
+                    <el-button type="text" @click="down(tableData, scope.$index)">
+                        向下
                     </el-button>
-                    <el-button type="text">
-                        修改
+                    <el-button type="text" @click="edit(scope.row)">
+                        编辑
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" @click="delBanner(scope.row.id)">
                         删除
-                    </el-button>
-                    <el-button type="text">
-                        彻底删除
                     </el-button>
                 </template>
             </el-table-column>
@@ -42,28 +42,18 @@
             :page-size="pagination.page_size"
             :total="pagination.total"
         />
-
-        <AddBanner :visible.sync="isOpenAddBanner" />
-        <MessageList :visible.sync="isOpenMessageList" />
-        <TaskList :visible.sync="isOpenTaskList" />
-    </div>
+    </el-dialog>
 </template>
 
 <script>
-import AddBanner from "@/components/Dialog/AddBanner";
-import MessageList from "../../Dialog/Message";
-import TaskList from "../../Dialog/TaskList";
-import { appConst } from "@/model/api";
+import { appConst, appConstDetail } from "@/model/api";
+
 export default {
-    components: {
-        AddBanner,
-        TaskList
-    },
     data() {
         return {
             isOpenAddBanner: false,
-            isOpenMessageList: false,
-            isOpenTaskList: false,
+            appConstId: "",
+            editData: {},
             loading: false,
             tableData: [],
             pagination: {
@@ -73,7 +63,22 @@ export default {
             }
         };
     },
+    props: {
+        visible: {
+            type: Boolean,
+            default: false
+        },
+        onSuccess: {
+            type: Function
+        }
+    },
     methods: {
+        close() {
+            this.$emit("update:visible", false);
+        },
+        open() {
+            this.getList();
+        },
         getList() {
             const { page, page_size } = this.pagination;
             this.loading = true;
@@ -98,22 +103,10 @@ export default {
                 }
             });
         },
-        addBanner() {
-            this.isOpenAddBanner = true;
-        },
         setPagination(p, v) {
             this.$set(this.pagination, p, v);
             this.getList();
-        },
-        viewMessage(data) {
-            this.isOpenMessageList = true;
-        },
-        viewTaskList(data) {
-            this.isOpenTaskList = true;
         }
-    },
-    created() {
-        this.getList();
     }
 };
 </script>

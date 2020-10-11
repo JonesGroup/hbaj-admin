@@ -1,6 +1,6 @@
 <template>
     <div class="main mgT24">
-        <div>
+        <div class="operate mgB24">
             <el-button type="primary">新增</el-button>
         </div>
         <el-table :data="tableData" v-loading="loading">
