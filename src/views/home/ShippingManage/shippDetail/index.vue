@@ -3,7 +3,7 @@
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="序号" />
             <el-table-column prop="name" label="场景名称" />
-            <el-table-column prop="sceneTypeId" label="场景区域" />
+            <el-table-column prop="sceneTypeName" label="场景区域" />
             <el-table-column prop="detail" label="场景简介" />
             <el-table-column prop="locationX" label="locationX" />
             <el-table-column prop="locationY" label="locationY" />
@@ -14,7 +14,7 @@
             </el-table-column>
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
-                    <el-button type="text">
+                    <el-button type="text" @click="view(row)">
                         查看
                     </el-button>
                     <el-button type="text" @click="editScene(row)">
@@ -39,12 +39,14 @@
             :total="pagination.total"
         />
         <EditScene :sceneId="sceneId" :editData="editSceneData" :visible.sync="isOpenEditScene" />
+        <SceneDialog :visible.sync="isOpenSceneDialog" />
     </div>
 </template>
 
 <script>
 import { scene, sceneDetail } from "@/model/api";
 import EditScene from "../shippingList/Dialog/editScene";
+import SceneDialog from "./Dialog/sceneDialog";
 export default {
     data() {
         return {
@@ -56,12 +58,14 @@ export default {
             tableData: [],
             loading: false,
             isOpenEditScene: false,
+            isOpenSceneDialog: false,
             editSceneData: {},
             sceneId: ""
         };
     },
     components: {
-        EditScene
+        EditScene,
+        SceneDialog
     },
     methods: {
         getList() {
@@ -102,8 +106,7 @@ export default {
                     this.$message.success("操作成功");
                     this.getList();
                 } else {
-                    this.$message.console.error();
-                    ("操作失败");
+                    this.$message.error("操作失败");
                 }
             });
         },
@@ -127,6 +130,10 @@ export default {
             this.sceneId = data.id;
             this.editSceneData = data;
             this.isOpenEditScene = true;
+        },
+        view(data) {
+            console.log(data, "data");
+            this.isOpenSceneDialog = true;
         }
     },
     created() {

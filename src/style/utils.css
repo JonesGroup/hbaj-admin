@@ -39,3 +39,7 @@
 .mgB24 {
     margin-bottom: 24px;
 }
+
+.inputNoResize textarea {
+    resize: none;
+}

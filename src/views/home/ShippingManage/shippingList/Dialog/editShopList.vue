@@ -2,7 +2,7 @@
     <el-dialog title="更新船舶简介" :visible="visible" width="30%" @open="open" @close="close">
         <el-form ref="form" :model="form" label-width="80px" label-position="left">
             <el-form-item label="船舶简介">
-                <el-input v-model="form.detail"></el-input>
+                <el-input v-model="form.detail" type="textarea" :rows="4" class="inputNoResize"></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">

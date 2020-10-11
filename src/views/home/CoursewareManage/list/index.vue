@@ -26,6 +26,8 @@
             <el-form ref="form" :model="form" label-width="80px" inline label-position="left">
                 <el-form-item label="功能">
                     <el-select v-model="form.moduleId" placeholder="请选择" @change="changeFun">
+                        <el-option label="全部" value="" :key="-1"></el-option>
+
                         <el-option :label="item.name" :value="item.id" v-for="item in funcList" :key="item.id"></el-option>
                     </el-select>
                 </el-form-item>
@@ -122,9 +124,13 @@ export default {
                 status: ""
             },
             blockId: 25,
-            moduleList: [],
+            moduleList: [{ name: "全部", id: "" }],
             funcList: [],
             statusList: [
+                {
+                    label: "全部",
+                    value: ""
+                },
                 {
                     label: "创建中",
                     value: 0
@@ -267,7 +273,7 @@ export default {
                 }
             }).then(res => {
                 if (res.suceeded) {
-                    this.moduleList = res.data.content || [];
+                    this.moduleList = this.moduleList.concat(res.data.content || []);
                 }
             });
         }
