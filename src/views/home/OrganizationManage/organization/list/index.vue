@@ -1,7 +1,7 @@
 <template>
     <div class="main mgT24">
         <div class="operate mgB24">
-            <el-button type="primary">新增</el-button>
+            <el-button type="primary" @click="addDepartment">新增</el-button>
         </div>
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="序号" />
@@ -11,6 +11,9 @@
             <el-table-column label="操作" fixed="right" width="220">
                 <template slot-scope="{ row }">
                     <el-button type="text" @click="toDetail(row.id)">
+                        查看
+                    </el-button>
+                    <el-button type="text" @click="edit(row.id)">
                         编辑
                     </el-button>
                     <el-button type="text" @click="delDepartmentId(row.id)">
@@ -28,14 +31,21 @@
             :page-size="pagination.page_size"
             :total="pagination.total"
         />
+
+        <AddDepartment :visible.sync="isOpenAddDepartment" />
     </div>
 </template>
 
 <script>
+import AddDepartment from "../Dialog/AddDepartment";
 import { department, departmentDetail } from "@/model/api";
 export default {
+    components: {
+        AddDepartment
+    },
     data() {
         return {
+            isOpenAddDepartment: false,
             pagination: {
                 page: 1,
                 page_size: 10,
@@ -85,6 +95,13 @@ export default {
                     this.getList();
                 }
             });
+        },
+        edit(data) {
+            console.log(data, "data");
+            this.isOpenAddDepartment = true;
+        },
+        addDepartment() {
+            this.isOpenAddDepartment = true;
         }
     },
     created() {
