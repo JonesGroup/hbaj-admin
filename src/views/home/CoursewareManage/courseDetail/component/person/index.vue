@@ -19,20 +19,20 @@
             </el-table-column>
         </el-table>
 
-        <AddBanner :visible.sync="isOpenAddBanner" />
+        <AddPerson :visible.sync="isOpenAddPerson" />
     </div>
 </template>
 
 <script>
-import AddBanner from "@/components/Dialog/AddBanner";
+import AddPerson from "@/components/Dialog/AddPerson";
 import { projectDetail } from "@/model/api";
 export default {
     components: {
-        AddBanner
+        AddPerson
     },
     data() {
         return {
-            isOpenAddBanner: false,
+            isOpenAddPerson: false,
             loading: false,
             tableData: []
         };
@@ -54,7 +54,7 @@ export default {
             });
         },
         addBanner() {
-            this.isOpenAddBanner = true;
+            this.isOpenAddPerson = true;
         },
         delPerson(data) {
             const projectId = this.$route.params.id;

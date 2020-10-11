@@ -12,7 +12,8 @@ const router = [
         name: "courseDetail",
         meta: {
             title: "项目详情",
-            hidden: true
+            hidden: true,
+            isBack: true
         },
         component: () => import("@/views/home/CoursewareManage/courseDetail/index.vue")
     }

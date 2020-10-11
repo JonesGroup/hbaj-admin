@@ -4,24 +4,28 @@
             <img src="../../images/logo.png" alt="" width="33" />
             <span>海宝安检</span>
         </div>
-        <div class="header-operate">
-            <div class="search">
-                <i class="iconfont iconsousuo"></i>
-            </div>
-            <div class="meassage">
-                <i class="iconfont iconxiaoxi"></i>
-            </div>
-            <div class="person">
-                <img :src="src" alt="" width="30" />
-                <el-dropdown @command="handleCommand">
-                    <span class="el-dropdown-link"> {{ user.sgname }}<i class="el-icon-arrow-down el-icon--right"></i> </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="resetPassword">重置密码</el-dropdown-item>
-                        <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
+        <div class="top">
+            <div class="back"><el-button type="text" @click="goBack" v-if="isBack">返回上一页</el-button></div>
+            <div class="header-operate">
+                <div class="search">
+                    <i class="iconfont iconsousuo"></i>
+                </div>
+                <div class="meassage">
+                    <i class="iconfont iconxiaoxi"></i>
+                </div>
+                <div class="person">
+                    <img :src="src" alt="" width="30" />
+                    <el-dropdown @command="handleCommand">
+                        <span class="el-dropdown-link"> {{ user.sgname }}<i class="el-icon-arrow-down el-icon--right"></i> </span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="resetPassword">重置密码</el-dropdown-item>
+                            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
             </div>
         </div>
+
         <ResetPassword :visible.sync="isOpenResetPasswoord" />
     </header>
 </template>
@@ -41,6 +45,11 @@ export default {
             src: "",
             isOpenResetPasswoord: false
         };
+    },
+    computed: {
+        isBack: function() {
+            return this.$route.meta.isBack ? this.$route.meta.isBack : false;
+        }
     },
     methods: {
         getUserDetail() {
@@ -69,6 +78,9 @@ export default {
             if (command === "resetPassword") {
                 this.isOpenResetPasswoord = true;
             }
+        },
+        goBack() {
+            this.$router.go(-1);
         }
     },
     mounted() {
@@ -85,7 +97,7 @@ header {
     background: #fff;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    // justify-content: space-between;
     padding-right: 30px;
 
     box-sizing: border-box;
@@ -101,19 +113,26 @@ header {
             margin-left: 16px;
         }
     }
-    .header-operate {
+    .top {
+        flex: 1;
         display: flex;
         align-items: center;
-        height: 100%;
-        .meassage {
-            margin: 0 16px;
-        }
-        .person {
-            height: 100%;
+        justify-content: space-between;
+        padding-left: 15px;
+        .header-operate {
             display: flex;
             align-items: center;
-            img {
-                margin-right: 16px;
+            height: 100%;
+            .meassage {
+                margin: 0 16px;
+            }
+            .person {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                img {
+                    margin-right: 16px;
+                }
             }
         }
     }
