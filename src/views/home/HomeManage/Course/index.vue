@@ -2,18 +2,18 @@
     <div class="main mgT24">
         <el-table :data="tableData" v-loading="loading">
             <el-table-column label="课件标题">
-                <template slot-scope="{ row }" v-if="row.value && row.value.title">
-                    <span>{{ row.value.title }}</span>
+                <template slot-scope="{ row }" v-if="row.rel && row.rel.name">
+                    <span>{{ row.rel.name }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="课件图片" width="200">
-                <template slot-scope="{ row }" v-if="row.value && row.value.url">
-                    <img :src="globalConfig.imagePath + row.value.url" alt="" height="100" />
+                <template slot-scope="{ row }" v-if="row.rel && row.rel.imageUrl">
+                    <img :src="globalConfig.imagePath + row.rel.imageUrl" alt="" height="100" />
                 </template>
             </el-table-column>
             <el-table-column label="课件简介">
-                <template slot-scope="{ row }" v-if="row.value && row.value.Detail">
-                    <span>{{ row.value.Detail }}</span>
+                <template slot-scope="{ row }" v-if="row.rel && row.rel.detail">
+                    <span>{{ row.rel.detail }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="操作" fixed="right" width="220">
@@ -57,8 +57,7 @@ export default {
             ).then(res => {
                 if (res.suceeded) {
                     this.loading = false;
-                    const data = res.data;
-                    this.tableData = data.map(item => ({ ...item, value: JSON.parse(item.value) }));
+                    this.tableData = res.data || [];
                 }
             });
         },
