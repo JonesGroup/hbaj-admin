@@ -7,24 +7,24 @@
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
-            <el-form-item label="项目名称">
+            <el-form-item label="项目名称" prop="name">
+                <el-input v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="项目简介" prop="detail">
                 <el-input v-model="form.detail"></el-input>
             </el-form-item>
-            <el-form-item label="项目简介">
-                <el-input v-model="form.detail"></el-input>
-            </el-form-item>
-            <el-form-item label="船只">
+            <el-form-item label="船只" prop="blockId">
                 <el-select v-model="form.blockId" placeholder="请选择" @change="handleShipType">
                     <el-option :label="item.name" :value="item.id" v-for="item in shippList" :key="item.id"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="功能">
+            <el-form-item label="功能" prop="moduleId">
                 <el-select v-model="form.moduleId" placeholder="请选择" @change="changeFun">
                     <el-option :label="item.name" :value="item.id" v-for="item in funcList" :key="item.id"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="项目分类">
-                <el-select v-model="form.classId" placeholder="请选择" @change="changeClass">
+            <el-form-item label="项目分类" prop="classId">
+                <el-select v-model="form.classId" placeholder="请选择">
                     <el-option :label="item.name" :value="item.id" v-for="item in moduleList" :key="item.id"></el-option>
                 </el-select>
             </el-form-item>
@@ -54,7 +54,9 @@ export default {
                 imageUrl: "",
                 moduleId: "",
                 classId: "",
-                blockId: ""
+                blockId: "",
+                name: "",
+                detail: ""
             },
             funcList: [],
             moduleList: [],
@@ -83,21 +85,12 @@ export default {
     },
     methods: {
         close() {
+            this.staticPath = "";
             this.$refs.form.resetFields();
             this.$emit("update:visible", false);
         },
         open() {
             console.log("打开");
-        },
-        fomatParams() {
-            this.form.url = this.form.imageUrl;
-            const { type, aim_id, title, url } = this.form;
-            const data = {
-                name: "HOME_NAV_IMAGE",
-                detail: this.form.detail,
-                value: JSON.stringify({ type, aim_id, title, url })
-            };
-            return data;
         },
         getFunList() {
             // 获取功能列表
@@ -143,10 +136,9 @@ export default {
         save() {
             this.$refs.form.validate(valid => {
                 if (valid) {
-                    const data = this.fomatParams();
-                    appConst({
+                    project({
                         type: "post",
-                        data
+                        data: this.form
                     }).then(res => {
                         if (res.suceeded) {
                             this.$message.success("新增成功");

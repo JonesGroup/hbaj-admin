@@ -103,7 +103,7 @@
             :page-size="pagination.page_size"
             :total="pagination.total"
         />
-        <AddProject :visible.sync="isOpenAddProject" />
+        <AddProject :visible.sync="isOpenAddProject" :onSuccess="getList" />
     </div>
 </template>
 
