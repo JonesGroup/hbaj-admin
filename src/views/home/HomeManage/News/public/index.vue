@@ -1,6 +1,6 @@
 <template>
     <div class="news-detail">
-        <el-form ref="form" :model="form" label-width="80px" label-position="left">
+        <el-form ref="form" :model="form" label-width="80px" label-position="left" style="z-index:1000">
             <el-form-item label="">
                 <el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="form.imageUrl && staticPath" :src="globalConfig.imagePath + form.imageUrl" class="avatar" />
@@ -8,29 +8,32 @@
                 </el-upload>
             </el-form-item>
             <el-form-item label="标题">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="form.title"></el-input>
             </el-form-item>
             <el-form-item label="作者">
-                <el-input v-model="form.name"></el-input>
+                <el-input v-model="form.author"></el-input>
             </el-form-item>
-            <el-form-item label="机构">
+            <!-- <el-form-item label="机构">
                 <el-input v-model="form.name"></el-input>
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item label="发布时间">
-                <el-date-picker v-model="form.value1" type="date" placeholder="选择日期"> </el-date-picker>
+                <el-date-picker v-model="form.publishTime" type="datetime" placeholder="选择日期时间"> </el-date-picker>
             </el-form-item>
-            <RichTextBox ref="RichTextBox" />
+            <div>
+                <RichTextBox ref="RichTextBox" />
+            </div>
         </el-form>
-        <span slot="footer" class="dialog-footer">
+        <div slot="footer" class="dialog-footer mgT24">
             <el-button @click="goback">返回</el-button>
             <el-button type="primary" @click="save">确 定</el-button>
-        </span>
+        </div>
     </div>
 </template>
 
 <script>
 import RichTextBox from "@/components/common/RichTextBox";
+import { newsAdmin } from "@/model/api";
 
 export default {
     components: {
@@ -39,10 +42,11 @@ export default {
     data() {
         return {
             form: {
-                name: "", // 名称
                 imageUrl: "",
-                radio: "",
-                value1: ""
+                title: "", // 标题
+                publishTime: "", // 发布时间
+                author: "", // 作者
+                contentHtml: "" //html
             },
             staticPath: ""
         };
@@ -58,7 +62,15 @@ export default {
             this.$router.go(-1);
         },
         save() {
-            console.log("保存");
+            const RichTextBox = this.$refs.RichTextBox;
+            const getHtml = RichTextBox.getHtml();
+            this.form.contentHtml = getHtml;
+            newsAdmin({
+                type: "post",
+                data: this.form
+            }).then(res => {
+                console.log(res, "res");
+            });
         },
         handleAvatarSuccess(res, file) {
             this.staticPath = res.data.path;
@@ -82,6 +94,9 @@ export default {
 
 <style lang="less">
 .news-detail {
+    .el-form-item {
+        z-index: 100000;
+    }
     .avatar-uploader {
         display: flex;
         // justify-content: center;

@@ -30,15 +30,6 @@
                 </template>
             </el-table-column>
         </el-table>
-
-        <app-pagination
-            @size-change="setPagination('page_size', $event)"
-            @current-change="setPagination('page', $event)"
-            :current-page="pagination.page"
-            :page-sizes="[10, 20, 50]"
-            :page-size="pagination.page_size"
-            :total="pagination.total"
-        />
     </div>
 </template>
 
@@ -48,36 +39,26 @@ export default {
     data() {
         return {
             loading: false,
-            tableData: [],
-            pagination: {
-                page: 1,
-                page_size: 10,
-                total: 0
-            }
+            tableData: []
         };
     },
     methods: {
         getList() {
-            const { page, page_size } = this.pagination;
             this.loading = true;
-            appConst(
+            appConstDetail(
                 {
                     type: "GET",
                     data: {
-                        page,
-                        size: page_size,
-                        name: "HOME_RECOMMEND_PROJECT"
+                        page: 1,
+                        size: 1000
                     }
                 },
-                "app/pageInfo"
+                "recommendProject"
             ).then(res => {
                 if (res.suceeded) {
                     this.loading = false;
-                    const { content, total, currentPage, pageSize } = res.data;
-                    this.pagination.total = total;
-                    this.pagination.page = currentPage;
-                    this.pagination.page_size = pageSize;
-                    this.tableData = content.map(item => ({ ...item, value: JSON.parse(item.value) }));
+                    const data = res.data;
+                    this.tableData = data.map(item => ({ ...item, value: JSON.parse(item.value) }));
                 }
             });
         },
@@ -122,10 +103,6 @@ export default {
         swapItems(arr, index1, index2) {
             arr[index1] = arr.splice(index2, 1, arr[index1])[0];
             return arr;
-        },
-        setPagination(p, v) {
-            this.$set(this.pagination, p, v);
-            this.getList();
         }
     },
     created() {
