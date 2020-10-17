@@ -22,7 +22,7 @@
                     <el-button type="text" @click="viewTaskList(row)">
                         任务管理
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" @click="editPerson(row)">
                         修改
                     </el-button>
                     <el-button type="text">
@@ -38,6 +38,7 @@
         <AddBanner :visible.sync="isOpenAddBanner" />
         <MessageList :visible.sync="isOpenMessageList" :userId="userId" />
         <TaskList :visible.sync="isOpenTaskList" :userId="userId" />
+        <EditPerson :visible.sync="isOpenEditPerson" :userId="userId" />
     </div>
 </template>
 
@@ -45,18 +46,21 @@
 import AddBanner from "@/components/Dialog/AddBanner";
 import MessageList from "../../Dialog/Message";
 import TaskList from "../../Dialog/TaskList";
+import EditPerson from "../../Dialog/EditPerson";
 import { departmentDetail } from "@/model/api";
 export default {
     components: {
         AddBanner,
         TaskList,
-        MessageList
+        MessageList,
+        EditPerson
     },
     data() {
         return {
             isOpenAddBanner: false,
             isOpenMessageList: false,
             isOpenTaskList: false,
+            isOpenEditPerson: false,
             loading: false,
             userId: "",
             tableData: []
@@ -89,6 +93,10 @@ export default {
         viewTaskList(data) {
             this.userId = data.id;
             this.isOpenTaskList = true;
+        },
+        editPerson(data) {
+            this.userId = data.id;
+            this.isOpenEditPerson = true;
         }
     },
     created() {
