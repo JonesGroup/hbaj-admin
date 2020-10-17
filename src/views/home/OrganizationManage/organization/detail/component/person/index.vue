@@ -6,7 +6,7 @@
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="ID" />
             <el-table-column prop="userSgname" label="用户名" />
-            <el-table-column prop="detail" label="密码" />
+            <!-- <el-table-column prop="detail" label="密码" /> -->
             <el-table-column prop="userEmail" label="电子邮件" />
             <el-table-column prop="userDescription" label="个人简介" />
             <el-table-column label="头像" width="220">
@@ -38,7 +38,7 @@
         <AddBanner :visible.sync="isOpenAddBanner" />
         <MessageList :visible.sync="isOpenMessageList" :userId="userId" />
         <TaskList :visible.sync="isOpenTaskList" :userId="userId" />
-        <EditPerson :visible.sync="isOpenEditPerson" :userId="userId" />
+        <EditPerson :visible.sync="isOpenEditPerson" :userId="userId" :editData="editData" :onSuccess="getList" />
     </div>
 </template>
 
@@ -63,7 +63,8 @@ export default {
             isOpenEditPerson: false,
             loading: false,
             userId: "",
-            tableData: []
+            tableData: [],
+            editData: {}
         };
     },
     methods: {
@@ -95,7 +96,9 @@ export default {
             this.isOpenTaskList = true;
         },
         editPerson(data) {
+            this.userId = "";
             this.userId = data.id;
+            this.editData = data;
             this.isOpenEditPerson = true;
         }
     },
