@@ -61,6 +61,7 @@ export default {
             console.log("打开");
         },
         save() {
+            this.form.enterpriseId = "1";
             role({
                 type: "post",
                 data: this.form

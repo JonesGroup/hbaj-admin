@@ -18,7 +18,7 @@
             </el-form-item> -->
 
             <el-form-item label="发布时间">
-                <el-date-picker v-model="form.publishTime" type="datetime" placeholder="选择日期时间"> </el-date-picker>
+                <el-date-picker v-model="form.publishTime" type="datetime" placeholder="选择日期时间" value-format="timestamp"></el-date-picker>
             </el-form-item>
             <div>
                 <RichTextBox ref="RichTextBox" />
@@ -26,14 +26,14 @@
         </el-form>
         <div slot="footer" class="dialog-footer mgT24">
             <el-button @click="goback">返回</el-button>
-            <el-button type="primary" @click="save">确 定</el-button>
+            <el-button type="primary" @click="submit">确 定</el-button>
         </div>
     </div>
 </template>
 
 <script>
 import RichTextBox from "@/components/common/RichTextBox";
-import { newsAdmin } from "@/model/api";
+import { newsAdmin, newsAdminDetail } from "@/model/api";
 
 export default {
     components: {
@@ -61,6 +61,34 @@ export default {
         goback() {
             this.$router.go(-1);
         },
+        getNewsDetail() {
+            const { id } = this.$route.params;
+            if (!id) {
+                return;
+            }
+            this.loading = true;
+
+            newsAdminDetail(
+                {
+                    type: "get"
+                },
+                id
+            ).then(res => {
+                this.loading = false;
+                if (res.suceeded) {
+                    this.setText(res.data);
+                }
+            });
+        },
+        setText(data) {
+            const { author, contentHtml, imageUrl, publishTime, title } = data;
+            this.form.imageUrl = imageUrl;
+            this.staticPath = imageUrl;
+            this.form.title = title;
+            this.form.publishTime = publishTime;
+            this.form.author = author;
+            this.$refs.RichTextBox.setHtml(contentHtml);
+        },
         save() {
             const RichTextBox = this.$refs.RichTextBox;
             const getHtml = RichTextBox.getHtml();
@@ -69,8 +97,30 @@ export default {
                 type: "post",
                 data: this.form
             }).then(res => {
-                console.log(res, "res");
+                if (res.suceeded) {
+                    this.$message.success("保存成功");
+                }
             });
+        },
+        edit() {
+            const RichTextBox = this.$refs.RichTextBox;
+            const getHtml = RichTextBox.getHtml();
+            this.form.contentHtml = getHtml;
+            const id = this.$route.params.id;
+            newsAdminDetail(
+                {
+                    type: "put",
+                    data: this.form
+                },
+                id
+            ).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("保存成功");
+                }
+            });
+        },
+        submit() {
+            this.$route.params.id ? this.edit() : this.save();
         },
         handleAvatarSuccess(res, file) {
             this.staticPath = res.data.path;
@@ -88,6 +138,9 @@ export default {
             }
             return isJPG && isLt2M;
         }
+    },
+    created() {
+        this.getNewsDetail();
     }
 };
 </script>
