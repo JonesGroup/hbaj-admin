@@ -1,43 +1,46 @@
 <template>
-    <el-dialog title="新增项目" :visible="visible" width="30%" @open="open" @close="close">
+    <el-dialog title="新增课件" :visible="visible" width="30%" @open="open" @close="close" class="dialog-width">
         <el-form ref="form" :model="form" label-width="80px" label-position="left">
-            <el-form-item label="">
+            <el-form-item label="课件封面">
                 <el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="form.imageUrl && staticPath" :src="globalConfig.imagePath + form.imageUrl" class="avatar" />
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
-            <el-form-item label="项目名称" prop="name">
+            <el-form-item label="课件名称" prop="name">
                 <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="项目简介" prop="detail">
+            <el-form-item label="课件简介" prop="detail">
                 <el-input v-model="form.detail"></el-input>
             </el-form-item>
-            <el-form-item label="船只" prop="blockId">
-                <el-select v-model="form.blockId" placeholder="请选择" @change="handleShipType">
-                    <el-option :label="item.name" :value="item.id" v-for="item in shippList" :key="item.id"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="功能" prop="moduleId">
-                <el-select v-model="form.moduleId" placeholder="请选择" @change="changeFun">
-                    <el-option :label="item.name" :value="item.id" v-for="item in funcList" :key="item.id"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="项目分类" prop="classId">
-                <el-select v-model="form.classId" placeholder="请选择">
-                    <el-option :label="item.name" :value="item.id" v-for="item in moduleList" :key="item.id"></el-option>
-                </el-select>
-            </el-form-item>
+            <div class="func">
+                <el-form-item label="船舶选择" prop="blockId">
+                    <el-select v-model="form.blockId" placeholder="请选择" @change="handleShipType">
+                        <el-option :label="item.name" :value="item.id" v-for="item in shippList" :key="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="功能选择" prop="moduleId">
+                    <el-select v-model="form.moduleId" placeholder="请选择" @change="changeFun">
+                        <el-option :label="item.name" :value="item.id" v-for="item in funcList" :key="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="课件分类" prop="classId" class="classId">
+                    <el-select v-model="form.classId" placeholder="请选择">
+                        <el-option :label="item.name" :value="item.id" v-for="item in moduleList" :key="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+            </div>
         </el-form>
-        <span slot="footer" class="dialog-footer">
+        <div slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>
             <el-button type="primary" @click="sumbit">确 定</el-button>
-        </span>
+        </div>
     </el-dialog>
 </template>
 
 <script>
 import { project, projectDetail, projectModule, projectClass } from "@/model/api";
+import store from "@/widget/store";
 export default {
     props: {
         visible: {
@@ -56,7 +59,8 @@ export default {
                 classId: "",
                 blockId: "",
                 name: "",
-                detail: ""
+                detail: "",
+                oriEnterpriseId: "1"
             },
             funcList: [],
             moduleList: [],
@@ -141,11 +145,29 @@ export default {
                         data: this.form
                     }).then(res => {
                         if (res.suceeded) {
-                            this.$message.success("新增成功");
+                            this.addPerson(res.data.id);
                             this.onSuccess && this.onSuccess();
                             this.close();
                         }
                     });
+                }
+            });
+        },
+        addPerson(projectId) {
+            const User = store.get("user", "local");
+            const userId = User.id;
+            projectDetail(
+                {
+                    type: "post",
+                    data: {
+                        userIds: [userId],
+                        managerFlg: 1
+                    }
+                },
+                `${projectId}/user`
+            ).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("操作成功");
                 }
             });
         },
@@ -212,13 +234,30 @@ export default {
     font-size: 28px;
     color: #8c939d;
     min-width: 478px;
-    height: 178px;
-    line-height: 178px;
+    height: 148px;
+    line-height: 148px;
     text-align: center;
 }
 .avatar {
     // width: 178px;
-    height: 178px;
+    height: 148px;
     display: block;
+}
+.func {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .el-form-item {
+        width: 45%;
+        // float: left;
+    }
+    .classId {
+        width: 100%;
+        .el-form-item__content {
+            .el-select {
+                width: 100%;
+            }
+        }
+    }
 }
 </style>

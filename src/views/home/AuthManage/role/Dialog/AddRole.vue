@@ -55,6 +55,7 @@ export default {
     },
     methods: {
         close() {
+            this.$refs.form.resetFields();
             this.$emit("update:visible", false);
         },
         open() {

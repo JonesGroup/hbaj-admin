@@ -1,19 +1,20 @@
 <template>
-    <el-dialog title="添加项目人员" :visible="visible" width="30%" @open="open" @close="close">
+    <el-dialog title="添加课件共建人" :visible="visible" width="30%" @open="open" @close="close" class="addPerson dialog-width">
         <el-form ref="form" :model="form" label-width="80px" label-position="left">
-            <el-form-item label="部门">
+            <el-form-item label="选择部门">
                 <el-select v-model="form.departmentId" placeholder="请选择" @change="changeDepartment">
                     <el-option :label="item.name" :value="item.id" v-for="item in departmentList" :key="item.id"></el-option>
                 </el-select>
             </el-form-item>
         </el-form>
 
-        <el-table ref="multipleTable" :data="userList" @selection-change="handleSelectionChange" v-if="multiple">
+        <el-table ref="multipleTable" :data="userList" @selection-change="handleSelectionChange" v-if="multiple" height="350">
             <el-table-column type="selection" width="55"> </el-table-column>
             <el-table-column prop="userSgname" label="人员姓名"> </el-table-column>
+            <!-- <el-table-column prop="name" label="部门"> </el-table-column> -->
         </el-table>
 
-        <el-table :data="userList" highlight-current-row @current-change="handleCurrentChange" v-else>
+        <el-table :data="userList" highlight-current-row @current-change="handleCurrentChange" v-else height="350">
             <el-table-column prop="userSgname" label="人员姓名"> </el-table-column>
         </el-table>
 
@@ -132,6 +133,7 @@ export default {
             if (this.checkList.length === 0) {
                 return this.$message.error("请选择人员");
             }
+            this.close();
             this.onSuccess && this.onSuccess(this.checkList);
         }
     }
@@ -139,7 +141,14 @@ export default {
 </script>
 
 <style lang="less">
+.addPerson {
+    .el-dialog {
+        // height: 600px !important;
+        // overflow-y: scroll;
+    }
+}
 .check-user-list {
+    margin-top: 20px;
     .el-tag {
         margin-right: 10px;
         margin-bottom: 10px;

@@ -31,7 +31,7 @@
                         <el-option :label="item.name" :value="item.id" v-for="item in funcList" :key="item.id"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="项目分类">
+                <el-form-item label="课件分类">
                     <el-select v-model="form.classId" placeholder="请选择" @change="changeClass">
                         <el-option :label="item.name" :value="item.id" v-for="item in moduleList" :key="item.id"></el-option>
                     </el-select>
@@ -44,39 +44,60 @@
             </el-form>
         </div>
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="序号" />
-            <el-table-column prop="name" label="项目名称" />
-            <el-table-column prop="detail" label="项目详情" />
-            <el-table-column label="发布时间">
+            <el-table-column label="课件封面" align="center" width="140">
+                <template slot-scope="{ row }">
+                    <img :src="globalConfig.imagePath + row.imageUrl" alt="" height="100" />
+                </template>
+            </el-table-column>
+            <el-table-column prop="name" label="课件名称" align="center" />
+            <el-table-column prop="id" label="课件编码" align="center" width="100" />
+            <el-table-column label="课件索引" align="center">
+                <template slot-scope="{ row }">
+                    <span>{{ `${row.blockName}-${row.moduleName}-${row.className}` }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="detail" label="课件详情" align="center">
+                <template slot-scope="{ row }" v-if="row && row.detail">
+                    <el-popover placement="top-start" title="" width="250" trigger="hover" :content="row.detail">
+                        <div class="ellipsisLineTwo" slot="reference">
+                            {{ row.detail }}
+                        </div>
+                    </el-popover>
+                </template>
+            </el-table-column>
+            <el-table-column label="发布时间" align="center" width="180">
                 <template slot-scope="{ row }">
                     <span>{{ row.publishDate | formaData }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="状态">
+            <el-table-column label="状态" align="center" width="100">
                 <template slot-scope="{ row }">
                     <span>{{ transformText(row.status) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="是否公开">
+            <el-table-column label="是否公开" align="center" width="100">
                 <template slot-scope="{ row }">
                     <span>{{ row.publicFlg === 1 ? "公开" : "非公开" }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="220">
+            <el-table-column label="操作" fixed="right" width="220" align="center">
                 <template slot-scope="{ row }">
-                    <el-button type="text" v-if="[1, 2, 5].indexOf(row.status) !== -1" @click="handler(row.id, 'patch', 'onshelf')">
-                        发布
+                    <el-button type="text" v-if="[1].indexOf(row.status) !== -1" @click="handler(row.id, 'PATCH', 'submitVerify')">
+                        提交审核
                     </el-button>
-                    <el-button type="text" v-if="[3].indexOf(row.status) !== -1" @click="handler(row.id, 'patch', 'offshelf')">
+                    <el-button type="text" v-if="[5].indexOf(row.status) !== -1" @click="handler(row.id, 'PATCH', 'onshelf')">
+                        上架
+                    </el-button>
+                    <el-button type="text" v-if="[3].indexOf(row.status) !== -1" @click="handler(row.id, 'PATCH', 'offshelf')">
                         下架
                     </el-button>
-                    <el-button type="text" v-if="[2].indexOf(row.status) !== -1" @click="handler(row.id, 'patch', 'verify')">
-                        审核撤回
+                    <el-button type="text" v-if="[2].indexOf(row.status) !== -1" @click="verify(row)">
+                        审核
                     </el-button>
-                    <el-button type="text" v-if="row.publicFlg !== 1" @click="handler(row.id, 'patch', 'public')">
+                    <el-button type="text" v-if="row.publicFlg !== 1 && [3].indexOf(row.status) !== -1" @click="handler(row.id, 'PATCH', 'public')">
                         公开
                     </el-button>
-                    <el-button type="text" v-if="row.publicFlg === 1" @click="handler(row.id, 'patch', 'unpublic')">
+                    <el-button type="text" v-if="row.publicFlg === 1" @click="handler(row.id, 'PATCH', 'unpublic')">
                         取消公开
                     </el-button>
                     <el-button type="text" @click="toDetail(row.id, row)">
@@ -85,11 +106,14 @@
                     <el-button type="text" @click="editProject(row)">
                         编辑
                     </el-button>
-                    <el-button type="text" v-if="[0].indexOf(row.status) !== -1" @click="dispathTask(row)">
+                    <!-- <el-button type="text" v-if="[0].indexOf(row.status) !== -1" @click="dispathTask(row)">
                         下发任务
-                    </el-button>
+                    </el-button> -->
                     <el-button type="text" v-if="[0].indexOf(row.status) !== -1" @click="del(row.id)">
                         删除
+                    </el-button>
+                    <el-button type="text" @click="comment(row.id)">
+                        处理评论
                     </el-button>
                 </template>
             </el-table-column>
@@ -104,19 +128,23 @@
             :total="pagination.total"
         />
         <AddProject :visible.sync="isOpenAddProject" :onSuccess="getList" />
+        <Verify :visible.sync="isOpenVerify" :onSuccess="getList" :id="id" />
     </div>
 </template>
 
 <script>
 import { project, projectDetail, projectModule, projectClass } from "@/model/api";
 import AddProject from "./Dialog/AddProject";
+import Verify from "./Dialog/Verify";
 export default {
     components: {
-        AddProject
+        AddProject,
+        Verify
     },
     data() {
         return {
             isOpenAddProject: false,
+            isOpenVerify: false,
             pagination: {
                 page: 1,
                 page_size: 10,
@@ -129,6 +157,7 @@ export default {
                 classId: "",
                 status: ""
             },
+            id: "",
             blockId: 25,
             moduleList: [{ name: "全部", id: "" }],
             funcList: [],
@@ -166,9 +195,6 @@ export default {
     },
     methods: {
         transformText(status) {
-            if (!status) {
-                return status;
-            }
             const map = {
                 0: "创建中",
                 1: "编辑中",
@@ -211,7 +237,20 @@ export default {
             this.$store.commit("SET_TIPS", `管理"${data.name}"课件详情`);
             this.$router.push(`./courseDetail/${id}`);
         },
+        comment(id) {
+            console.log(id);
+        },
+        verify(data) {
+            this.id = "";
+            this.id = data.id;
+            this.isOpenVerify = true;
+        },
         handler(id, type, url) {
+            const params = {};
+            if (url === "onshelf") {
+                params.publicFlag = false;
+                url += "?publicFlag=false";
+            }
             projectDetail(
                 {
                     type
