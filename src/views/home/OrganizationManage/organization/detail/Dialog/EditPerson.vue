@@ -52,9 +52,11 @@ export default {
     },
     watch: {
         userId: function(val) {
-            this.$nextTick(() => {
-                this.form = Object.assign(this.form, this.editData);
-            });
+            if (val) {
+                this.$nextTick(() => {
+                    this.form = Object.assign(this.form, this.editData);
+                });
+            }
         }
     },
     methods: {

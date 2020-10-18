@@ -88,16 +88,16 @@ export default {
             this.isOpenAddBanner = true;
         },
         viewMessage(data) {
-            this.userId = data.id;
+            this.userId = data.userId;
             this.isOpenMessageList = true;
         },
         viewTaskList(data) {
-            this.userId = data.id;
+            this.userId = data.userId;
             this.isOpenTaskList = true;
         },
         editPerson(data) {
             this.userId = "";
-            this.userId = data.id;
+            this.userId = data.userId;
             this.editData = data;
             this.isOpenEditPerson = true;
         }
