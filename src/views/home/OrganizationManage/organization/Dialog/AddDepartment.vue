@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="新增部门" :visible="visible" width="30%" @open="open" @close="close" :close-on-click-modal="false" :modal-append-to-body="false" append-to-body>
+    <el-dialog :title="departmentId ? '编辑部门' : '新增部门'" :visible="visible" width="30%" @open="open" @close="close" :close-on-click-modal="false" :modal-append-to-body="false" append-to-body>
         <el-form ref="form" :model="form" label-width="100px" label-position="left">
             <el-form-item label="部门名称" prop="name">
                 <el-input v-model="form.name"></el-input>

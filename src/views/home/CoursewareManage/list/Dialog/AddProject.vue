@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="新增课件" :visible="visible" width="30%" @open="open" @close="close" class="dialog-width">
+    <el-dialog :title="projectId ? '编辑课件' : '新增课件'" :visible="visible" width="30%" @open="open" @close="close" class="dialog-width">
         <el-form ref="form" :model="form" label-width="80px" label-position="left">
             <el-form-item label="课件封面">
                 <el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
@@ -49,6 +49,24 @@ export default {
         },
         onSuccess: {
             type: Function
+        },
+        projectId: {
+            type: [String, Number],
+            default: ""
+        },
+        editData: {
+            type: Object,
+            default: {}
+        }
+    },
+    watch: {
+        projectId: function(val) {
+            if (val) {
+                this.$nextTick(() => {
+                    this.form = Object.assign(this.form, this.editData);
+                    this.staticPath = this.form.imageUrl;
+                });
+            }
         }
     },
     data() {
@@ -67,15 +85,15 @@ export default {
             shippList: [
                 {
                     name: "散货船",
-                    id: "25"
+                    id: 25
                 },
                 {
                     name: "豪华邮轮",
-                    id: "24"
+                    id: 24
                 },
                 {
                     name: "CIC专项船",
-                    id: "27"
+                    id: 27
                 }
             ],
             staticPath: ""
@@ -94,7 +112,12 @@ export default {
             this.$emit("update:visible", false);
         },
         open() {
-            console.log("打开");
+            this.$nextTick(() => {
+                this.form.blockId && this.getFunList();
+                this.form.moduleId && this.getClassList();
+            });
+
+            // console.log("打开");
         },
         getFunList() {
             // 获取功能列表
@@ -135,7 +158,7 @@ export default {
             this.getClassList();
         },
         sumbit() {
-            this.appConstId ? this.edit() : this.save();
+            this.projectId ? this.edit() : this.save();
         },
         save() {
             this.$refs.form.validate(valid => {
@@ -174,16 +197,14 @@ export default {
         edit() {
             this.$refs.form.validate(valid => {
                 if (valid) {
-                    const data = this.fomatParams();
-                    appConstDetail(
+                    projectDetail(
                         {
                             type: "put",
-                            data
+                            data: this.form
                         },
-                        this.appConstId
+                        this.projectId
                     ).then(res => {
                         if (res.suceeded) {
-                            this.$message.success("修改成功");
                             this.onSuccess && this.onSuccess();
                             this.close();
                         }

@@ -127,7 +127,7 @@
             :page-size="pagination.page_size"
             :total="pagination.total"
         />
-        <AddProject :visible.sync="isOpenAddProject" :onSuccess="getList" />
+        <AddProject :visible.sync="isOpenAddProject" :onSuccess="getList" :projectId="projectId" :editData="editData" />
         <Verify :visible.sync="isOpenVerify" :onSuccess="getList" :id="id" />
     </div>
 </template>
@@ -143,6 +143,8 @@ export default {
     },
     data() {
         return {
+            projectId: "",
+            editData: {},
             isOpenAddProject: false,
             isOpenVerify: false,
             pagination: {
@@ -327,9 +329,13 @@ export default {
             });
         },
         addProject() {
+            this.projectId = "";
             this.isOpenAddProject = true;
         },
-        editProject() {
+        editProject(data) {
+            this.projectId = "";
+            this.projectId = data.id;
+            this.editData = data;
             this.isOpenAddProject = true;
         }
     },
