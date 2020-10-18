@@ -5,7 +5,7 @@
             <Sidebar></Sidebar>
             <div class="container-main">
                 <div class="content">
-                    <HeaderBg :isShowBg="isShowBg" />
+                    <!-- <HeaderBg :isShowBg="isShowBg" /> -->
                     <router-view></router-view>
                 </div>
                 <Footer></Footer>
@@ -18,7 +18,7 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
-import HeaderBg from "../common/Header-BG";
+// import HeaderBg from "../common/Header-BG";
 
 export default {
     data() {
@@ -27,8 +27,8 @@ export default {
     components: {
         Header,
         Footer,
-        Sidebar,
-        HeaderBg
+        Sidebar
+        // HeaderBg
     },
     computed: {
         isShowBg() {

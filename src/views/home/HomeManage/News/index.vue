@@ -1,7 +1,7 @@
 <template>
     <div class="main mgT24">
-        <div class="operate mgB24">
-            <el-button type="primary" @click="addNews">添加</el-button>
+        <div class="operate mgB24 fr">
+            <el-button type="primary" @click="addNews">新增</el-button>
         </div>
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="序号" />

@@ -1,7 +1,7 @@
 <template>
-    <el-dialog title="轮播图信息" :visible="visible" width="30%" @open="open" @close="close">
+    <el-dialog title="轮播图信息" :visible="visible" @open="open" @close="close" class="dialog-width">
         <el-form ref="form" :model="form" label-width="80px" label-position="left">
-            <el-form-item label="">
+            <el-form-item label="封面图片">
                 <el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                     <img v-if="form.imageUrl && staticPath" :src="globalConfig.imagePath + form.imageUrl" class="avatar" />
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>

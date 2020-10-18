@@ -1,26 +1,28 @@
 <template>
     <div class="main mgT24">
-        <div class="operate mgB24">
-            <el-button type="primary" @click="addBanner">添加</el-button>
+        <div class="operate mgB24 fr">
+            <el-button type="primary" @click="addBanner">新增</el-button>
         </div>
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="ID" />
-            <el-table-column prop="detail" label="图片名称" />
-            <el-table-column label="链接类别">
-                <template slot-scope="{ row }">{{ row.value.type === "NEWS" ? "新闻" : "课件" }}</template>
-            </el-table-column>
-            <el-table-column label="项目编号">
-                <template slot-scope="{ row }">{{ row.value.aim_id }}</template>
-            </el-table-column>
-            <el-table-column label="项目标题">
-                <template slot-scope="{ row }">{{ row.value.title }}</template>
-            </el-table-column>
-            <el-table-column prop="url" label="项目封面" width="200">
+            <el-table-column prop="url" label="轮播图封面" width="200" align="center">
                 <template slot-scope="{ row }">
                     <img :src="globalConfig.imagePath + row.value.url" alt="" height="100" />
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="220">
+            <el-table-column prop="detail" label="封面名称" width="300" align="center" />
+            <el-table-column prop="id" label="轮播图编码" width="100" align="center" />
+
+            <el-table-column label="链接类别" width="100" align="center">
+                <template slot-scope="{ row }">{{ row.value.type === "NEWS" ? "新闻" : "课件" }}</template>
+            </el-table-column>
+            <el-table-column label="项目编号" width="100" align="center">
+                <template slot-scope="{ row }">{{ row.value.aim_id }}</template>
+            </el-table-column>
+            <el-table-column label="项目标题" align="center">
+                <template slot-scope="{ row }">{{ row.value.title }}</template>
+            </el-table-column>
+
+            <el-table-column label="操作" fixed="right" width="220" align="center">
                 <template slot-scope="scope">
                     <el-button type="text" @click="up(tableData, scope.$index)">
                         向上
