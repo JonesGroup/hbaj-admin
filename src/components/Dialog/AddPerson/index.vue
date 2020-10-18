@@ -1,5 +1,15 @@
 <template>
-    <el-dialog title="添加课件共建人" :visible="visible" width="30%" @open="open" @close="close" class="addPerson dialog-width">
+    <el-dialog
+        title="添加课件共建人"
+        :visible="visible"
+        width="30%"
+        @open="open"
+        @close="close"
+        class="addPerson dialog-width"
+        :close-on-click-modal="false"
+        :modal-append-to-body="false"
+        append-to-body
+    >
         <el-form ref="form" :model="form" label-width="80px" label-position="left">
             <el-form-item label="选择部门">
                 <el-select v-model="form.departmentId" placeholder="请选择" @change="changeDepartment">

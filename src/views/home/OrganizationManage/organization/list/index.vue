@@ -4,16 +4,17 @@
             <el-button type="primary" @click="addDepartment">新增</el-button>
         </div>
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="序号" />
-            <el-table-column prop="name" label="部门" />
-            <el-table-column prop="managerName" label="部门负责人" />
-            <el-table-column prop="parentName" label="上级部门" />
-            <el-table-column label="操作" fixed="right" width="220">
+            <el-table-column prop="name" label="部门名称" align="center" width="100" />
+            <el-table-column prop="id" label="部门编码" align="center" width="100" />
+
+            <el-table-column prop="managerName" label="部门负责人" align="center" width="100" />
+            <el-table-column prop="parentName" label="上级部门" align="center" width="100" />
+            <el-table-column label="操作" fixed="right" align="center">
                 <template slot-scope="{ row }">
                     <el-button type="text" @click="toDetail(row.id)">
                         查看
                     </el-button>
-                    <el-button type="text" @click="edit(row.id)">
+                    <el-button type="text" @click="edit(row)">
                         编辑
                     </el-button>
                     <el-button type="text" @click="delDepartmentId(row.id)">
@@ -32,7 +33,7 @@
             :total="pagination.total"
         />
 
-        <AddDepartment :visible.sync="isOpenAddDepartment" />
+        <AddDepartment :visible.sync="isOpenAddDepartment" :onSuccess="getList" :departmentId="departmentId" :editData="editData" />
     </div>
 </template>
 
@@ -52,7 +53,9 @@ export default {
                 total: 0
             },
             tableData: [],
-            loading: false
+            loading: false,
+            departmentId: "",
+            editData: {}
         };
     },
     methods: {
@@ -97,10 +100,13 @@ export default {
             });
         },
         edit(data) {
-            console.log(data, "data");
+            this.departmentId = "";
+            this.departmentId = data.id;
+            this.editData = data;
             this.isOpenAddDepartment = true;
         },
         addDepartment() {
+            this.departmentId = "";
             this.isOpenAddDepartment = true;
         }
     },
