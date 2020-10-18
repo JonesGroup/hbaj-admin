@@ -1,10 +1,10 @@
 <template>
     <div class="main mgT24">
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="ID" />
-            <el-table-column prop="name" label="场景名称" />
-            <el-table-column prop="detail" label="场景简介" />
-            <el-table-column prop="sceneTypeName" label="场景区域" />
+            <el-table-column prop="name" label="场景名称" align="center" width="200" />
+            <el-table-column prop="id" label="场景编码" align="center" width="100" />
+            <el-table-column prop="sceneTypeName" label="场景区域" align="center" width="200" />
+            <el-table-column prop="detail" label="场景简介" align="center" />
         </el-table>
     </div>
 </template>

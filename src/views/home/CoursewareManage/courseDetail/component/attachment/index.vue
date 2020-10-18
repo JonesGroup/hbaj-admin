@@ -1,11 +1,11 @@
 <template>
     <div class="main mgT24">
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="附件ID" />
-            <el-table-column prop="code" label="附件编码" />
-            <el-table-column prop="title" label="附件名称" />
+            <el-table-column prop="id" label="附件ID" align="center" width="100" />
+            <el-table-column prop="code" label="附件编码" align="center" width="200" />
+            <el-table-column prop="title" label="附件名称" align="center" />
 
-            <el-table-column label="操作" fixed="right" width="220">
+            <el-table-column label="操作" fixed="right" width="220" align="center">
                 <template slot-scope="{ row }">
                     <el-button type="text">
                         查看

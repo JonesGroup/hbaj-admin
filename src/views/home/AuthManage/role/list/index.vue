@@ -13,7 +13,7 @@
                         豪华邮轮
                     </el-radio-button>
                     <el-radio-button :label="27" type="primary">
-                        CIC专项船
+                        CIC2019专项船
                     </el-radio-button>
                 </el-radio-group>
             </div>
@@ -22,11 +22,11 @@
             </div>
         </div>
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="序号" />
-            <el-table-column prop="name" label="角色名称" />
-            <el-table-column label="操作" fixed="right" width="220">
+            <el-table-column prop="id" label="序号" align="center" width="100" />
+            <el-table-column prop="name" label="角色名称" align="center" />
+            <el-table-column label="操作" fixed="right" width="220" align="center">
                 <template slot-scope="{ row }">
-                    <el-button type="text" @click="toDetail(row.id)">
+                    <el-button type="text" @click="toDetail(row)">
                         查看
                     </el-button>
                     <el-button type="text" @click="editRole(row)">
@@ -81,8 +81,14 @@ export default {
                 }
             });
         },
-        toDetail(id) {
-            this.$router.push(`./detail/${this.blockId}/${id}`);
+        toDetail(data) {
+            const map = {
+                25: "散货船",
+                24: "豪华邮轮",
+                27: "CIC2019专项船"
+            };
+            this.$store.commit("SET_TIPS", `对"${map[this.blockId]}"的"${data.name}"角色进行授权管理`);
+            this.$router.push(`./detail/${this.blockId}/${data.id}`);
         },
         editRole(data) {
             this.name = data.name;
