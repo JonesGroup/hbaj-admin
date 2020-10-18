@@ -134,8 +134,9 @@ export default {
 
 <style lang="less">
 #editor {
+    height: 100%;
     .w-e-text-container {
-        height: 400px !important;
+        height: 100% !important;
         z-index: 1000 !important;
     }
     .w-e-toolbar {

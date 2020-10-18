@@ -1,32 +1,36 @@
 <template>
     <div class="news-detail">
-        <el-form ref="form" :model="form" label-width="80px" label-position="left" style="z-index:1000">
-            <el-form-item label="">
-                <el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                    <img v-if="form.imageUrl && staticPath" :src="globalConfig.imagePath + form.imageUrl" class="avatar" />
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-            <el-form-item label="标题">
-                <el-input v-model="form.title"></el-input>
-            </el-form-item>
-            <el-form-item label="作者">
-                <el-input v-model="form.author"></el-input>
-            </el-form-item>
-            <!-- <el-form-item label="机构">
+        <div class="news-edit">
+            <div class="RichTextBox">
+                <RichTextBox ref="RichTextBox" />
+            </div>
+            <div class="form">
+                <el-form ref="form" :model="form" label-width="80px" label-position="left" style="z-index:1000">
+                    <el-form-item label="新闻封面">
+                        <el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                            <img v-if="form.imageUrl && staticPath" :src="globalConfig.imagePath + form.imageUrl" class="avatar" />
+                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+                    </el-form-item>
+                    <el-form-item label="标题">
+                        <el-input v-model="form.title"></el-input>
+                    </el-form-item>
+                    <el-form-item label="作者">
+                        <el-input v-model="form.author"></el-input>
+                    </el-form-item>
+                    <!-- <el-form-item label="机构">
                 <el-input v-model="form.name"></el-input>
             </el-form-item> -->
 
-            <el-form-item label="发布时间">
-                <el-date-picker v-model="form.publishTime" type="datetime" placeholder="选择日期时间" value-format="timestamp"></el-date-picker>
-            </el-form-item>
-            <div>
-                <RichTextBox ref="RichTextBox" />
+                    <el-form-item label="发布时间">
+                        <el-date-picker v-model="form.publishTime" type="datetime" placeholder="选择日期时间" value-format="timestamp"></el-date-picker>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer mgT24 fr" style="margin-top:20px">
+                    <el-button @click="goback">返回</el-button>
+                    <el-button type="primary" @click="submit">确 定</el-button>
+                </div>
             </div>
-        </el-form>
-        <div slot="footer" class="dialog-footer mgT24">
-            <el-button @click="goback">返回</el-button>
-            <el-button type="primary" @click="submit">确 定</el-button>
         </div>
     </div>
 </template>
@@ -147,6 +151,19 @@ export default {
 
 <style lang="less">
 .news-detail {
+    height: calc(100% - 40px);
+    .news-edit {
+        display: flex;
+        height: 100%;
+        .RichTextBox {
+            margin-right: 25px;
+            height: 100%;
+            flex: 1;
+        }
+        .form {
+            width: 400px;
+        }
+    }
     .el-form-item {
         z-index: 100000;
     }

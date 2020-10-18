@@ -4,26 +4,26 @@
             <el-button type="primary" @click="addNews">新增</el-button>
         </div>
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="序号" />
-            <el-table-column prop="title" label="新闻标题" />
-            <el-table-column prop="institution" label="发布机构" />
-            <el-table-column prop="author" label="作者" />
-            <el-table-column prop="publishTime" label="发布时间">
+            <el-table-column prop="title" label="新闻标题" align="center" />
+            <el-table-column prop="id" label="新闻编码" align="center" width="100" />
+            <el-table-column prop="author" label="作者" align="center" width="100" />
+            <el-table-column prop="institution" label="发布机构" align="center" width="100" />
+            <el-table-column prop="publishTime" label="发布时间" align="center" width="180">
                 <template slot-scope="{ row }">
                     <span>{{ row.publishTime | formaData }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="发布状态">
+            <el-table-column label="发布状态" align="center" width="100">
                 <template slot-scope="{ row }">
                     <span>{{ row.status === 1 ? "发布" : "待发布" }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="是否置顶">
+            <el-table-column label="是否置顶" align="center" width="100">
                 <template slot-scope="{ row }">
                     <span>{{ row.topFlg === 1 ? "置顶" : "-" }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="220">
+            <el-table-column label="操作" fixed="right" width="300" align="center">
                 <template slot-scope="{ row }">
                     <el-button type="text" v-if="row.status !== 1" @click="editNews(row.id)">
                         编辑
@@ -39,6 +39,9 @@
                     </el-button>
                     <el-button type="text" v-if="row.status === 1" @click="News(row.id, 'put', 'settop')">
                         置顶
+                    </el-button>
+                    <el-button type="text" v-if="row.topFlg === 1" @click="News(row.id, 'put', 'settop')">
+                        取消置顶
                     </el-button>
                     <el-button type="text" @click="comment(row.id)">
                         处理评论
