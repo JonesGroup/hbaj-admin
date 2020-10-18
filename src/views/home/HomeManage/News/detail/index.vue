@@ -1,7 +1,7 @@
 <template>
     <div class="news_detail">
         <div class="news_content" v-loading="loading">
-            <div class="detail">
+            <div class="detail" v-if="isshowNewsDetail">
                 <div class="title">
                     <p class="ellipsisLineTwo">
                         {{ data.title }}
@@ -41,6 +41,11 @@ export default {
     },
     components: {
         Comment
+    },
+    computed: {
+        isshowNewsDetail() {
+            return this.$route.params.type === "NEWS";
+        }
     },
     watch: {
         $route: function() {

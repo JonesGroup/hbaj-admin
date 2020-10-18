@@ -43,7 +43,7 @@
                     <el-button type="text" v-if="row.topFlg === 1" @click="News(row.id, 'put', 'settop')">
                         取消置顶
                     </el-button>
-                    <el-button type="text" @click="comment(row.id)">
+                    <el-button type="text" @click="comment(row)">
                         处理评论
                     </el-button>
                 </template>
@@ -149,9 +149,10 @@ export default {
                 "refreshAll"
             ).then(res => {});
         },
-        comment(id = "1") {
+        comment(data) {
+            this.$store.commit("SET_TIPS", `对"${data.title}"新闻评论处理`);
             this.$router.push({
-                path: `./news/comment/${id}`
+                path: `./news/comment/NEWS/${data.id}`
             });
         },
         backout() {

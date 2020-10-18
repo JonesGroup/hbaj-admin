@@ -112,7 +112,7 @@
                     <el-button type="text" v-if="[0].indexOf(row.status) !== -1" @click="del(row.id)">
                         删除
                     </el-button>
-                    <el-button type="text" @click="comment(row.id)">
+                    <el-button type="text" @click="comment(row)">
                         处理评论
                     </el-button>
                 </template>
@@ -237,8 +237,11 @@ export default {
             this.$store.commit("SET_TIPS", `管理"${data.name}"课件详情`);
             this.$router.push(`./courseDetail/${id}`);
         },
-        comment(id) {
-            console.log(id);
+        comment(data) {
+            this.$store.commit("SET_TIPS", `对"${data.name}"课件的评论处理`);
+            this.$router.push({
+                path: `/home/homeManage/news/comment/PROJECT/${data.id}`
+            });
         },
         verify(data) {
             this.id = "";

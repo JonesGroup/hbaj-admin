@@ -19,6 +19,14 @@ export default {
     components: {
         CommentItem
     },
+    computed: {
+        isshowNewsDetail() {
+            return this.$route.params.type === "news";
+        },
+        type() {
+            return this.$route.params.type;
+        }
+    },
     methods: {
         getComment() {
             this.loading = true;
@@ -29,7 +37,7 @@ export default {
                     page: 1,
                     size: 10000,
                     relatedId: id,
-                    type: "NEWS"
+                    type: this.type
                 }
             }).then(res => {
                 if (res.suceeded) {

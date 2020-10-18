@@ -16,7 +16,7 @@ const router = [
         component: () => import("@/views/home/HomeManage/News/index.vue")
     },
     {
-        path: "news/comment/:id", // 这2个会有冲突-顺序换动
+        path: "news/comment/:type/:id", // 这2个会有冲突-顺序换动
         name: "News",
         meta: {
             title: "新闻资讯-处理评论",

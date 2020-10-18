@@ -10,6 +10,9 @@
                     <el-button type="text">
                         查看
                     </el-button>
+                    <el-button type="text" @click="comment(row)">
+                        处理评论
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -46,6 +49,12 @@ export default {
                         }
                     });
                 }
+            });
+        },
+        comment(data) {
+            this.$store.commit("SET_TIPS", `对"${data.title}"技术点的评论处理`);
+            this.$router.push({
+                path: `/home/homeManage/news/comment/HOTSPOT/${data.id}`
             });
         }
     },
