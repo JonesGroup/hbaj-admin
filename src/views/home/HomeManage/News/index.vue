@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { newsAdmin, newsAdminDetail } from "@/model/api";
+import { newsAdmin, newsAdminDetail, home } from "@/model/api";
 export default {
     data() {
         return {
@@ -102,11 +102,13 @@ export default {
             this.getList();
         },
         addNews() {
+            this.$store.commit("SET_TIPS", "新增新闻内容");
             this.$router.push({
                 path: "./news/create"
             });
         },
         editNews(id) {
+            this.$store.commit("SET_TIPS", "更新新闻内容");
             this.$router.push({
                 path: `./news/update/${id}`
             });
@@ -135,6 +137,17 @@ export default {
         },
         News(newsId, type, url) {
             this.handler(newsId, type, url);
+            if (url === "settop") {
+                this.refreshAll();
+            }
+        },
+        refreshAll() {
+            home(
+                {
+                    type: "get"
+                },
+                "refreshAll"
+            ).then(res => {});
         },
         comment(id = "1") {
             this.$router.push({

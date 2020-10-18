@@ -42,7 +42,7 @@ const router = [
         path: "course",
         name: "Course",
         meta: {
-            title: "公众课件"
+            title: "推荐课件"
         },
         component: () => import("@/views/home/HomeManage/Course/index.vue")
     },

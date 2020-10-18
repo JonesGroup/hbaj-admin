@@ -68,5 +68,6 @@ router.afterEach(to => {
 new Vue({
     el: "#app",
     router,
+    store,
     render: h => h(Application)
 });

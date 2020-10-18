@@ -6,6 +6,7 @@
         </div>
         <div class="top">
             <div class="back"><el-button type="text" @click="goBack" v-if="isBack">返回上一页</el-button></div>
+            <div class="tips" style="color:#409EFF;font-size:14px;" v-if="tips && isBack">{{ tips }}</div>
             <div class="header-operate">
                 <div class="search">
                     <i class="iconfont iconsousuo"></i>
@@ -49,6 +50,9 @@ export default {
     computed: {
         isBack: function() {
             return this.$route.meta.isBack ? this.$route.meta.isBack : false;
+        },
+        tips: function() {
+            return this.$store.state.tipsStore.tips;
         }
     },
     methods: {

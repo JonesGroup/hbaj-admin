@@ -1,16 +1,17 @@
 <template>
     <div class="main mgT24">
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="序号" />
-            <el-table-column prop="name" label="船名" />
-            <el-table-column prop="detail" label="船舶简介" />
-            <el-table-column label="操作" fixed="right" width="220">
+            <el-table-column prop="name" label="船名" width="150" align="center" />
+            <el-table-column prop="id" label="船舶编码" width="100" align="center" />
+
+            <el-table-column prop="detail" label="船舶简介" align="center" />
+            <el-table-column label="操作" fixed="right" width="300" align="center">
                 <template slot-scope="{ row }">
-                    <el-button type="text" @click="toShipDetail(row.id)">
-                        查看资源
+                    <el-button type="text" @click="toShipDetail(row.id, row)">
+                        查看场景资源
                     </el-button>
                     <el-button type="text" @click="editDetail(row)">
-                        编辑简介
+                        编辑船舶简介
                     </el-button>
                 </template>
             </el-table-column>
@@ -54,7 +55,8 @@ export default {
                 }
             });
         },
-        toShipDetail(id) {
+        toShipDetail(id, data) {
+            this.$store.commit("SET_TIPS", `查看${data.name}场景资源`);
             this.$router.push(`./shippDetail/${id}`);
         },
         editDetail(data) {

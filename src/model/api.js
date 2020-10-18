@@ -62,3 +62,5 @@ export const departmentDetail = (data, url) => request(`${baseUrl}/department/${
 export const projectModule = data => request(`${baseUrl}/projectModule`, data);
 
 export const projectClass = data => request(`${baseUrl}/projectClass`, data);
+
+export const sceneType = data => request(`${baseUrl}/sceneType`, data);

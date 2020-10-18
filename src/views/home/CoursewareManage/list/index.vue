@@ -79,7 +79,7 @@
                     <el-button type="text" v-if="row.publicFlg === 1" @click="handler(row.id, 'patch', 'unpublic')">
                         取消公开
                     </el-button>
-                    <el-button type="text" @click="toDetail(row.id)">
+                    <el-button type="text" @click="toDetail(row.id, row)">
                         查看
                     </el-button>
                     <el-button type="text" @click="editProject(row)">
@@ -207,7 +207,8 @@ export default {
             this.$set(this.pagination, p, v);
             this.getList();
         },
-        toDetail(id) {
+        toDetail(id, data) {
+            this.$store.commit("SET_TIPS", `管理"${data.name}"课件详情`);
             this.$router.push(`./courseDetail/${id}`);
         },
         handler(id, type, url) {

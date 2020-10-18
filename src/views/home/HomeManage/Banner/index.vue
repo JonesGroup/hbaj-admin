@@ -54,7 +54,7 @@
 
 <script>
 import AddBanner from "@/components/Dialog/AddBanner";
-import { appConst, appConstDetail } from "@/model/api";
+import { appConst, appConstDetail, home } from "@/model/api";
 export default {
     components: {
         AddBanner
@@ -95,6 +95,7 @@ export default {
                     this.pagination.page = currentPage;
                     this.pagination.page_size = pageSize;
                     this.tableData = content.map(item => ({ ...item, value: JSON.parse(item.value) }));
+                    this.refreshAll();
                 }
             });
         },
@@ -127,6 +128,14 @@ export default {
             ).then(res => {
                 this.getList();
             });
+        },
+        refreshAll() {
+            home(
+                {
+                    type: "get"
+                },
+                "refreshAll"
+            ).then(res => {});
         },
         up(arr, index) {
             if (arr.length > 1 && index !== 0) {

@@ -1,9 +1,9 @@
 <template>
     <div class="main mgT24">
         <el-table :data="tableData">
-            <el-table-column prop="id" label="序号" />
-            <el-table-column prop="name" label="应用名称" />
-            <el-table-column prop="desc" label="应用简介" />
+            <el-table-column prop="id" label="序号" width="100" align="center" />
+            <el-table-column prop="name" label="应用名称" width="150" align="center" />
+            <el-table-column prop="desc" label="应用简介" align="center" />
         </el-table>
     </div>
 </template>
