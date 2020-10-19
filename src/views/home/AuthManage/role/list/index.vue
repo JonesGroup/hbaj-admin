@@ -22,14 +22,17 @@
             </div>
         </div>
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="序号" align="center" width="100" />
             <el-table-column prop="name" label="角色名称" align="center" />
+            <el-table-column prop="id" label="角色编码" align="center" width="200" />
             <el-table-column label="操作" fixed="right" width="220" align="center">
                 <template slot-scope="{ row }">
                     <el-button type="text" @click="toDetail(row)">
                         查看
                     </el-button>
                     <el-button type="text" @click="editRole(row)">
+                        编辑
+                    </el-button>
+                    <el-button type="text" @click="delRole(row)">
                         编辑
                     </el-button>
                 </template>
@@ -98,6 +101,19 @@ export default {
         },
         addRole() {
             this.isOpenAddRole = true;
+        },
+        delRole(data) {
+            roleDetail(
+                {
+                    type: "delete"
+                },
+                data.id
+            ).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("删除成功");
+                    this.getList();
+                }
+            });
         },
         setPagination(p, v) {
             this.$set(this.pagination, p, v);

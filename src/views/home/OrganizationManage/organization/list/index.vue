@@ -4,14 +4,14 @@
             <el-button type="primary" @click="addDepartment">新增</el-button>
         </div>
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="name" label="部门名称" align="center" width="100" />
+            <el-table-column prop="name" label="部门名称" align="center" width="120" />
             <el-table-column prop="id" label="部门编码" align="center" width="100" />
 
             <el-table-column prop="managerName" label="部门负责人" align="center" width="100" />
-            <el-table-column prop="parentName" label="上级部门" align="center" width="100" />
-            <el-table-column label="操作" fixed="right" align="center">
+            <el-table-column prop="parentName" label="上级部门" align="center" />
+            <el-table-column label="操作" fixed="right" align="center" width="200">
                 <template slot-scope="{ row }">
-                    <el-button type="text" @click="toDetail(row.id)">
+                    <el-button type="text" @click="toDetail(row)">
                         查看
                     </el-button>
                     <el-button type="text" @click="edit(row)">
@@ -84,8 +84,9 @@ export default {
             this.$set(this.pagination, p, v);
             this.getList();
         },
-        toDetail(id) {
-            this.$router.push(`./detail/${id}`);
+        toDetail(data) {
+            this.$store.commit("SET_TIPS", `管理"${data.name}"部门人员`);
+            this.$router.push(`./detail/${data.id}`);
         },
         delDepartmentId(id) {
             departmentDetail(
@@ -103,6 +104,7 @@ export default {
             this.departmentId = "";
             this.departmentId = data.id;
             this.editData = data;
+
             this.isOpenAddDepartment = true;
         },
         addDepartment() {

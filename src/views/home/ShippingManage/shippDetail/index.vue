@@ -49,7 +49,7 @@
             :page-size="pagination.page_size"
             :total="pagination.total"
         />
-        <EditScene :sceneId="sceneId" :editData="editSceneData" :visible.sync="isOpenEditScene" />
+        <EditScene :sceneId="sceneId" :editData="editSceneData" :visible.sync="isOpenEditScene" :onSuccess="getList" />
         <SceneDialog :visible.sync="isOpenSceneDialog" />
     </div>
 </template>

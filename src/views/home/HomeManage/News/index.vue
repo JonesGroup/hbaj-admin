@@ -4,6 +4,11 @@
             <el-button type="primary" @click="addNews">新增</el-button>
         </div>
         <el-table :data="tableData" v-loading="loading">
+            <el-table-column label="新闻封面" align="center" width="140">
+                <template slot-scope="{ row }" v-if="row && row.imageUrl">
+                    <img :src="globalConfig.imagePath + row.imageUrl" alt="" width="140" />
+                </template>
+            </el-table-column>
             <el-table-column prop="title" label="新闻标题" align="center" />
             <el-table-column prop="id" label="新闻编码" align="center" width="100" />
             <el-table-column prop="author" label="作者" align="center" width="100" />

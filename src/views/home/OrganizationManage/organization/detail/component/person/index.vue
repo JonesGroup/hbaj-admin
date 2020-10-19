@@ -1,19 +1,19 @@
 <template>
     <div class="main mgT24">
-        <div class="operate mgB24">
+        <div class="operate mgB24 fr">
             <el-button type="primary" @click="addBanner">导入</el-button>
         </div>
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column prop="id" label="ID" />
-            <el-table-column prop="userSgname" label="用户名" />
+            <el-table-column prop="id" label="ID" width="100" align="center" />
+            <el-table-column prop="userSgname" label="用户名" width="100" align="center" />
             <!-- <el-table-column prop="detail" label="密码" /> -->
-            <el-table-column prop="userEmail" label="电子邮件" />
-            <el-table-column prop="userDescription" label="个人简介" />
-            <el-table-column label="头像" width="220">
+            <el-table-column prop="userEmail" label="电子邮件" width="180" align="center" />
+            <el-table-column prop="userDescription" label="个人简介" align="center" />
+            <!-- <el-table-column label="头像" width="220">
                 <template slot-scope="{ row }">
                     <img src="" alt="" />
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column label="操作" fixed="right" width="320">
                 <template slot-scope="{ row }">
                     <el-button type="text" @click="viewMessage(row)">

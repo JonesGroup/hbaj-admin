@@ -1,8 +1,8 @@
 <template>
     <header>
         <div class="logo">
-            <img src="../../images/logo.png" alt="" width="33" />
-            <span>海宝安检</span>
+            <img src="../../images/logo-2.jpg" alt="" height="38" />
+            <!-- <span>海宝安检</span> -->
         </div>
         <div class="top">
             <div class="back"><el-button type="text" @click="goBack" v-if="isBack">返回上一页</el-button></div>
