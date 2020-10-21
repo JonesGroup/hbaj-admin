@@ -27,7 +27,7 @@
 
 <script>
 import AddPerson from "@/components/Dialog/AddPerson";
-import { projectDetail } from "@/model/api";
+import { projectDetail, task } from "@/model/api";
 export default {
     components: {
         AddPerson
@@ -36,7 +36,8 @@ export default {
         return {
             isOpenAddPerson: false,
             loading: false,
-            tableData: []
+            tableData: [],
+            detailInfo: {} // 课件详情数据
         };
     },
     methods: {
@@ -52,6 +53,7 @@ export default {
                 if (res.suceeded) {
                     this.loading = false;
                     this.tableData = res.data.userList || [];
+                    this.detailInfo = res.data;
                 }
             });
         },
@@ -73,18 +75,46 @@ export default {
         },
         onSuccess(list) {
             const projectId = this.$route.params.id;
+            const userIds = list.map(item => item.userId);
             projectDetail(
                 {
                     type: "post",
                     data: {
-                        userIds: list.map(item => item.userId)
+                        userIds
                     }
                 },
                 `${projectId}/user`
             ).then(res => {
                 if (res.suceeded) {
-                    this.$message.success("操作成功");
                     this.getList();
+                    this.dispatchTask(userIds);
+                }
+            });
+        },
+        dispatchTask(userIds) {
+            const { blockId, createBy, currentFlg, status, name, createTime } = this.detailInfo;
+            const projectId = this.$route.params.id;
+            const data = {
+                blockId, //模块ID
+                createBy, //管理员ID
+                currentFlg,
+                detail: `${name}课件制作`, //项目名称+课件制作
+                expireDate: createTime + 30 * 24 * 60 * 60 * 1000, //当前日期加30天
+                name: `${name}课件制作`, //项目名称+课件制作
+                projectId, //项目ID
+                startDate: createTime, //当前日期
+                type: "PROJECT_MODIFY", // PROJECT_MODIFY
+                userIds
+            };
+
+            task({
+                type: "post",
+                data
+            }).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("操作成功");
+                } else {
+                    res.message && this.$message.error(res.message);
                 }
             });
         }

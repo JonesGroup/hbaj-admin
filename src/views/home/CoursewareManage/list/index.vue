@@ -13,7 +13,7 @@
                         豪华邮轮
                     </el-radio-button>
                     <el-radio-button :label="27" type="primary">
-                        CIC专项船
+                        CIC2019专项船
                     </el-radio-button>
                 </el-radio-group>
             </div>

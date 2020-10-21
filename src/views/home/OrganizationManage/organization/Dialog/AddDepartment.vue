@@ -4,7 +4,7 @@
             <el-form-item label="部门名称" prop="name">
                 <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="部门负责人" :rules="{ message: '请选择', required: true }" prop="managerName">
+            <el-form-item label="部门负责人" prop="managerName">
                 <el-input v-model="form.managerName" placeholder="请选择部门负责人" readonly @focus="openSelectUser"></el-input>
             </el-form-item>
             <el-form-item label="上级部门" prop="parentId">

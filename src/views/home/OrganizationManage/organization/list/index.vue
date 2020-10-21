@@ -8,7 +8,13 @@
             <el-table-column prop="id" label="部门编码" align="center" width="100" />
 
             <el-table-column prop="managerName" label="部门负责人" align="center" width="100" />
+            <el-table-column label="部门人数" align="center" width="200">
+                <template slot-scope="{ row }">
+                    <span>{{ row.userList.length }}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="parentName" label="上级部门" align="center" />
+
             <el-table-column label="操作" fixed="right" align="center" width="200">
                 <template slot-scope="{ row }">
                     <el-button type="text" @click="toDetail(row)">
@@ -17,7 +23,7 @@
                     <el-button type="text" @click="edit(row)">
                         编辑
                     </el-button>
-                    <el-button type="text" @click="delDepartmentId(row.id)">
+                    <el-button type="text" @click="delDepartmentId(row)">
                         删除
                     </el-button>
                 </template>
@@ -88,17 +94,26 @@ export default {
             this.$store.commit("SET_TIPS", `管理"${data.name}"部门人员`);
             this.$router.push(`./detail/${data.id}`);
         },
-        delDepartmentId(id) {
-            departmentDetail(
-                {
-                    type: "delete"
-                },
-                id
-            ).then(res => {
-                if (res.suceeded) {
-                    this.getList();
-                }
-            });
+        delDepartmentId(data) {
+            this.$confirm(`此操作将删除${data.name}, 是否继续?`, "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+                .then(() => {
+                    departmentDetail(
+                        {
+                            type: "delete"
+                        },
+                        data.id
+                    ).then(res => {
+                        if (res.suceeded) {
+                            this.$message.success("删除成功");
+                            this.getList();
+                        }
+                    });
+                })
+                .catch(() => {});
         },
         edit(data) {
             this.departmentId = "";

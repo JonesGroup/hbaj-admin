@@ -1,6 +1,6 @@
 <template>
     <el-dialog title="查看任务" :visible="visible" width="70%" @open="open" @close="close">
-        <el-table :data="tableData" v-loading="loading">
+        <el-table :data="tableData" v-loading="loading" height="450">
             <el-table-column prop="id" label="任务Id" />
             <el-table-column prop="name" label="任务名" />
             <el-table-column label="任务开始时间">

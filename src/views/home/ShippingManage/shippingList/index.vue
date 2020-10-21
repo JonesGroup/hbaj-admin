@@ -1,6 +1,11 @@
 <template>
     <div class="main mgT24">
         <el-table :data="tableData" v-loading="loading">
+            <el-table-column label="封面" align="center" width="180">
+                <template slot-scope="{ row }">
+                    <img :src="`${imagePath['img' + row.id]}`" alt="" height="100" />
+                </template>
+            </el-table-column>
             <el-table-column prop="name" label="船名" width="150" align="center" />
             <el-table-column prop="id" label="船舶编码" width="100" align="center" />
 
@@ -23,6 +28,9 @@
 <script>
 import { block } from "@/model/api";
 import EditShopList from "./Dialog/editShopList.vue";
+import img24 from "../../HomeManage/images/block24.jpg";
+import img25 from "../../HomeManage/images/block25.jpg";
+import img27 from "../../HomeManage/images/block27.jpg";
 export default {
     data() {
         return {
@@ -30,7 +38,12 @@ export default {
             loading: false,
             isOpenEditShopList: false,
             detail: "",
-            blockId: ""
+            blockId: "",
+            imagePath: {
+                img24,
+                img25,
+                img27
+            }
         };
     },
     components: {

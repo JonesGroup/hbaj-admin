@@ -24,6 +24,11 @@
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="name" label="角色名称" align="center" />
             <el-table-column prop="id" label="角色编码" align="center" width="200" />
+            <el-table-column label="用户数量" align="center" width="200">
+                <template slot-scope="{ row }">
+                    {{ row.userList.length }}
+                </template>
+            </el-table-column>
             <el-table-column label="操作" fixed="right" width="220" align="center">
                 <template slot-scope="{ row }">
                     <el-button type="text" @click="toDetail(row)">
@@ -33,7 +38,7 @@
                         编辑
                     </el-button>
                     <el-button type="text" @click="delRole(row)">
-                        编辑
+                        删除
                     </el-button>
                 </template>
             </el-table-column>
@@ -103,17 +108,30 @@ export default {
             this.isOpenAddRole = true;
         },
         delRole(data) {
-            roleDetail(
-                {
-                    type: "delete"
-                },
-                data.id
-            ).then(res => {
-                if (res.suceeded) {
-                    this.$message.success("删除成功");
-                    this.getList();
-                }
-            });
+            this.$confirm(`此操作将删除${data.name}, 是否继续?`, "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+                .then(() => {
+                    roleDetail(
+                        {
+                            type: "delete"
+                        },
+                        data.id
+                    ).then(res => {
+                        if (res.suceeded) {
+                            this.$message.success("删除成功");
+                            this.getList();
+                        }
+                    });
+                })
+                .catch(() => {
+                    this.$message({
+                        type: "info",
+                        message: "已取消删除"
+                    });
+                });
         },
         setPagination(p, v) {
             this.$set(this.pagination, p, v);

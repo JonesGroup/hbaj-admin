@@ -47,7 +47,7 @@ export default {
                     id: "24"
                 },
                 {
-                    name: "CIC专项船",
+                    name: "CIC2019专项船",
                     id: "27"
                 }
             ]

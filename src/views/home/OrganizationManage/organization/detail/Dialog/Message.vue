@@ -1,6 +1,6 @@
 <template>
     <el-dialog title="查看消息" :visible="visible" width="70%" @open="open" @close="close">
-        <el-table :data="tableData" v-loading="loading">
+        <el-table :data="tableData" v-loading="loading" height="450">
             <el-table-column prop="id" label="Id" />
             <el-table-column prop="title" label="消息标题" />
             <el-table-column prop="content" label="详细内容" />
