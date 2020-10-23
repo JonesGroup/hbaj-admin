@@ -1,5 +1,5 @@
 <template>
-    <div class="main mgT24">
+    <div class="main mgT24 coursesare-manage-list">
         <div
             style="display: flex;
     justify-content: space-between;"
@@ -44,19 +44,19 @@
             </el-form>
         </div>
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column label="课件封面" align="center" width="140">
+            <el-table-column label="课件封面" align="center" width="140" :key="Math.random()">
                 <template slot-scope="{ row }">
                     <img :src="globalConfig.imagePath + row.imageUrl" alt="" height="100" />
                 </template>
             </el-table-column>
-            <el-table-column prop="name" label="课件名称" align="center" />
-            <el-table-column prop="id" label="课件编码" align="center" width="100" />
+            <el-table-column prop="name" label="课件名称" align="center" :key="Math.random()" />
+            <el-table-column prop="id" label="课件编码" align="center" width="100" :key="Math.random()" />
             <el-table-column label="课件索引" align="center">
                 <template slot-scope="{ row }">
                     <span>{{ `${row.blockName}-${row.moduleName}-${row.className}` }}</span>
                 </template>
             </el-table-column>
-            <el-table-column prop="detail" label="课件详情" align="center">
+            <el-table-column prop="detail" label="课件详情" align="center" :key="Math.random()">
                 <template slot-scope="{ row }" v-if="row && row.detail">
                     <el-popover placement="top-start" title="" width="250" trigger="hover" :content="row.detail">
                         <div class="ellipsisLineTwo" slot="reference">
@@ -65,17 +65,17 @@
                     </el-popover>
                 </template>
             </el-table-column>
-            <el-table-column label="发布时间" align="center" width="180">
+            <el-table-column label="发布时间" align="center" width="180" :key="Math.random()">
                 <template slot-scope="{ row }">
                     <span>{{ row.publishDate | formaData }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="状态" align="center" width="100">
+            <el-table-column label="状态" align="center" width="100" :key="Math.random()">
                 <template slot-scope="{ row }">
                     <span>{{ transformText(row.status) }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="是否公开" align="center" width="100">
+            <el-table-column label="是否公开" align="center" width="100" :key="Math.random()">
                 <template slot-scope="{ row }">
                     <span>{{ row.publicFlg === 1 ? "公开" : "非公开" }}</span>
                 </template>
@@ -345,3 +345,14 @@ export default {
     }
 };
 </script>
+
+<style lang="less">
+.coursesare-manage-list {
+    table {
+        .el-table__row {
+            height: 125px !important;
+            overflow: hidden;
+        }
+    }
+}
+</style>

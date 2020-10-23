@@ -1,24 +1,24 @@
 <template>
-    <div class="main mgT24">
+    <div class="main mgT24 course-list-content">
         <el-table :data="tableData" v-loading="loading">
-            <el-table-column label="课件封面" width="140" align="center">
+            <el-table-column label="课件封面" width="140" align="center" :key="Math.random()">
                 <template slot-scope="{ row }" v-if="row.rel && row.rel.imageUrl">
                     <img :src="globalConfig.imagePath + row.rel.imageUrl" alt="" height="100" />
                 </template>
             </el-table-column>
-            <el-table-column label="课件标题" align="center">
+            <el-table-column label="课件标题" align="center" :key="Math.random()">
                 <template slot-scope="{ row }" v-if="row.rel && row.rel.name">
                     <span>{{ row.rel.name }}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column label="课件索引" align="center">
+            <el-table-column label="课件索引" align="center" :key="Math.random()">
                 <template slot-scope="{ row }" v-if="row.rel">
                     <span>{{ `${row.rel.blockName}-${row.rel.moduleName}-${row.rel.className}-编码${row.rel.id}` }}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column label="课件简介" align="center">
+            <el-table-column label="课件简介" align="center" :key="Math.random()">
                 <template slot-scope="{ row }" v-if="row.rel && row.rel.detail">
                     <el-popover placement="top-start" title="" width="250" trigger="hover" :content="row.rel.detail">
                         <div class="ellipsisLineTwo" slot="reference">
@@ -27,7 +27,7 @@
                     </el-popover>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="220" align="center">
+            <el-table-column label="操作" fixed="right" width="220" align="center" :key="Math.random()">
                 <template slot-scope="scope">
                     <el-button type="text" @click="downshelf(scope.row.id)">
                         撤销
@@ -129,3 +129,14 @@ export default {
     }
 };
 </script>
+
+<style lang="less">
+.course-list-content {
+    table {
+        .el-table__row {
+            height: 125px !important;
+            overflow: hidden;
+        }
+    }
+}
+</style>
