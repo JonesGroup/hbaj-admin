@@ -137,12 +137,12 @@ export default {
     height: 100%;
     .w-e-text-container {
         height: 100% !important;
-        z-index: 1000 !important;
+        // z-index: 1000 !important;
     }
     .w-e-toolbar {
         .w-e-menu {
             &[style] {
-                z-index: 1000 !important;
+                // z-index: 1000 !important;
             }
         }
     }

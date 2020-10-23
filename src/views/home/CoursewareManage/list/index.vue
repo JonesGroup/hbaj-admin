@@ -80,7 +80,7 @@
                     <span>{{ row.publicFlg === 1 ? "公开" : "非公开" }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="220" align="center">
+            <el-table-column label="操作" fixed="right" width="220" align="center" :key="Math.random()">
                 <template slot-scope="{ row }">
                     <el-button type="text" v-if="[1].indexOf(row.status) !== -1" @click="handler(row.id, 'PATCH', 'submitVerify')">
                         提交审核
