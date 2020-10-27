@@ -107,8 +107,6 @@ export default {
     },
     methods: {
         close() {
-            this.staticPath = "";
-            this.$refs.form.resetFields();
             this.$emit("update:visible", false);
         },
         open() {
@@ -170,6 +168,8 @@ export default {
                         if (res.suceeded) {
                             this.addPerson(res.data.id);
                             this.onSuccess && this.onSuccess();
+                            this.staticPath = "";
+                            this.$refs.form.resetFields();
                             this.close();
                         }
                     });

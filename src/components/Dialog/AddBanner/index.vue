@@ -80,7 +80,6 @@ export default {
     },
     methods: {
         close() {
-            this.$refs.form.resetFields();
             this.$emit("update:visible", false);
         },
         open() {
@@ -110,6 +109,7 @@ export default {
                         if (res.suceeded) {
                             this.$message.success("新增成功");
                             this.onSuccess && this.onSuccess();
+                            this.$refs.form.resetFields();
                             this.close();
                         }
                     });

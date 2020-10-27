@@ -79,7 +79,6 @@ export default {
             this.form.managerId = list[0].userId;
         },
         close() {
-            this.$refs.form.resetFields();
             this.$emit("update:visible", false);
         },
         open() {
@@ -113,6 +112,7 @@ export default {
                     }).then(res => {
                         this.$message.success("操作成功");
                         this.onSuccess && this.onSuccess();
+                        this.$refs.form.resetFields();
                         this.close();
                     });
                 }
