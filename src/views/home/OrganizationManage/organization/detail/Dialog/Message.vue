@@ -1,25 +1,25 @@
 <template>
     <el-dialog title="查看消息" :visible="visible" width="70%" @open="open" @close="close">
         <el-table :data="tableData" v-loading="loading" height="450">
-            <el-table-column prop="id" label="Id" />
-            <el-table-column prop="title" label="消息标题" />
+            <el-table-column prop="id" label="Id" width="70" align="center" />
+            <el-table-column prop="title" label="消息标题" width="200" align="center" />
             <el-table-column prop="content" label="详细内容" />
-            <el-table-column label="消息状态">
+            <el-table-column label="消息状态" width="100" align="center">
                 <template slot-scope="{ row }">
                     {{ row.status === 0 ? "未读" : "已读" }}
                 </template>
             </el-table-column>
-            <el-table-column label="消息类别">
+            <el-table-column label="消息类别" width="100" align="center">
                 <template slot-scope="{ row }">
                     {{ row.messageType | formMessageText }}
                 </template>
             </el-table-column>
-            <el-table-column label="创建时间">
+            <el-table-column label="创建时间" width="180" align="center">
                 <template slot-scope="{ row }">
                     {{ row.createTime | formaData }}
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="220">
+            <el-table-column label="操作" fixed="right" width="50">
                 <template slot-scope="{ row }">
                     <el-button type="text" @click="del(row.id)">
                         删除

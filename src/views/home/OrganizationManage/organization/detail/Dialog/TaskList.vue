@@ -1,25 +1,25 @@
 <template>
     <el-dialog title="查看任务" :visible="visible" width="70%" @open="open" @close="close">
         <el-table :data="tableData" v-loading="loading" height="450">
-            <el-table-column prop="id" label="任务Id" />
-            <el-table-column prop="name" label="任务名" />
-            <el-table-column label="任务开始时间">
+            <el-table-column prop="id" label="任务Id" width="70" align="center" />
+            <el-table-column prop="name" label="任务名" width="200" align="center" />
+            <el-table-column label="任务开始时间" width="180" align="center">
                 <template slot-scope="{ row }">
                     {{ row.startDate | formaData }}
                 </template>
             </el-table-column>
-            <el-table-column label="任务结束时间">
+            <el-table-column label="任务结束时间" width="180" align="center">
                 <template slot-scope="{ row }">
                     {{ row.expireDate | formaData }}
                 </template>
             </el-table-column>
-            <el-table-column label="类别" prop="type" />
-            <el-table-column label="状态">
+            <el-table-column label="类别" prop="type" width="180" align="center" />
+            <el-table-column label="状态" width="100" align="center">
                 <template slot-scope="{ row }">
                     {{ row.status | formTaskText }}
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="220">
+            <el-table-column label="操作" fixed="right" width="50" align="center">
                 <template slot-scope="{ row }">
                     <el-button type="text" @click="del(row.id)">
                         删除

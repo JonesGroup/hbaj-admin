@@ -65,9 +65,9 @@
                     </el-popover>
                 </template>
             </el-table-column>
-            <el-table-column label="发布时间" align="center" width="180" :key="Math.random()">
+            <el-table-column label="更新时间" align="center" width="180" :key="Math.random()">
                 <template slot-scope="{ row }">
-                    <span>{{ row.publishDate | formaData }}</span>
+                    <span>{{ row.updateTime | formaData }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="状态" align="center" width="100" :key="Math.random()">
@@ -101,10 +101,10 @@
                         取消公开
                     </el-button>
                     <el-button type="text" @click="toDetail(row.id, row)">
-                        查看
+                        查看详情
                     </el-button>
                     <el-button type="text" @click="editProject(row)">
-                        编辑
+                        编辑简介
                     </el-button>
                     <!-- <el-button type="text" v-if="[0].indexOf(row.status) !== -1" @click="dispathTask(row)">
                         下发任务
@@ -114,6 +114,9 @@
                     </el-button>
                     <el-button type="text" @click="comment(row)">
                         处理评论
+                    </el-button>
+                    <el-button type="text" @click="recommend(row)" v-if="row.publicFlg !== 1 && [5].indexOf(row.status) !== -1">
+                        首页推荐
                     </el-button>
                 </template>
             </el-table-column>
@@ -133,7 +136,7 @@
 </template>
 
 <script>
-import { project, projectDetail, projectModule, projectClass } from "@/model/api";
+import { project, projectDetail, projectModule, projectClass, appConst, home } from "@/model/api";
 import AddProject from "./Dialog/AddProject";
 import Verify from "./Dialog/Verify";
 export default {
@@ -337,6 +340,28 @@ export default {
             this.projectId = data.id;
             this.editData = data;
             this.isOpenAddProject = true;
+        },
+        recommend(row) {
+            appConst({
+                type: "post",
+                data: {
+                    detail: "首页推荐",
+                    name: "HOME_RECOMMEND_PROJECT",
+                    value: row.id
+                }
+            }).then(res => {
+                if (res.suceeded) {
+                    this.refreshAll();
+                }
+            });
+        },
+        refreshAll() {
+            home(
+                {
+                    type: "get"
+                },
+                "refreshAll"
+            ).then(res => {});
         }
     },
     created() {

@@ -25,7 +25,7 @@
                     <el-button type="text" @click="editPerson(row)">
                         修改
                     </el-button>
-                    <el-button type="text">
+                    <el-button type="text" @click="delPerson(row)">
                         删除
                     </el-button>
                     <el-button type="text">
@@ -100,6 +100,39 @@ export default {
             this.userId = data.userId;
             this.editData = data;
             this.isOpenEditPerson = true;
+        },
+        delPerson(data) {
+            const id = this.$route.params.id;
+            const userId = data.userId;
+            this.$confirm(`此操作将删除${data.userSgname}, 是否继续?`, "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+                .then(() => {
+                    departmentDetail(
+                        {
+                            type: "post",
+                            data: {
+                                departmentId: 40,
+                                enterpriseId: 1,
+                                userIds: [userId]
+                            }
+                        },
+                        `${id}/user`
+                    ).then(res => {
+                        if (res.suceeded) {
+                            this.$message.success("操作成功");
+                            this.getList();
+                        }
+                    });
+                })
+                .catch(() => {
+                    this.$message({
+                        type: "info",
+                        message: "已取消删除"
+                    });
+                });
         }
     },
     created() {

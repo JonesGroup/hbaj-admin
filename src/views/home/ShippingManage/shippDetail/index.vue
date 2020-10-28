@@ -130,7 +130,7 @@ export default {
         unpublic(id) {
             sceneDetail(
                 {
-                    type: "patch"
+                    type: "PATCH"
                 },
                 `${id}/unpublic`
             ).then(res => {
@@ -145,7 +145,7 @@ export default {
         publicScene(id) {
             sceneDetail(
                 {
-                    type: "patch"
+                    type: "PATCH"
                 },
                 `${id}/public`
             ).then(res => {

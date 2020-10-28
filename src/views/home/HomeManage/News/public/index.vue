@@ -103,6 +103,7 @@ export default {
             }).then(res => {
                 if (res.suceeded) {
                     this.$message.success("保存成功");
+                    this.goback();
                 }
             });
         },
@@ -120,6 +121,7 @@ export default {
             ).then(res => {
                 if (res.suceeded) {
                     this.$message.success("保存成功");
+                    this.goback();
                 }
             });
         },

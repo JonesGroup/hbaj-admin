@@ -1,11 +1,11 @@
 <template>
-    <el-dialog title="更新场景信息" :visible="visible" width="30%" @open="open" @close="close">
+    <el-dialog title="更新场景信息" :visible="visible" width="30%" @open="open" @close="close" class="dialog-width">
         <el-form ref="form" :model="form" label-width="80px" label-position="left">
             <el-form-item label="场景名称">
                 <el-input v-model="form.name"></el-input>
             </el-form-item>
             <el-form-item label="场景简介">
-                <el-input v-model="form.detail"></el-input>
+                <el-input v-model="form.detail" type="textarea" :rows="3" class="inputNoResize"></el-input>
             </el-form-item>
             <el-form-item label="locationX" :rules="{ type: 'number', message: '请输入数字' }">
                 <el-input v-model.number="form.locationX"></el-input>

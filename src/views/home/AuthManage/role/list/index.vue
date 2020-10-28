@@ -29,16 +29,16 @@
                     {{ row.userList.length }}
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="220" align="center">
+            <el-table-column label="操作" fixed="right" width="320" align="center">
                 <template slot-scope="{ row }">
                     <el-button type="text" @click="toDetail(row)">
-                        查看
+                        查看角色授权
                     </el-button>
                     <el-button type="text" @click="editRole(row)">
-                        编辑
+                        编辑角色名称
                     </el-button>
                     <el-button type="text" @click="delRole(row)">
-                        删除
+                        删除角色
                     </el-button>
                 </template>
             </el-table-column>

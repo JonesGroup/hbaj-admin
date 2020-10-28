@@ -7,24 +7,24 @@
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
-            <el-form-item label="课件名称" prop="name">
+            <el-form-item label="课件名称" prop="name" :rules="{ required: true, message: '必填' }">
                 <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="课件简介" prop="detail">
+            <el-form-item label="课件简介" prop="detail" :rules="{ required: true, message: '必填' }">
                 <el-input v-model="form.detail"></el-input>
             </el-form-item>
             <div class="func">
-                <el-form-item label="船舶选择" prop="blockId">
+                <el-form-item label="船舶选择" prop="blockId" :rules="{ required: true, message: '必选' }">
                     <el-select v-model="form.blockId" placeholder="请选择" @change="handleShipType">
                         <el-option :label="item.name" :value="item.id" v-for="item in shippList" :key="item.id"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="功能选择" prop="moduleId">
+                <el-form-item label="功能选择" prop="moduleId" :rules="{ required: true, message: '必选' }">
                     <el-select v-model="form.moduleId" placeholder="请选择" @change="changeFun">
                         <el-option :label="item.name" :value="item.id" v-for="item in funcList" :key="item.id"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="课件分类" prop="classId" class="classId">
+                <el-form-item label="课件分类" prop="classId" class="classId" :rules="{ required: true, message: '必选' }">
                     <el-select v-model="form.classId" placeholder="请选择">
                         <el-option :label="item.name" :value="item.id" v-for="item in moduleList" :key="item.id"></el-option>
                     </el-select>
@@ -72,7 +72,7 @@ export default {
     data() {
         return {
             form: {
-                imageUrl: "",
+                imageUrl: "/image/PROJECT_IMAGE_default.jpg",
                 moduleId: "",
                 classId: "",
                 blockId: "",
@@ -96,7 +96,7 @@ export default {
                     id: 27
                 }
             ],
-            staticPath: ""
+            staticPath: "/image/PROJECT_IMAGE_default.jpg"
         };
     },
     computed: {
