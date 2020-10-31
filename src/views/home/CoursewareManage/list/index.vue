@@ -115,7 +115,7 @@
                     <el-button type="text" @click="comment(row)">
                         处理评论
                     </el-button>
-                    <el-button type="text" @click="recommend(row)" v-if="row.publicFlg !== 1 && [5].indexOf(row.status) !== -1">
+                    <el-button type="text" @click="recommend(row)" v-if="row.publicFlg === 1 && [3].indexOf(row.status) !== -1">
                         首页推荐
                     </el-button>
                 </template>
