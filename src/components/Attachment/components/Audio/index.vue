@@ -1,26 +1,86 @@
 <template>
-    <div class="audio-contant">
-        <div class="title">
-            <p>{{ title || "此内容为空" }}</p>
-        </div>
-        <div class="audio" style="">
-            <audio id="audioPlayer" :src="globalConfig.imagePath + extra" controlsList="nodownload" controls="controls" ref="audio"></audio>
-        </div>
+    <div class="audio-contant" v-loading="loading">
+        <template v-if="info.title">
+            <div class="title">
+                <p>{{ info.title || "此内容为空" }}</p>
+            </div>
+            <div class="audio" style="">
+                <audio id="audioPlayer" :src="globalConfig.imagePath + info.extra" controlsList="nodownload" controls="controls" ref="audio"></audio>
+            </div>
 
-        <div class="desc">
-            <p>{{ content }}</p>
-        </div>
+            <div class="desc">
+                <p>{{ info.content }}</p>
+            </div>
+        </template>
+        <Empty v-else />
     </div>
 </template>
 
 <script>
+import { hotspotContent } from "@/model/api";
+import Empty from "@/components/Empty";
+
 export default {
+    components: {
+        Empty
+    },
     data() {
         return {
-            title: "测试标题",
-            extra: "/static/enterprise/280/hotspot/HOTSPOT_AUDIO_280_1603014259074_default.mp3",
-            content: "测试内容"
+            loading: false,
+            info: {
+                title: "",
+                extra: "",
+                content: ""
+            }
         };
+    },
+    props: {
+        hotspotId: {
+            type: [String, Number],
+            required: true
+        }
+    },
+    watch: {
+        // 切换的时候也需要更新
+        hotspotId: function(val) {
+            if (val) {
+                this.getList();
+            }
+        }
+    },
+    methods: {
+        getList() {
+            this.loading = true;
+            hotspotContent(
+                {
+                    type: "get",
+                    data: {
+                        hotspotId: this.hotspotId,
+                        type: "AUDIO",
+                        size: 1000,
+                        page: 1
+                    }
+                },
+                "all"
+            ).then(res => {
+                if (res.suceeded) {
+                    if (res.data.length) {
+                        const { title, extra, content } = res.data[0];
+                        this.info = { ...this.info, title, extra, content };
+                    } else {
+                        this.info.title = "";
+                        this.info.extra = "";
+                        this.info.content = "";
+                    }
+                    this.loading = false;
+                } else {
+                    this.loading = false;
+                }
+            });
+        }
+    },
+    mounted() {
+        this.getList();
     }
 };
 </script>

@@ -64,3 +64,5 @@ export const projectModule = data => request(`${baseUrl}/projectModule`, data);
 export const projectClass = data => request(`${baseUrl}/projectClass`, data);
 
 export const sceneType = data => request(`${baseUrl}/sceneType`, data);
+
+export const hotspotContent = (data, url) => request(`${baseUrl}/hotspotContent/${url}`, data);

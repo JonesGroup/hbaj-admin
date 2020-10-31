@@ -13,7 +13,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <Attachment :visible.sync="isOpenAttachment" :hotspotId="1" />
+        <Attachment :visible.sync="isOpenAttachment" :hotspotId="hotspotId" />
     </div>
 </template>
 
@@ -28,7 +28,8 @@ export default {
         return {
             isOpenAttachment: false,
             loading: false,
-            tableData: []
+            tableData: [],
+            hotspotId: ""
         };
     },
     methods: {
@@ -49,6 +50,7 @@ export default {
         },
         view(data) {
             this.isOpenAttachment = true;
+            this.hotspotId = data.id;
         }
     },
     created() {

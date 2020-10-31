@@ -1,33 +1,43 @@
 <template>
-    <div class="text-list-container">
-        <div class="text-list-item" v-for="(item, index) in list" :key="index">
-            <div class="text-header">
-                <div class="text-title">
-                    <span>{{ item.title }}</span>
+    <div class="text-list-container" v-loading="loading">
+        <template v-if="list.length">
+            <div class="text-list-item" v-for="(item, index) in list" :key="index">
+                <div class="text-header">
+                    <div class="text-title">
+                        <span>{{ item.title }}</span>
+                    </div>
+                    <div class="operate_btn">
+                        <div class="sort common">
+                            <i class="iconfont iconpaixu cursor"></i>
+                        </div>
+                        <div class="edit common">
+                            <i class="iconfont icontubiaoweb-07 cursor"></i>
+                        </div>
+                        <div class="del common">
+                            <i class="iconfont icontubiaoweb-27 cursor"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="operate_btn">
-                    <div class="sort common">
-                        <i class="iconfont iconpaixu cursor"></i>
-                    </div>
-                    <div class="edit common">
-                        <i class="iconfont icontubiaoweb-07 cursor"></i>
-                    </div>
-                    <div class="del common">
-                        <i class="iconfont icontubiaoweb-27 cursor"></i>
-                    </div>
+                <div class="text-body">
+                    <p>{{ item.content }}</p>
                 </div>
             </div>
-            <div class="text-body">
-                <p>{{ item.content }}</p>
-            </div>
-        </div>
+        </template>
+        <Empty v-else />
     </div>
 </template>
 <script>
+import { hotspotContent } from "@/model/api";
+import Empty from "@/components/Empty";
+
 export default {
+    components: {
+        Empty
+    },
     data() {
         return {
-            list: [{ title: "这是标题", content: "这是内容" }]
+            list: [],
+            loading: false
         };
     },
     props: {
@@ -36,7 +46,41 @@ export default {
             required: true
         }
     },
-    methods: {}
+    watch: {
+        // 切换的时候也需要更新
+        hotspotId: function(val) {
+            if (val) {
+                this.getList();
+            }
+        }
+    },
+    methods: {
+        getList() {
+            this.loading = true;
+            hotspotContent(
+                {
+                    type: "get",
+                    data: {
+                        hotspotId: this.hotspotId,
+                        type: "TEXT",
+                        size: 1000,
+                        page: 1
+                    }
+                },
+                "all"
+            ).then(res => {
+                if (res.suceeded) {
+                    this.list = res.data || [];
+                    this.loading = false;
+                } else {
+                    this.loading = false;
+                }
+            });
+        }
+    },
+    mounted() {
+        this.getList();
+    }
 };
 </script>
 <style lang="less" scoped>

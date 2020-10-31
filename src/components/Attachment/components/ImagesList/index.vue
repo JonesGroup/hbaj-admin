@@ -1,40 +1,50 @@
 <template>
-    <div class="images-list-containter">
-        <div class="images-list-item" v-for="(item, index) in list" :key="index">
-            <div class="images-header">
-                <div class="images-title">
-                    <span>{{ item.title }}</span>
+    <div class="images-list-containter" v-loading="loading">
+        <template v-if="list.length">
+            <div class="images-list-item" v-for="(item, index) in list" :key="index">
+                <div class="images-header">
+                    <div class="images-title">
+                        <span>{{ item.title }}</span>
+                    </div>
+                    <div class="operate_btn">
+                        <div class="sort common">
+                            <i class="iconfont iconpaixu cursor"></i>
+                        </div>
+                        <div class="edit common cursor">
+                            <i class="iconfont icontubiaoweb-07"></i>
+                        </div>
+                        <div class="del common cursor">
+                            <i class="iconfont icontubiaoweb-27"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="operate_btn">
-                    <div class="sort common">
-                        <i class="iconfont iconpaixu cursor"></i>
+                <div class="images-body">
+                    <div class="content-images">
+                        <p>{{ item.content }}</p>
                     </div>
-                    <div class="edit common cursor">
-                        <i class="iconfont icontubiaoweb-07"></i>
-                    </div>
-                    <div class="del common cursor">
-                        <i class="iconfont icontubiaoweb-27"></i>
+                    <div class="images" @click="showImages(item)">
+                        <el-image :src="globalConfig.imagePath + item.extra" :preview-src-list="[globalConfig.imagePath + item.extra]"> </el-image>
                     </div>
                 </div>
             </div>
-            <div class="images-body">
-                <div class="content-images">
-                    <p>{{ item.content }}</p>
-                </div>
-                <div class="images" @click="showImages(item)">
-                    <el-image :src="globalConfig.imagePath + item.extra" :preview-src-list="[globalConfig.imagePath + item.extra]"> </el-image>
-                </div>
-            </div>
-        </div>
+        </template>
+        <Empty v-else />
     </div>
 </template>
 
 <script>
+import { hotspotContent } from "@/model/api";
+import Empty from "@/components/Empty";
+
 export default {
+    components: {
+        Empty
+    },
     data() {
         return {
             show: false,
-            list: [{ title: "这是标题", content: "这是内容", extra: "/static/enterprise/249/project/PROJECT_IMAGE_249_1599723892351_default.jpg" }]
+            loading: false,
+            list: []
         };
     },
     props: {
@@ -43,10 +53,43 @@ export default {
             required: true
         }
     },
+    watch: {
+        // 切换的时候也需要更新
+        hotspotId: function(val) {
+            if (val) {
+                this.getList();
+            }
+        }
+    },
     methods: {
         showImages(data) {
             this.show = true;
+        },
+        getList() {
+            this.loading = true;
+            hotspotContent(
+                {
+                    type: "get",
+                    data: {
+                        hotspotId: this.hotspotId,
+                        type: "IMAGE",
+                        size: 1000,
+                        page: 1
+                    }
+                },
+                "all"
+            ).then(res => {
+                if (res.suceeded) {
+                    this.list = res.data || [];
+                    this.loading = false;
+                } else {
+                    this.loading = false;
+                }
+            });
         }
+    },
+    mounted() {
+        this.getList();
     }
 };
 </script>
