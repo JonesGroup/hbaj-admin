@@ -7,27 +7,26 @@
 
             <el-table-column label="操作" fixed="right" width="220" align="center">
                 <template slot-scope="{ row }">
-                    <el-button type="text">
+                    <el-button type="text" @click="view(row)">
                         查看
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
-
-        <AddBanner :visible.sync="isOpenAddBanner" />
+        <Attachment :visible.sync="isOpenAttachment" :hotspotId="1" />
     </div>
 </template>
 
 <script>
-import AddBanner from "@/components/Dialog/AddBanner";
+import Attachment from "@/components/Attachment";
 import { projectDetail } from "@/model/api";
 export default {
     components: {
-        AddBanner
+        Attachment
     },
     data() {
         return {
-            isOpenAddBanner: false,
+            isOpenAttachment: false,
             loading: false,
             tableData: []
         };
@@ -48,8 +47,8 @@ export default {
                 }
             });
         },
-        addBanner() {
-            this.isOpenAddBanner = true;
+        view(data) {
+            this.isOpenAttachment = true;
         }
     },
     created() {

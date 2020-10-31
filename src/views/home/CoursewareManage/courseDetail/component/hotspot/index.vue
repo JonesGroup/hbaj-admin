@@ -7,7 +7,7 @@
             <el-table-column prop="pSceneName" label="热点所在场景" align="center" width="150" />
             <el-table-column label="操作" fixed="right" width="220" align="center">
                 <template slot-scope="{ row }">
-                    <el-button type="text">
+                    <el-button type="text" @click="view(row)">
                         查看
                     </el-button>
                     <el-button type="text" @click="comment(row)">
@@ -16,15 +16,22 @@
                 </template>
             </el-table-column>
         </el-table>
+        <Attachment :visible.sync="isOpenAttachment" :hotspotId="1" />
     </div>
 </template>
 
 <script>
 import { projectDetail } from "@/model/api";
+import Attachment from "@/components/Attachment";
+
 export default {
+    components: {
+        Attachment
+    },
     data() {
         return {
             loading: false,
+            isOpenAttachment: false,
             tableData: []
         };
     },
@@ -56,6 +63,9 @@ export default {
             this.$router.push({
                 path: `/home/homeManage/news/comment/HOTSPOT/${data.id}`
             });
+        },
+        view(data) {
+            this.isOpenAttachment = true;
         }
     },
     created() {
