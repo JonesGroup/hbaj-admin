@@ -1,6 +1,6 @@
 <template>
     <el-tabs v-model="defaultTabName" class="tag-container">
-        <el-tab-pane :label="tag.name" :key="tag.order" :name="tag.order" v-for="tag in Tabs">
+        <el-tab-pane :label="tag.name" :key="tag.order" :name="tag.order" v-for="tag in Tabs" :class="tag.class">
             <component :is="tag.component" ref="tab-child" v-if="defaultTabName === tag.order" :hotspotId="hotspotId" />
         </el-tab-pane>
     </el-tabs>
@@ -9,6 +9,9 @@
 <script>
 import ImagesList from "./ImagesList";
 import TextList from "./TextList";
+import Audio from "./Audio";
+import Video from "./Video";
+import RichTextBox from "./RichTextBox";
 export default {
     props: {
         hotspotId: {
@@ -24,8 +27,11 @@ export default {
         return {
             defaultTabName: "1",
             tabs: [
-                { component: TextList, name: "文本", order: "1" },
-                { component: ImagesList, name: "图片", order: "2" }
+                { component: TextList, name: "文本", order: "1", class: "TextList" },
+                { component: ImagesList, name: "图片", order: "2", class: "ImagesList" },
+                { component: Audio, name: "音频", order: "3", class: "Audio" },
+                { component: Video, name: "视频", order: "4", class: "Video" },
+                { component: RichTextBox, name: "富文本", order: "5", class: "RichTextBox" }
             ]
         };
     },
@@ -46,3 +52,14 @@ export default {
     }
 };
 </script>
+
+<style lang="less" scoped>
+/deep/ .el-tabs__content {
+    max-height: 500px;
+    height: 500px;
+    overflow-y: scroll;
+    .RichTextBox {
+        height: calc(100% - 40px) !important;
+    }
+}
+</style>

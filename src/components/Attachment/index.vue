@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="附件资源" :visible="visible" width="50%" @open="open" @close="close">
+    <el-dialog title="附件资源" :visible="visible" width="50%" @open="open" @close="close" lock-scroll top="0vh">
         <Components :hotspotId="hotspotId" :orderList="orderList" />
     </el-dialog>
 </template>
@@ -34,3 +34,11 @@ export default {
     }
 };
 </script>
+<style lang="less" scoped>
+/deep/ .el-dialog {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+</style>
