@@ -9,7 +9,7 @@
 <script>
 import ImagesList from "./ImagesList";
 import TextList from "./TextList";
-import Audio from "./Audio";
+import AudioList from "./AudioList";
 import Video from "./Video";
 import RichTextBox from "./RichTextBox";
 export default {
@@ -29,7 +29,7 @@ export default {
             tabs: [
                 { component: TextList, name: "文本", order: "1", class: "TextList" },
                 { component: ImagesList, name: "图片", order: "2", class: "ImagesList" },
-                { component: Audio, name: "音频", order: "3", class: "Audio" },
+                { component: AudioList, name: "音频", order: "3", class: "Audio" },
                 { component: Video, name: "视频", order: "4", class: "Video" },
                 { component: RichTextBox, name: "富文本", order: "5", class: "RichTextBox" }
             ]

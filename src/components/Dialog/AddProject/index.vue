@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="添加访问授权项目分类"
+        :title="`添加${operation === 0 ? '访问授权' : '制作权限'}项目分类`"
         :visible="visible"
         width="30%"
         @open="open"
