@@ -1,7 +1,7 @@
 <template>
     <div class="main mgT24">
         <div class="operate mgB24 fr">
-            <el-button type="primary" @click="addBanner">导入</el-button>
+            <el-button type="primary" @click="importPerson">导入</el-button>
         </div>
         <el-table :data="tableData" v-loading="loading">
             <el-table-column prop="id" label="ID" width="100" align="center" />
@@ -34,30 +34,29 @@
                 </template>
             </el-table-column>
         </el-table>
-
-        <AddBanner :visible.sync="isOpenAddBanner" />
         <MessageList :visible.sync="isOpenMessageList" :userId="userId" />
+        <ImportPerson :visible.sync="isOpenImportPerson" />
         <TaskList :visible.sync="isOpenTaskList" :userId="userId" />
         <EditPerson :visible.sync="isOpenEditPerson" :userId="userId" :editData="editData" :onSuccess="getList" />
     </div>
 </template>
 
 <script>
-import AddBanner from "@/components/Dialog/AddBanner";
+import ImportPerson from "@/components/Dialog/importPerson";
 import MessageList from "../../Dialog/Message";
 import TaskList from "../../Dialog/TaskList";
 import EditPerson from "../../Dialog/EditPerson";
 import { departmentDetail } from "@/model/api";
 export default {
     components: {
-        AddBanner,
+        ImportPerson,
         TaskList,
         MessageList,
         EditPerson
     },
     data() {
         return {
-            isOpenAddBanner: false,
+            isOpenImportPerson: false,
             isOpenMessageList: false,
             isOpenTaskList: false,
             isOpenEditPerson: false,
@@ -84,8 +83,8 @@ export default {
                 }
             });
         },
-        addBanner() {
-            this.isOpenAddBanner = true;
+        importPerson() {
+            this.isOpenImportPerson = true;
         },
         viewMessage(data) {
             this.userId = data.userId;
