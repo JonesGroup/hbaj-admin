@@ -85,7 +85,10 @@ export default {
             });
         },
         submit() {
-            console.log("1");
+            this.$refs.form.validate(valid => {
+                if (valid) {
+                }
+            });
         }
     }
 };

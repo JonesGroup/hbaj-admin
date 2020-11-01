@@ -21,7 +21,7 @@
                 </el-form>
             </div>
             <div>
-                <el-button type="primary" @click="addBanner" class="fr">新增</el-button>
+                <el-button type="primary" @click="addProject" class="fr">新增</el-button>
             </div>
         </div>
         <el-table :data="filterVisitList">
@@ -37,15 +37,15 @@
             </el-table-column>
         </el-table>
 
-        <AddBanner :visible.sync="isOpenAddBanner" />
+        <AddProject :visible.sync="isOpenAddProject" />
     </div>
 </template>
 
 <script>
-import AddBanner from "@/components/Dialog/AddBanner";
+import AddProject from "@/components/Dialog/AddProject";
 export default {
     components: {
-        AddBanner
+        AddProject
     },
     props: {
         buildList: {
@@ -63,15 +63,15 @@ export default {
     },
     data() {
         return {
-            isOpenAddBanner: false,
+            isOpenAddProject: false,
             form: {
                 moduleName: ""
             }
         };
     },
     methods: {
-        addBanner() {
-            this.isOpenAddBanner = true;
+        addProject() {
+            this.isOpenAddProject = true;
         }
     }
 };
