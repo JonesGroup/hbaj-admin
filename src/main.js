@@ -12,6 +12,7 @@ import router, { whiteList } from "./router";
 import filters from "./filters";
 import store from "./store";
 import "@/widget/skeleton";
+import ExtendRouter from "@/plugins/ExtendRouter";
 
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
@@ -22,6 +23,14 @@ Vue.config.productionTip = false;
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key]);
 });
+
+// /**
+//  * 拓展router
+//  */
+// Vue.use(ExtendRouter, {
+//     router,
+//     store
+// });
 
 Vue.prototype.globalConfig = window.globalConfig;
 let firstFlag = false;
