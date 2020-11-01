@@ -28,28 +28,31 @@
             <el-table-column prop="departmentName" label="所属部门" />
             <el-table-column label="操作" fixed="right" width="100">
                 <template slot-scope="{ row }">
-                    <el-button type="text">
+                    <el-button type="text" @click="del(row)">
                         删除
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
 
-        <AddRole :visible.sync="isOpenAddRole" />
+        <AddPerson :visible.sync="isOpenAddPerson" :onSuccess="selectUser" />
     </div>
 </template>
 
 <script>
-import AddRole from "@/components/Dialog/AddRole";
-import { department } from "@/model/api";
+import AddPerson from "@/components/Dialog/AddPerson";
+import { department, roleDetail } from "@/model/api";
 
 export default {
     components: {
-        AddRole
+        AddPerson
     },
     props: {
         authList: {
             type: Array
+        },
+        onSuccessGetList: {
+            type: Function
         }
     },
     computed: {
@@ -63,7 +66,7 @@ export default {
     },
     data() {
         return {
-            isOpenAddRole: false,
+            isOpenAddPerson: false,
             form: {
                 departmentName: ""
             },
@@ -72,7 +75,7 @@ export default {
     },
     methods: {
         addRole() {
-            this.isOpenAddRole = true;
+            this.isOpenAddPerson = true;
         },
         getList() {
             department({
@@ -88,6 +91,53 @@ export default {
                     this.departmentList = content;
                 }
             });
+        },
+        selectUser(list) {
+            const roleId = this.$route.params.roleId;
+            roleDetail(
+                {
+                    type: "post",
+                    data: {
+                        enterpriseId: "1",
+                        userIds: list.map(item => item.userId)
+                    }
+                },
+                `${roleId}/user`
+            ).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("操作成功");
+                    this.onSuccessGetList && this.onSuccessGetList();
+                }
+            });
+        },
+        del(data) {
+            const roleId = this.$route.params.roleId;
+            this.$confirm(`此操作将删除${data.sgname}, 是否继续?`, "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            })
+                .then(() => {
+                    roleDetail(
+                        {
+                            type: "delete"
+                        },
+                        `${roleId}/user/${data.id}`
+                    ).then(res => {
+                        if (res.suceeded) {
+                            this.onSuccessGetList && this.onSuccessGetList();
+                            this.$message.success("操作成功");
+                        } else {
+                            res.message && this.$message.error(res.message);
+                        }
+                    });
+                })
+                .catch(() => {
+                    this.$message({
+                        type: "info",
+                        message: "已取消删除"
+                    });
+                });
         }
     },
     created() {
