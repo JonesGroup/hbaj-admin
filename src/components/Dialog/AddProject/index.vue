@@ -29,7 +29,7 @@
     </el-dialog>
 </template>
 <script>
-import { projectModule, projectClass } from "@/model/api";
+import { projectModule, projectClass, roleDetail } from "@/model/api";
 
 export default {
     data() {
@@ -38,7 +38,7 @@ export default {
             moduleList: [],
             form: {
                 moduleId: "",
-                classIds: [],
+                classId: [],
                 status: ""
             }
         };
@@ -50,6 +50,13 @@ export default {
         },
         onSuccess: {
             type: Function
+        },
+        roleId: {
+            type: [String, Number]
+        },
+        operation: {
+            // 0 访问权限 1制作权限
+            type: Number
         }
     },
     methods: {
@@ -95,6 +102,22 @@ export default {
         submit() {
             this.$refs.form.validate(valid => {
                 if (valid) {
+                    roleDetail(
+                        {
+                            type: "post",
+                            data: {
+                                classIds: this.form.classId,
+                                operation: this.operation
+                            }
+                        },
+                        `${this.roleId}/permission`
+                    ).then(res => {
+                        if (res.suceeded) {
+                            this.onSuccess && this.onSuccess();
+                            this.$message.success("操作成功");
+                            this.close();
+                        }
+                    });
                 }
             });
         }

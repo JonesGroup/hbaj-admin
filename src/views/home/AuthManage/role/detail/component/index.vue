@@ -1,7 +1,7 @@
 <template>
     <el-tabs v-model="tab_name" class="tag-container">
         <el-tab-pane :label="tag.name" :key="tag.order" :name="tag.order" v-for="tag in tabs">
-            <component :is="tag.component" ref="tab-child" v-if="tab_name === tag.order" :visitList="visitList" :buildList="buildList" :authList="authList" />
+            <component :is="tag.component" ref="tab-child" v-if="tab_name === tag.order" :visitList="visitList" :buildList="buildList" :authList="authList" :onSuccessGetList="getList" />
         </el-tab-pane>
     </el-tabs>
 </template>
