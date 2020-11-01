@@ -35,28 +35,28 @@
             </el-table-column>
         </el-table>
         <MessageList :visible.sync="isOpenMessageList" :userId="userId" />
-        <ImportPerson :visible.sync="isOpenImportPerson" />
+        <AddPerson :visible.sync="isOpenAddPerson" :onSuccess="selectUser" />
         <TaskList :visible.sync="isOpenTaskList" :userId="userId" />
         <EditPerson :visible.sync="isOpenEditPerson" :userId="userId" :editData="editData" :onSuccess="getList" />
     </div>
 </template>
 
 <script>
-import ImportPerson from "@/components/Dialog/importPerson";
+import AddPerson from "@/components/Dialog/AddPerson";
 import MessageList from "../../Dialog/Message";
 import TaskList from "../../Dialog/TaskList";
 import EditPerson from "../../Dialog/EditPerson";
 import { departmentDetail } from "@/model/api";
 export default {
     components: {
-        ImportPerson,
+        AddPerson,
         TaskList,
         MessageList,
         EditPerson
     },
     data() {
         return {
-            isOpenImportPerson: false,
+            isOpenAddPerson: false,
             isOpenMessageList: false,
             isOpenTaskList: false,
             isOpenEditPerson: false,
@@ -84,7 +84,25 @@ export default {
             });
         },
         importPerson() {
-            this.isOpenImportPerson = true;
+            this.isOpenAddPerson = true;
+        },
+        selectUser(list) {
+            const departmentId = this.$route.params.id;
+            departmentDetail(
+                {
+                    type: "post",
+                    data: {
+                        enterpriseId: "1",
+                        userIds: list.map(item => item.userId)
+                    }
+                },
+                `${departmentId}/user`
+            ).then(res => {
+                if (res.suceeded) {
+                    this.$message.success("操作成功");
+                    this.getList();
+                }
+            });
         },
         viewMessage(data) {
             this.userId = data.userId;
@@ -101,7 +119,7 @@ export default {
             this.isOpenEditPerson = true;
         },
         delPerson(data) {
-            const id = this.$route.params.id;
+            const departmentId = this.$route.params.id;
             const userId = data.userId;
             this.$confirm(`此操作将删除${data.userSgname}, 是否继续?`, "提示", {
                 confirmButtonText: "确定",
@@ -111,14 +129,9 @@ export default {
                 .then(() => {
                     departmentDetail(
                         {
-                            type: "post",
-                            data: {
-                                departmentId: 40,
-                                enterpriseId: 1,
-                                userIds: [userId]
-                            }
+                            type: "delete"
                         },
-                        `${id}/user`
+                        `${departmentId}/user/${userId}`
                     ).then(res => {
                         if (res.suceeded) {
                             this.$message.success("操作成功");

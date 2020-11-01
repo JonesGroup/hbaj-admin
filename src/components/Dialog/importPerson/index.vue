@@ -29,6 +29,7 @@
 </template>
 
 <script>
+// 废弃
 import AddPerson from "@/components/Dialog/AddPerson";
 import { department } from "@/model/api";
 
