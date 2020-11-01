@@ -19,7 +19,7 @@
                 </el-form>
             </div>
             <div>
-                <el-button type="primary" @click="addBanner" class="fr">新增</el-button>
+                <el-button type="primary" @click="addRole" class="fr">新增</el-button>
             </div>
         </div>
         <el-table :data="filterVisitList">
@@ -35,17 +35,17 @@
             </el-table-column>
         </el-table>
 
-        <AddBanner :visible.sync="isOpenAddBanner" />
+        <AddRole :visible.sync="isOpenAddRole" />
     </div>
 </template>
 
 <script>
-import AddBanner from "@/components/Dialog/AddBanner";
+import AddRole from "@/components/Dialog/AddRole";
 import { department } from "@/model/api";
 
 export default {
     components: {
-        AddBanner
+        AddRole
     },
     props: {
         authList: {
@@ -63,7 +63,7 @@ export default {
     },
     data() {
         return {
-            isOpenAddBanner: false,
+            isOpenAddRole: false,
             form: {
                 departmentName: ""
             },
@@ -71,8 +71,8 @@ export default {
         };
     },
     methods: {
-        addBanner() {
-            this.isOpenAddBanner = true;
+        addRole() {
+            this.isOpenAddRole = true;
         },
         getList() {
             department({

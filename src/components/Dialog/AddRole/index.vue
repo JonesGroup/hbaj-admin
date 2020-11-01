@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="调整部门人员"
+        title="角色添加人员"
         :visible="visible"
         width="30%"
         @open="open"
@@ -24,7 +24,7 @@
             <el-button @click="close">取 消</el-button>
             <el-button type="primary" @click="submit">确 定</el-button>
         </span>
-        <AddPerson :visible.sync="isOpenAddPerson" :onSuccess="selectUser" :multiple="false" />
+        <AddPerson :visible.sync="isOpenAddPerson" :onSuccess="selectUser" />
     </el-dialog>
 </template>
 
@@ -65,6 +65,7 @@ export default {
             this.isOpenAddPerson = true;
         },
         selectUser(list) {
+            console.log(list, "list");
             this.form.managerName = list[0].userSgname;
             this.form.managerId = list[0].userId;
         },
