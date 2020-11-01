@@ -21,24 +21,29 @@
             </el-table-column>
         </el-table>
 
-        <AddPerson :visible.sync="isOpenAddPerson" :onSuccess="onSuccess" />
+        <AddProjectPerson :visible.sync="isOpenAddPerson" :onSuccess="onSuccess" :projectId="projectId" />
     </div>
 </template>
 
 <script>
-import AddPerson from "@/components/Dialog/AddPerson";
+import AddProjectPerson from "@/components/Dialog/AddProjectPerson";
 import { projectDetail, task, taskDetail } from "@/model/api";
 export default {
     components: {
-        AddPerson
+        AddProjectPerson
     },
     data() {
         return {
             isOpenAddPerson: false,
             loading: false,
             tableData: [],
-            detailInfo: {} // 课件详情数据
+            detailInfo: {} // 课件详情数据,
         };
+    },
+    computed: {
+        projectId: function() {
+            return this.$route.params.id;
+        }
     },
     methods: {
         getList() {

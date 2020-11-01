@@ -1,5 +1,15 @@
 <template>
-    <el-dialog title="选择人员" :visible="visible" width="30%" @open="open" @close="close" class="addPerson dialog-width" :close-on-click-modal="false" :modal-append-to-body="false" append-to-body>
+    <el-dialog
+        title="选择共建人员"
+        :visible="visible"
+        width="30%"
+        @open="open"
+        @close="close"
+        class="addPerson dialog-width"
+        :close-on-click-modal="false"
+        :modal-append-to-body="false"
+        append-to-body
+    >
         <el-form ref="form" :model="form" label-width="80px" label-position="left">
             <el-form-item label="选择部门">
                 <el-select v-model="form.departmentId" placeholder="请选择" @change="changeDepartment">
@@ -39,7 +49,7 @@
 </template>
 
 <script>
-import { department, departmentDetail } from "@/model/api";
+import { department, departmentDetail, projectDetail } from "@/model/api";
 
 export default {
     data() {
@@ -68,6 +78,9 @@ export default {
         multiple: {
             type: Boolean,
             default: true
+        },
+        projectId: {
+            type: [String, Number]
         }
     },
     methods: {
@@ -122,7 +135,7 @@ export default {
             this.userList = [];
             const { page, page_size } = this.pagination;
 
-            departmentDetail(
+            projectDetail(
                 {
                     type: "get",
                     data: {
@@ -131,7 +144,7 @@ export default {
                         departmentId: this.form.departmentId
                     }
                 },
-                `${this.form.departmentId}/user`
+                `${this.projectId}/user/validPartner`
             ).then(res => {
                 if (res.suceeded) {
                     const { content, currentPage, pageSize, total } = res.data;
