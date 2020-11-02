@@ -90,8 +90,9 @@ export default {
             this.checkList = [val];
         },
         handleClose(tags) {
+            console.log(tags, "tags");
             const id = tags.userId;
-            this.checkList = this.checkList.filter(item => item.userId !== userId);
+            this.checkList = this.checkList.filter(item => item.userId !== id);
         },
         getDeparmentUserList() {
             this.userList = [];
