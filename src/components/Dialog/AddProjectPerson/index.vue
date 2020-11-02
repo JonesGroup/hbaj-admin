@@ -10,35 +10,19 @@
         :modal-append-to-body="false"
         append-to-body
     >
-        <el-form ref="form" :model="form" label-width="80px" label-position="left">
-            <el-form-item label="选择部门">
-                <el-select v-model="form.departmentId" placeholder="请选择" @change="changeDepartment">
-                    <el-option :label="item.name" :value="item.id" v-for="item in departmentList" :key="item.id"></el-option>
-                </el-select>
-            </el-form-item>
-        </el-form>
-
         <el-table ref="multipleTable" :data="userList" @selection-change="handleSelectionChange" v-if="multiple" height="350">
             <el-table-column type="selection" width="55"> </el-table-column>
-            <el-table-column prop="userSgname" label="人员姓名"> </el-table-column>
+            <el-table-column prop="sgname" label="人员姓名"> </el-table-column>
             <!-- <el-table-column prop="name" label="部门"> </el-table-column> -->
         </el-table>
 
         <el-table :data="userList" highlight-current-row @current-change="handleCurrentChange" v-else height="350">
-            <el-table-column prop="userSgname" label="人员姓名"> </el-table-column>
+            <el-table-column prop="sgname" label="人员姓名"> </el-table-column>
         </el-table>
-        <app-pagination
-            @size-change="setPagination('page_size', $event)"
-            @current-change="setPagination('page', $event)"
-            :current-page="pagination.page"
-            :page-sizes="[10, 20, 50]"
-            :page-size="pagination.page_size"
-            :total="pagination.total"
-        />
 
         <div class="check-user-list mgT24">
-            <el-tag v-for="tag in checkList" :key="tag.userSgname" closable @close="handleClose(tag)">
-                {{ tag.userSgname }}
+            <el-tag v-for="tag in checkList" :key="tag.sgname" closable @close="handleClose(tag)">
+                {{ tag.sgname }}
             </el-tag>
         </div>
         <span slot="footer" class="dialog-footer">
@@ -54,10 +38,6 @@ import { department, departmentDetail, projectDetail } from "@/model/api";
 export default {
     data() {
         return {
-            departmentList: [],
-            form: {
-                departmentId: ""
-            },
             userList: [],
             checkList: [],
             pagination: {
@@ -88,7 +68,7 @@ export default {
             this.$emit("update:visible", false);
         },
         open() {
-            this.getAllDeparment();
+            this.getDeparmentUserList();
         },
         uniq(arr) {
             const resutl = [];
@@ -103,61 +83,32 @@ export default {
         },
         // 多选
         handleSelectionChange(val) {
-            const ids = (val || []).map(item => item.id);
-            this.checkList = this.userList.filter(item => ids.indexOf(item.id) !== -1);
+            const ids = (val || []).map(item => item.userId);
+            this.checkList = this.userList.filter(item => ids.indexOf(item.userId) !== -1);
         },
         // 单选
         handleCurrentChange(val) {
             this.checkList = [val];
         },
         handleClose(tags) {
-            const id = tags.id;
-            this.checkList = this.checkList.filter(item => item.id !== id);
-        },
-        getAllDeparment() {
-            department({
-                type: "GET",
-                data: {
-                    page: 1,
-                    size: 1000,
-                    enterpriseId: "1"
-                }
-            }).then(res => {
-                if (res.suceeded) {
-                    const { content } = res.data;
-                    this.departmentList = content || [];
-                    this.form.departmentId = this.departmentList[0].id;
-                    this.getDeparmentUserList();
-                }
-            });
+            const id = tags.userId;
+            this.checkList = this.checkList.filter(item => item.userId !== userId);
         },
         getDeparmentUserList() {
             this.userList = [];
-            const { page, page_size } = this.pagination;
-
             projectDetail(
                 {
                     type: "get",
                     data: {
-                        page,
-                        size: page_size,
-                        departmentId: this.form.departmentId
+                        operation: 1
                     }
                 },
-                `${this.projectId}/user/validPartner`
+                `${this.projectId}/user/validPartner/all`
             ).then(res => {
                 if (res.suceeded) {
-                    const { content, currentPage, pageSize, total } = res.data;
-                    this.userList = content || [];
-                    this.pagination.total = total;
-                    this.pagination.page = currentPage;
-                    this.pagination.page_size = pageSize;
-                    this.tableData = content;
+                    this.userList = res.data || [];
                 }
             });
-        },
-        changeDepartment() {
-            this.getDeparmentUserList();
         },
         save() {
             if (this.checkList.length === 0) {
