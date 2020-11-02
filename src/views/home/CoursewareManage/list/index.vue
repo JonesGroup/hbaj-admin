@@ -91,6 +91,9 @@
                     <el-button type="text" v-if="[3].indexOf(row.status) !== -1" @click="handler(row.id, 'PATCH', 'offshelf')">
                         下架
                     </el-button>
+                    <el-button type="text" v-if="[5].indexOf(row.status) !== -1" @click="handler(row.id, 'PATCH', 'remodify')">
+                        退回编辑
+                    </el-button>
                     <el-button type="text" v-if="[2].indexOf(row.status) !== -1" @click="verify(row)">
                         审核
                     </el-button>

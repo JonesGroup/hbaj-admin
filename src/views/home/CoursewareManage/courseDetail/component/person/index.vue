@@ -21,7 +21,7 @@
             </el-table-column>
         </el-table>
 
-        <AddProjectPerson :visible.sync="isOpenAddPerson" :onSuccess="onSuccess" :projectId="projectId" />
+        <AddProjectPerson :visible.sync="isOpenAddPerson" :onSuccess="onSuccess" :projectId="projectId" :selecteds="tableData.map(item => item.userId)" />
     </div>
 </template>
 

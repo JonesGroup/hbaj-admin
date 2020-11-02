@@ -134,8 +134,22 @@ export default {
                         `${departmentId}/user/${userId}`
                     ).then(res => {
                         if (res.suceeded) {
-                            this.$message.success("操作成功");
-                            this.getList();
+                            // 删除成功后加入待定组
+                            departmentDetail(
+                                {
+                                    type: "post",
+                                    data: {
+                                        enterpriseId: "1",
+                                        userIds: [userId]
+                                    }
+                                },
+                                `40/user`
+                            ).then(res => {
+                                if (res.suceeded) {
+                                    this.$message.success("操作成功");
+                                    this.getList();
+                                }
+                            });
                         }
                     });
                 })

@@ -39,12 +39,7 @@ export default {
     data() {
         return {
             userList: [],
-            checkList: [],
-            pagination: {
-                page: 1,
-                page_size: 10,
-                total: 0
-            }
+            checkList: []
         };
     },
     props: {
@@ -61,6 +56,10 @@ export default {
         },
         projectId: {
             type: [String, Number]
+        },
+        selecteds: {
+            // 已经选中的列表
+            type: Array
         }
     },
     methods: {
@@ -106,7 +105,7 @@ export default {
                 `${this.projectId}/user/validPartner/all`
             ).then(res => {
                 if (res.suceeded) {
-                    this.userList = res.data || [];
+                    this.userList = res.data.filter(item => !this.selecteds.includes(item.userId)) || [];
                 }
             });
         },
