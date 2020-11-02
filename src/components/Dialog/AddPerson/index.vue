@@ -146,6 +146,10 @@ export default {
         changeDepartment() {
             this.getDeparmentUserList();
         },
+        setPagination(p, v) {
+            this.$set(this.pagination, p, v);
+            this.getDeparmentUserList();
+        },
         save() {
             if (this.checkList.length === 0) {
                 return this.$message.error("请选择人员");
