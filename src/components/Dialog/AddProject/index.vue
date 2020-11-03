@@ -11,12 +11,12 @@
         append-to-body
     >
         <el-form ref="form" :model="form" label-width="80px" label-position="left">
-            <el-form-item label="功能">
+            <el-form-item label="功能" :rules="{ required: true, message: '必填' }" prop="moduleId">
                 <el-select v-model="form.moduleId" placeholder="请选择" @change="changeFun">
                     <el-option :label="item.name" :value="item.id" v-for="item in funcList" :key="item.id"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="课件分类">
+            <el-form-item label="课件分类" :rules="{ required: true, message: '必填' }" prop="classId">
                 <el-select v-model="form.classId" placeholder="请选择" multiple collapse-tags>
                     <el-option :label="item.name" :value="item.id" v-for="item in moduleList" :key="item.id"></el-option>
                 </el-select>

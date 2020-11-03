@@ -8,11 +8,7 @@
             <el-table-column prop="id" label="部门编码" align="center" width="100" />
 
             <el-table-column prop="managerName" label="部门负责人" align="center" width="100" />
-            <el-table-column label="部门人数" align="center" width="200">
-                <template slot-scope="{ row }">
-                    <span>{{ row.userList.length }}</span>
-                </template>
-            </el-table-column>
+            <el-table-column label="部门人数" align="center" width="200" prop="userCount" />
             <el-table-column prop="parentName" label="上级部门" align="center" />
 
             <el-table-column label="操作" fixed="right" align="center" width="200">
