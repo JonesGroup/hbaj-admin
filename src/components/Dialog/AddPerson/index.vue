@@ -8,8 +8,8 @@
             </el-form-item>
         </el-form>
 
-        <el-table ref="multipleTable" :data="userList" @selection-change="handleSelectionChange" v-if="multiple" height="350">
-            <el-table-column type="selection" width="55"> </el-table-column>
+        <el-table ref="multipleTable" :data="userList" @selection-change="handleSelectionChange" v-if="multiple" height="350" :row-key="getRowKey">
+            <el-table-column type="selection" width="55" :reserve-selection="true"> </el-table-column>
             <el-table-column prop="userSgname" label="人员姓名"> </el-table-column>
             <!-- <el-table-column prop="name" label="部门"> </el-table-column> -->
         </el-table>
@@ -71,29 +71,18 @@ export default {
         }
     },
     methods: {
+        getRowKey(row) {
+            return row.userId;
+        },
         close() {
             this.$emit("update:visible", false);
         },
         open() {
             this.getAllDeparment();
         },
-        uniq(arr) {
-            const result = [];
-            const onlyKey = [];
-            for (let i = 0; i < arr.length; i++) {
-                if (onlyKey.indexOf(arr[i].userId) === -1) {
-                    onlyKey.push(arr[i].userId);
-                    result.push(arr[i]);
-                }
-            }
-            return result;
-        },
         // 多选
         handleSelectionChange(val) {
-            const arrSelect = [...this.checkList, ...val];
-            this.checkList = [...this.uniq(arrSelect)];
-            // const ids = (val || []).map(item => item.id);
-            // this.checkList = this.userList.filter(item => ids.indexOf(item.id) !== -1);
+            this.checkList = val;
         },
         // 单选
         handleCurrentChange(val) {

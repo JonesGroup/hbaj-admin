@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import { project, projectDetail, projectModule, projectClass, appConst, home } from "@/model/api";
+import { project, projectDetail, projectModule, projectClass, appConst, home, task } from "@/model/api";
 import AddProject from "./Dialog/AddProject";
 import Verify from "./Dialog/Verify";
 export default {
@@ -271,8 +271,52 @@ export default {
                 if (res.suceeded) {
                     this.$message.success("操作成功");
                     this.getList();
+                    if (url === "remodify") {
+                        this.dispatch(id);
+                    }
                 } else {
                     this.$message.error("操作失败");
+                }
+            });
+        },
+        dispatch(id) {
+            projectDetail(
+                {
+                    type: "GET"
+                },
+                id
+            ).then(res => {
+                if (res.suceeded) {
+                    const userIds = res.data.userList || [];
+                    const detailInfo = res.data;
+                    this.dispatchTask(userIds, detailInfo);
+                }
+            });
+        },
+        dispatchTask(userIds, detailInfo) {
+            const { blockId, createBy, currentFlg, status, name, createTime, updateTime } = detailInfo;
+            const projectId = this.$route.params.id;
+            const data = {
+                blockId, //模块ID
+                createBy, //管理员ID
+                currentFlg,
+                detail: `${name}课件制作`, //项目名称+课件制作
+                expireDate: updateTime + 30 * 24 * 60 * 60 * 1000, //当前日期加30天
+                name: `${name}课件制作`, //项目名称+课件制作
+                projectId, //项目ID
+                startDate: createTime, //当前日期
+                type: "PROJECT_MODIFY", // PROJECT_MODIFY
+                userIds: userIds.map(item => item.userId)
+            };
+
+            task({
+                type: "post",
+                data
+            }).then(res => {
+                if (res.suceeded) {
+                    // this.$message.success("操作成功");
+                } else {
+                    res.message && this.$message.error(res.message);
                 }
             });
         },
