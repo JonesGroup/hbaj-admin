@@ -90,9 +90,12 @@ export default {
             this.checkList = [val];
         },
         handleClose(tags) {
-            console.log(tags, "tags");
-            const id = tags.userId;
-            this.checkList = this.checkList.filter(item => item.userId !== id);
+            const userId = tags.userId;
+            this.checkList = this.checkList.filter(item => item.userId !== userId);
+            const index = this.userList.findIndex(item => item.userId === userId);
+            if (index !== -1) {
+                this.$refs.multipleTable.toggleRowSelection(this.userList[index], false);
+            }
         },
         getDeparmentUserList() {
             this.userList = [];

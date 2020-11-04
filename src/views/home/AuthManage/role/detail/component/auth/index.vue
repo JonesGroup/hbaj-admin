@@ -35,7 +35,7 @@
             </el-table-column>
         </el-table>
 
-        <AddPerson :visible.sync="isOpenAddPerson" :onSuccess="selectUser" />
+        <AddPerson :visible.sync="isOpenAddPerson" :onSuccess="selectUser" :selected="filterVisitList.map(item => item.id)" />
     </div>
 </template>
 

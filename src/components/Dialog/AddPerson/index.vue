@@ -9,7 +9,7 @@
         </el-form>
 
         <el-table ref="multipleTable" :data="userList" @selection-change="handleSelectionChange" v-if="multiple" height="350" :row-key="getRowKey">
-            <el-table-column type="selection" width="55" :reserve-selection="true"> </el-table-column>
+            <el-table-column type="selection" width="55" :reserve-selection="true" :selectable="checkboxT"> </el-table-column>
             <el-table-column prop="userSgname" label="人员姓名"> </el-table-column>
             <!-- <el-table-column prop="name" label="部门"> </el-table-column> -->
         </el-table>
@@ -50,6 +50,7 @@ export default {
             },
             userList: [],
             checkList: [],
+            delUserIds: [], //被删除掉的ids
             pagination: {
                 page: 1,
                 page_size: 10,
@@ -68,9 +69,15 @@ export default {
         multiple: {
             type: Boolean,
             default: true
+        },
+        selected: {
+            type: Array
         }
     },
     methods: {
+        checkboxT(row) {
+            return !this.selected.includes(row.userId);
+        },
         getRowKey(row) {
             return row.userId;
         },
@@ -89,8 +96,27 @@ export default {
             this.checkList = [val];
         },
         handleClose(tags) {
-            const id = tags.id;
-            this.checkList = this.checkList.filter(item => item.id !== id);
+            const userId = tags.userId;
+            this.checkList = this.checkList.filter(item => item.userId !== userId);
+            const index = this.userList.findIndex(item => item.userId === userId);
+            this.delUserIds.push(userId);
+            if (index !== -1) {
+                this.$refs.multipleTable.toggleRowSelection(this.userList[index], false);
+            }
+        },
+        setSelectTabal() {
+            this.$nextTick(() => {
+                const Indexs = []; // 找到索引
+                (this.delUserIds || []).forEach(item => {
+                    const i = this.userList.findIndex(k => k.userId === item);
+                    if (i !== -1) {
+                        Indexs.push(i);
+                    }
+                });
+                Indexs.forEach(item => {
+                    this.$refs.multipleTable.toggleRowSelection(this.userList[item], false);
+                });
+            });
         },
         getAllDeparment() {
             department({
@@ -131,10 +157,12 @@ export default {
                     this.pagination.page = currentPage;
                     this.pagination.page_size = pageSize;
                     this.tableData = content;
+                    this.setSelectTabal();
                 }
             });
         },
         changeDepartment() {
+            this.pagination.page = 1;
             this.getDeparmentUserList();
         },
         setPagination(p, v) {

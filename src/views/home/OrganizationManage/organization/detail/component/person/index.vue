@@ -35,7 +35,7 @@
             </el-table-column>
         </el-table>
         <MessageList :visible.sync="isOpenMessageList" :userId="userId" />
-        <AddPerson :visible.sync="isOpenAddPerson" :onSuccess="selectUser" />
+        <AddPerson :visible.sync="isOpenAddPerson" :onSuccess="selectUser" :selected="tableData.map(item => item.userId)" />
         <TaskList :visible.sync="isOpenTaskList" :userId="userId" />
         <EditPerson :visible.sync="isOpenEditPerson" :userId="userId" :editData="editData" :onSuccess="getList" />
     </div>
