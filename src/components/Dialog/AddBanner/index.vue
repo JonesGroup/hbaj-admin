@@ -7,19 +7,19 @@
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
-            <el-form-item label="图片名称">
+            <el-form-item label="图片名称" prop="detail">
                 <el-input v-model="form.detail"></el-input>
             </el-form-item>
-            <el-form-item label="项目类型">
+            <el-form-item label="项目类型" prop="type">
                 <el-radio-group v-model="form.type">
                     <el-radio label="PROJECT">课件</el-radio>
                     <el-radio label="NEWS">咨讯</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="项目编号">
+            <el-form-item label="项目编号" prop="aim_id">
                 <el-input v-model="form.aim_id"></el-input>
             </el-form-item>
-            <el-form-item label="项目标题">
+            <el-form-item label="项目标题" prop="title">
                 <el-input v-model="form.title"></el-input>
             </el-form-item>
         </el-form>
@@ -83,7 +83,13 @@ export default {
             this.$emit("update:visible", false);
         },
         open() {
-            console.log("打开");
+            if (!this.appConstId) {
+                this.$nextTick(() => {
+                    this.form.imageUrl = "";
+                    this.staticPath = "";
+                    this.$refs.form.resetFields();
+                });
+            }
         },
         fomatParams() {
             this.form.url = this.form.imageUrl;
@@ -130,6 +136,7 @@ export default {
                         if (res.suceeded) {
                             this.$message.success("修改成功");
                             this.onSuccess && this.onSuccess();
+                            this.$refs.form.resetFields();
                             this.close();
                         }
                     });

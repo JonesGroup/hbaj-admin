@@ -82,6 +82,9 @@ export default {
             this.$emit("update:visible", false);
         },
         open() {
+            if (!this.departmentId) {
+                this.$refs.form.resetFields();
+            }
             this.getAllDeparment();
         },
         getAllDeparment() {
@@ -131,6 +134,7 @@ export default {
                     ).then(res => {
                         this.$message.success("操作成功");
                         this.onSuccess && this.onSuccess();
+                        this.$refs.form.resetFields();
                         this.close();
                     });
                 }

@@ -113,14 +113,14 @@ export default {
             });
         },
         dispatchTask(userIds) {
-            const { blockId, createBy, currentFlg, status, name, createTime } = this.detailInfo;
+            const { blockId, createBy, currentFlg, status, name, createTime, updateTime } = this.detailInfo;
             const projectId = this.$route.params.id;
             const data = {
                 blockId, //模块ID
                 createBy, //管理员ID
                 currentFlg,
                 detail: `${name}课件制作`, //项目名称+课件制作
-                expireDate: createTime + 30 * 24 * 60 * 60 * 1000, //当前日期加30天
+                expireDate: updateTime + 30 * 24 * 60 * 60 * 1000, //当前日期加30天
                 name: `${name}课件制作`, //项目名称+课件制作
                 projectId, //项目ID
                 startDate: createTime, //当前日期
