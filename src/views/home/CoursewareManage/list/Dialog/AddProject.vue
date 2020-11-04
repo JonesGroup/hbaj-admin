@@ -110,6 +110,9 @@ export default {
             this.$emit("update:visible", false);
         },
         open() {
+            if (!this.projectId) {
+                this.$refs.form.resetFields();
+            }
             this.$nextTick(() => {
                 this.form.blockId && this.getFunList();
                 this.form.moduleId && this.getClassList();
@@ -206,6 +209,7 @@ export default {
                     ).then(res => {
                         if (res.suceeded) {
                             this.onSuccess && this.onSuccess();
+                            this.$refs.form.resetFields();
                             this.close();
                         }
                     });

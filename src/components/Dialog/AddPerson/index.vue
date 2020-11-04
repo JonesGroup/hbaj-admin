@@ -78,20 +78,22 @@ export default {
             this.getAllDeparment();
         },
         uniq(arr) {
-            const resutl = [];
-            const ids = [];
+            const result = [];
+            const onlyKey = [];
             for (let i = 0; i < arr.length; i++) {
-                if (ids.indexOf(arr[i].id) === -1) {
-                    ids.push(arr[i].id);
-                    resutl.push(arr[i]);
+                if (onlyKey.indexOf(arr[i].userId) === -1) {
+                    onlyKey.push(arr[i].userId);
+                    result.push(arr[i]);
                 }
             }
-            return resutl;
+            return result;
         },
         // 多选
         handleSelectionChange(val) {
-            const ids = (val || []).map(item => item.id);
-            this.checkList = this.userList.filter(item => ids.indexOf(item.id) !== -1);
+            const arrSelect = [...this.checkList, ...val];
+            this.checkList = [...this.uniq(arrSelect)];
+            // const ids = (val || []).map(item => item.id);
+            // this.checkList = this.userList.filter(item => ids.indexOf(item.id) !== -1);
         },
         // 单选
         handleCurrentChange(val) {

@@ -310,6 +310,7 @@ export default {
         },
         getFunList() {
             // 获取功能列表
+            this.funcList = [];
             projectModule({
                 type: "get",
                 data: {
@@ -322,6 +323,7 @@ export default {
             });
         },
         getClassList() {
+            this.moduleList = [];
             projectClass({
                 type: "get",
                 data: {
