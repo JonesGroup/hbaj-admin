@@ -58,8 +58,8 @@ module.exports = {
             config.externals = {
                 vue: "Vue",
                 vuex: "Vuex",
-                "vue-router": "VueRouter"
-                // "element-ui": "ELEMENT"
+                "vue-router": "VueRouter",
+                "element-ui": "ELEMENT"
             };
             // 为生产环境修改配置...
             // 优化打包chunk-vendor.js文件体积过大
