@@ -303,7 +303,7 @@ export default {
                 detail: `${name}课件制作`, //项目名称+课件制作
                 expireDate: updateTime + 30 * 24 * 60 * 60 * 1000, //当前日期加30天
                 name: `${name}课件制作`, //项目名称+课件制作
-                projectId, //项目ID
+                projectId: id, //项目ID
                 startDate: createTime, //当前日期
                 type: "PROJECT_MODIFY", // PROJECT_MODIFY
                 userIds: userIds.map(item => item.userId)
