@@ -60,6 +60,8 @@ export default function request(
         utils.setCookie("authorization", store.get("authorization", "local"));
     }
 
+    options.headers["app_source"] = "ADMIN"; // 标识
+
     // if (store.get("user", "local")) {
     //     utils.setCookie("userId", store.get("user", "local"));
     // }
