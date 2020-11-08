@@ -39,7 +39,7 @@ export default function ajax({ hostPath = location.origin, url, async = true, ti
                     window.localStorage.removeItem("userId");
                     utils.delCookie("authorization");
                     utils.delCookie("userId");
-                    window.location.href = "/";
+                    window.location.href = "https://msa_admin.vr2shipping.com/home";
                 } else {
                     resolve({
                         data: [],
