@@ -76,11 +76,18 @@ export default {
         },
         handleCommand(command) {
             if (command === "logout") {
-                window.localStorage.removeItem("user");
-                window.localStorage.removeItem("authorization");
-                utils.delCookie("authorization");
-                utils.delCookie("userId");
-                this.$router.push("/login");
+                user(
+                    {
+                        type: "post"
+                    },
+                    "logout"
+                ).then(res => {
+                    window.localStorage.removeItem("user");
+                    window.localStorage.removeItem("authorization");
+                    utils.delCookie("authorization");
+                    utils.delCookie("userId-pc-admin");
+                    this.$router.push("/login");
+                });
             }
             if (command === "resetPassword") {
                 this.isOpenResetPasswoord = true;
