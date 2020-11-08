@@ -339,17 +339,20 @@ export default {
             console.log(data, "下发任务");
         },
         handleShipType() {
+            this.pagination.page = 1;
             this.getFunList();
             this.getList();
             this.form.moduleId = "";
             this.form.classId = "";
         },
         changeFun() {
+            this.pagination.page = 1;
             this.getClassList();
             this.form.classId = "";
             this.getList();
         },
         changeClass() {
+            this.pagination.page = 1;
             this.getList();
         },
         getFunList() {
