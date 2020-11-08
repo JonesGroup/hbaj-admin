@@ -13,6 +13,8 @@ import filters from "./filters";
 import store from "./store";
 import "@/widget/skeleton";
 import ExtendRouter from "@/plugins/ExtendRouter";
+import utils from "@/widget/utils";
+import storeStorege from "@/widget/store";
 
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
@@ -23,6 +25,18 @@ Vue.config.productionTip = false;
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key]);
 });
+
+const cookieAuthorization = utils.getCookie("authorization");
+
+const cookieUserId = utils.getCookie("userId");
+
+if (cookieUserId) {
+    storeStorege.set("userId", cookieUserId, "cookieUserId");
+}
+
+if (cookieAuthorization) {
+    storeStorege.set("authorization", cookieAuthorization, "local");
+}
 
 // /**
 //  * 拓展router
