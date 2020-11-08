@@ -85,7 +85,7 @@ export default {
                     window.localStorage.removeItem("user");
                     window.localStorage.removeItem("authorization");
                     utils.delCookie("authorization");
-                    utils.delCookie("userId-pc-admin");
+                    utils.delCookie("userId");
                     this.$router.push("/login");
                 });
             }
