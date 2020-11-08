@@ -36,6 +36,7 @@ import { user } from "@/model/api";
 import store from "@/widget/store";
 import defaultImagePath from "../../images/user_default.png";
 import ResetPassword from "@/components/Dialog/ResetPassword";
+import utils from "@/widget/utils";
 export default {
     components: {
         ResetPassword
@@ -77,6 +78,8 @@ export default {
             if (command === "logout") {
                 window.localStorage.removeItem("user");
                 window.localStorage.removeItem("authorization");
+                utils.delCookie("authorization");
+                utils.delCookie("userId");
                 this.$router.push("/login");
             }
             if (command === "resetPassword") {
