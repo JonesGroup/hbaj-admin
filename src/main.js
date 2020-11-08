@@ -28,7 +28,7 @@ Object.keys(filters).forEach(key => {
 
 const cookieAuthorization = utils.getCookie("authorization");
 
-const cookieUserId = utils.getCookie("userId");
+const cookieUserId = utils.getCookie("userId-pc-admin");
 
 if (cookieUserId) {
     storeStorege.set("userId", cookieUserId, "cookieUserId");

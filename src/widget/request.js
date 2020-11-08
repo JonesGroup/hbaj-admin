@@ -61,7 +61,7 @@ export default function request(
     }
 
     if (store.get("userId", "local")) {
-        utils.setCookie("userId", store.get("userId", "local"));
+        utils.setCookie("userId-pc-admin", store.get("userId", "local"));
     }
 
     options.headers["App-Source"] = "ADMIN"; // 标识
