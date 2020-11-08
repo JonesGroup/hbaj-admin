@@ -38,6 +38,8 @@ if (cookieAuthorization) {
     storeStorege.set("authorization", cookieAuthorization, "local");
 }
 
+console.log(111, "1");
+
 // /**
 //  * 拓展router
 //  */

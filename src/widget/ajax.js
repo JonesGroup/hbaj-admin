@@ -11,6 +11,7 @@
  */
 
 import utils from "@/widget/utils";
+import router from "@/router";
 
 export default function ajax({ hostPath = location.origin, url, async = true, timeout = 30000, type, headers, dataType, data }) {
     return new Promise((resolve, reject) => {
@@ -39,7 +40,7 @@ export default function ajax({ hostPath = location.origin, url, async = true, ti
                     window.localStorage.removeItem("userId");
                     utils.delCookie("authorization");
                     utils.delCookie("userId");
-                    window.location.href = "/login";
+                    router.push("/login");
                 } else {
                     resolve({
                         data: [],
