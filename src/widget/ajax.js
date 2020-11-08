@@ -10,6 +10,8 @@
  * @returns {Promise}
  */
 
+import utils from "@/widget/utils";
+
 export default function ajax({ hostPath = location.origin, url, async = true, timeout = 30000, type, headers, dataType, data }) {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -34,6 +36,9 @@ export default function ajax({ hostPath = location.origin, url, async = true, ti
                     resolve(xhr.response);
                 } else if (xhr.status === 401) {
                     window.localStorage.removeItem("authorization");
+                    window.localStorage.removeItem("userId");
+                    utils.delCookie("authorization");
+                    utils.delCookie("userId");
                     window.location.href = "/";
                 } else {
                     resolve({

@@ -46,7 +46,7 @@
         <el-table :data="tableData" v-loading="loading">
             <el-table-column label="课件封面" align="center" width="140" :key="Math.random()">
                 <template slot-scope="{ row }">
-                    <img :src="globalConfig.imagePath + row.imageUrl" alt="" height="100" />
+                    <img :src="globalConfig.imagePath + row.imageUrl" alt="" height="100" @click="openPc(row.id)" />
                 </template>
             </el-table-column>
             <el-table-column prop="name" label="课件名称" align="center" :key="Math.random()" />
@@ -255,6 +255,10 @@ export default {
             this.id = "";
             this.id = data.id;
             this.isOpenVerify = true;
+        },
+        openPc(projectId) {
+            // https://msa_pc.vr2shipping.com/my/p_ditor/0/319/2
+            window.open(`https://msa_pc.vr2shipping.com/my/p_ditor/0/${projectId}/2`);
         },
         handler(id, type, url) {
             const params = {};
