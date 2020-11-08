@@ -180,8 +180,7 @@ export default {
             });
         },
         addPerson(projectId) {
-            const User = store.get("user", "local");
-            const userId = User.id;
+            const userId = store.get("userId", "local");
             projectDetail(
                 {
                     type: "post",

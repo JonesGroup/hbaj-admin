@@ -57,8 +57,8 @@ export default {
     },
     methods: {
         getUserDetail() {
-            const User = store.get("user", "local");
-            const userId = User.id;
+            const userId = store.get("userId", "local");
+            console.log(userId, 111);
             if (user) {
                 user(
                     {
