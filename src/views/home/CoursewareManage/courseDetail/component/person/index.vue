@@ -75,22 +75,23 @@ export default {
                 `${projectId}/user/${userId}`
             ).then(res => {
                 if (res.suceeded) {
-                    task({
-                        type: "get",
-                        data: {
-                            userId,
-                            projectId
-                        }
-                    }).then(res => {
-                        taskDetail({
-                            // 需要拿到taskId进行删除
-                            type: "delete",
-                            data: {}
-                        }).then(res => {
-                            this.$message.success("操作成功");
-                            this.getList();
-                        });
-                    });
+                    this.$message.success("操作成功");
+                    // task({
+                    //     type: "get",
+                    //     data: {
+                    //         userId,
+                    //         projectId
+                    //     }
+                    // }).then(res => {
+                    //     taskDetail({
+                    //         // 需要拿到taskId进行删除
+                    //         type: "delete",
+                    //         data: {}
+                    //     }).then(res => {
+                    //         this.$message.success("操作成功");
+                    //         this.getList();
+                    //     });
+                    // });
                 }
             });
         },

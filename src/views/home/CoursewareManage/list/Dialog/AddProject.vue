@@ -169,10 +169,11 @@ export default {
                         data: this.form
                     }).then(res => {
                         if (res.suceeded) {
-                            this.addPerson(res.data.id);
+                            // this.addPerson(res.data.id);
                             this.onSuccess && this.onSuccess();
                             this.staticPath = "";
                             this.$refs.form.resetFields();
+                            this.$message.success("操作成功");
                             this.close();
                         }
                     });
