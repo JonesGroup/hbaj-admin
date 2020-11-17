@@ -8,12 +8,12 @@
             <div class="back"><el-button type="text" @click="goBack" v-if="isBack">返回上一页</el-button></div>
             <div class="tips" style="color:#409EFF;font-size:14px;" v-if="tips && isBack">{{ tips }}</div>
             <div class="header-operate">
-                <div class="search">
+                <!-- <div class="search">
                     <i class="iconfont iconsousuo"></i>
                 </div>
                 <div class="meassage">
                     <i class="iconfont iconxiaoxi"></i>
-                </div>
+                </div> -->
                 <div class="person">
                     <img :src="src" alt="" width="30" />
                     <el-dropdown @command="handleCommand">

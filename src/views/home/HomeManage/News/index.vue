@@ -45,7 +45,7 @@
                     <el-button type="text" v-if="row.status === 1" @click="News(row.id, 'put', 'settop')">
                         置顶
                     </el-button>
-                    <el-button type="text" v-if="row.topFlg === 1" @click="News(row.id, 'put', 'settop')">
+                    <el-button type="text" v-if="row.topFlg === 1" @click="News(row.id, 'put', 'canceltop')">
                         取消置顶
                     </el-button>
                     <el-button type="text" @click="comment(row)">
