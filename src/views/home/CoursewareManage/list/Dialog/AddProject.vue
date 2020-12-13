@@ -72,7 +72,7 @@ export default {
     data() {
         return {
             form: {
-                imageUrl: "/image/PROJECT_IMAGE_default.jpg",
+                imageUrl: globalConfig.defaultInfo.APP_DEFAULT_PROJECT_IMAGE[0],
                 moduleId: "",
                 classId: "",
                 blockId: "",
