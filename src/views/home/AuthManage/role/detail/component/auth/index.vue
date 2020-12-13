@@ -83,7 +83,7 @@ export default {
                 data: {
                     page: 1,
                     size: 1000,
-                    enterpriseId: "1"
+                    enterpriseId: globalConfig.defaultInfo.APP_DEFAULT_ENTERPRISE[0]
                 }
             }).then(res => {
                 if (res.suceeded) {
@@ -98,7 +98,7 @@ export default {
                 {
                     type: "post",
                     data: {
-                        enterpriseId: "1",
+                        enterpriseId: globalConfig.defaultInfo.APP_DEFAULT_ENTERPRISE[0],
                         userIds: list.map(item => item.userId)
                     }
                 },

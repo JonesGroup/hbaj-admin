@@ -124,7 +124,7 @@ export default {
                 data: {
                     page: 1,
                     size: 1000,
-                    enterpriseId: "1"
+                    enterpriseId: globalConfig.defaultInfo.APP_DEFAULT_ENTERPRISE[0]
                 }
             }).then(res => {
                 if (res.suceeded) {

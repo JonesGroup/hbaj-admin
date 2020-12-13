@@ -92,7 +92,7 @@ export default {
                 {
                     type: "post",
                     data: {
-                        enterpriseId: "1",
+                        enterpriseId: globalConfig.defaultInfo.APP_DEFAULT_ENTERPRISE[0],
                         userIds: list.map(item => item.userId)
                     }
                 },
@@ -139,7 +139,7 @@ export default {
                                 {
                                     type: "post",
                                     data: {
-                                        enterpriseId: "1",
+                                        enterpriseId: globalConfig.defaultInfo.APP_DEFAULT_ENTERPRISE[0],
                                         userIds: [userId]
                                     }
                                 },

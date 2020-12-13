@@ -62,7 +62,7 @@ export default {
             console.log("打开");
         },
         save() {
-            this.form.enterpriseId = "1";
+            this.form.enterpriseId = globalConfig.defaultInfo.APP_DEFAULT_ENTERPRISE[0];
             role({
                 type: "post",
                 data: this.form

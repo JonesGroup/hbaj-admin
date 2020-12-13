@@ -57,7 +57,7 @@ export default {
                 data: {
                     // page: page,
                     // size: page_size,
-                    enterpriseId: "1",
+                    enterpriseId: globalConfig.defaultInfo.APP_DEFAULT_ENTERPRISE[0],
                     status: "1"
                 }
             }).then(res => {

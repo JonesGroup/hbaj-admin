@@ -78,7 +78,7 @@ export default {
                 blockId: "",
                 name: "",
                 detail: "",
-                oriEnterpriseId: "1"
+                oriEnterpriseId: globalConfig.defaultInfo.APP_DEFAULT_ENTERPRISE[0]
             },
             funcList: [],
             moduleList: [],

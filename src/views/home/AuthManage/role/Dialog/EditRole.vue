@@ -46,7 +46,7 @@ export default {
         return {
             form: {
                 name: "",
-                enterpriseId: "1"
+                enterpriseId: globalConfig.defaultInfo.APP_DEFAULT_ENTERPRISE[0]
             }
         };
     },
@@ -58,7 +58,7 @@ export default {
             console.log("打开");
         },
         save() {
-            this.form.enterpriseId = "1";
+            this.form.enterpriseId = globalConfig.defaultInfo.APP_DEFAULT_ENTERPRISE[0];
             roleDetail(
                 {
                     type: "put",

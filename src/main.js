@@ -16,6 +16,8 @@ import ExtendRouter from "@/plugins/ExtendRouter";
 import utils from "@/widget/utils";
 import storeStorege from "@/widget/store";
 
+import { getDefaultInfo } from "@/config";
+
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
@@ -38,16 +40,6 @@ if (cookieAuthorization) {
     storeStorege.set("authorization", cookieAuthorization, "local");
 }
 
-console.log(111, "1");
-
-// /**
-//  * 拓展router
-//  */
-// Vue.use(ExtendRouter, {
-//     router,
-//     store
-// });
-
 Vue.prototype.globalConfig = window.globalConfig;
 let firstFlag = false;
 router.beforeEach((to, from, next) => {
@@ -57,19 +49,21 @@ router.beforeEach((to, from, next) => {
             //解决登陆后 用户输入登录地址重定向到首页
             return next({ path: "/" });
         } else {
-            // 第一次登陆
-            if (!firstFlag) {
-                firstFlag = true;
-                store.dispatch("GenerateRoutes").then(() => {
-                    // 注入vuex生成路由
-                    next({
-                        ...to,
-                        replace: true
+            getDefaultInfo().then(() => {
+                // 第一次登陆
+                if (!firstFlag) {
+                    firstFlag = true;
+                    store.dispatch("GenerateRoutes").then(() => {
+                        // 注入vuex生成路由
+                        next({
+                            ...to,
+                            replace: true
+                        });
                     });
-                });
-            } else {
-                next();
-            }
+                } else {
+                    next();
+                }
+            });
         }
     } else {
         // 未登录情况
