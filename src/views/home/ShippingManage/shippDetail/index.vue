@@ -50,7 +50,7 @@
             :total="pagination.total"
         />
         <EditScene :sceneId="sceneId" :editData="editSceneData" :visible.sync="isOpenEditScene" :onSuccess="getList" />
-        <SceneDialog :visible.sync="isOpenSceneDialog" />
+        <SceneDialog :visible.sync="isOpenSceneDialog" :sid="sceneId" />
     </div>
 </template>
 
@@ -164,7 +164,7 @@ export default {
             this.isOpenEditScene = true;
         },
         view(data) {
-            console.log(data, "data");
+            this.sceneId = data.id;
             this.isOpenSceneDialog = true;
         }
     },
