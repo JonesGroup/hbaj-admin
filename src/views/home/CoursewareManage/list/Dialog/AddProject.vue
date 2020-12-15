@@ -82,20 +82,7 @@ export default {
             },
             funcList: [],
             moduleList: [],
-            shippList: [
-                {
-                    name: "散货船",
-                    id: 25
-                },
-                {
-                    name: "豪华邮轮",
-                    id: 24
-                },
-                {
-                    name: "CIC2019专项船",
-                    id: 27
-                }
-            ],
+            shippList: globalConfig.defaultBlocks,
             staticPath: "/image/PROJECT_IMAGE_default.jpg"
         };
     },

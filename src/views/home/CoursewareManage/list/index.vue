@@ -6,14 +6,8 @@
         >
             <div style="margin-bottom:24px">
                 <el-radio-group v-model="blockId" @change="handleShipType">
-                    <el-radio-button :label="25" type="primary">
-                        散货船
-                    </el-radio-button>
-                    <el-radio-button :label="24" type="primary">
-                        豪华邮轮
-                    </el-radio-button>
-                    <el-radio-button :label="27" type="primary">
-                        CIC2019专项船
+                    <el-radio-button :label="item.id" type="primary" v-for="item in blockList" :key="item.id">
+                        {{ item.name }}
                     </el-radio-button>
                 </el-radio-group>
             </div>
@@ -166,7 +160,8 @@ export default {
                 status: ""
             },
             id: "",
-            blockId: 25,
+            blockId: globalConfig.defaultBlocks[0].id,
+            blockList: globalConfig.defaultBlocks,
             moduleList: [{ name: "全部", id: "" }],
             funcList: [],
             statusList: [

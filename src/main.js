@@ -16,7 +16,7 @@ import ExtendRouter from "@/plugins/ExtendRouter";
 import utils from "@/widget/utils";
 import storeStorege from "@/widget/store";
 
-import { getDefaultInfo } from "@/config";
+import { mapDefaultLis } from "@/config";
 
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
@@ -43,13 +43,13 @@ if (cookieAuthorization) {
 Vue.prototype.globalConfig = window.globalConfig;
 let firstFlag = false;
 router.beforeEach((to, from, next) => {
-    if (window.localStorage.getItem("authorization")) {
-        // 登录了情况
-        if (to.name == "Login") {
-            //解决登陆后 用户输入登录地址重定向到首页
-            return next({ path: "/" });
-        } else {
-            getDefaultInfo().then(() => {
+    mapDefaultLis().then(() => {
+        if (window.localStorage.getItem("authorization")) {
+            // 登录了情况
+            if (to.name == "Login") {
+                //解决登陆后 用户输入登录地址重定向到首页
+                return next({ path: "/" });
+            } else {
                 // 第一次登陆
                 if (!firstFlag) {
                     firstFlag = true;
@@ -63,21 +63,21 @@ router.beforeEach((to, from, next) => {
                 } else {
                     next();
                 }
-            });
-        }
-    } else {
-        // 未登录情况
-        if (whiteList.findIndex(item => item.path === to.path) !== -1) {
-            // 在白名单中
-            next();
+            }
         } else {
-            if (firstFlag) {
-                window.location.reload();
+            // 未登录情况
+            if (whiteList.findIndex(item => item.path === to.path) !== -1) {
+                // 在白名单中
+                next();
             } else {
-                next("/login");
+                if (firstFlag) {
+                    window.location.reload();
+                } else {
+                    next("/login");
+                }
             }
         }
-    }
+    });
 });
 
 router.afterEach(to => {

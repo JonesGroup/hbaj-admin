@@ -15,3 +15,20 @@ export const getDefaultInfo = async () => {
         console.log(error);
     }
 };
+
+export const defaultBlocks = async () => {
+    try {
+        const data = await home(
+            {
+                type: "get"
+            },
+            "defaultBlocks"
+        );
+        Vue.prototype.globalConfig.defaultBlocks = (data.data || []).sort((a, b) => a.seq - b.seq);
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const mapDefaultLis = async () => Promise.all([defaultBlocks(), getDefaultInfo()]);

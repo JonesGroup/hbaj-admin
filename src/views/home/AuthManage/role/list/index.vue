@@ -6,14 +6,8 @@
         >
             <div style="margin-bottom:24px">
                 <el-radio-group v-model="blockId" @change="handleShipType">
-                    <el-radio-button :label="25" type="primary">
-                        散货船
-                    </el-radio-button>
-                    <el-radio-button :label="24" type="primary">
-                        豪华邮轮
-                    </el-radio-button>
-                    <el-radio-button :label="27" type="primary">
-                        CIC2019专项船
+                    <el-radio-button :label="item.id" type="primary" v-for="item in blockList" :key="item.id">
+                        {{ item.name }}
                     </el-radio-button>
                 </el-radio-group>
             </div>
@@ -66,7 +60,8 @@ export default {
             isOpenRole: false,
             isOpenAddRole: false,
             roleId: "",
-            blockId: 25,
+            blockId: globalConfig.defaultBlocks[0].id,
+            blockList: globalConfig.defaultBlocks,
             name: ""
         };
     },
@@ -90,11 +85,10 @@ export default {
             });
         },
         toDetail(data) {
-            const map = {
-                25: "散货船",
-                24: "豪华邮轮",
-                27: "CIC2019专项船"
-            };
+            const map = {};
+            globalConfig.defaultBlocks.forEach(item => {
+                map[item.id] = item.name;
+            });
             this.$store.commit("SET_TIPS", `对"${map[this.blockId]}"的"${data.name}"角色进行授权管理`);
             this.$router.push(`./detail/${this.blockId}/${data.id}`);
         },
