@@ -253,7 +253,8 @@ export default {
         },
         openPc(projectId) {
             // https://msa_pc.vr2shipping.com/my/p_ditor/0/319/2
-            window.open(`https://msa_pc.vr2shipping.com/my/p_ditor/0/${projectId}/2`);
+            const url = globalConfig.APP_DEFAULT_PREVIEW[0].value;
+            window.open(`${url}/my/p_ditor/0/${projectId}/2`);
         },
         handler(id, type, url) {
             const params = {};

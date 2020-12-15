@@ -13,9 +13,7 @@
                     <el-form-item label="功能">
                         <el-select v-model="form.moduleName" placeholder="请选择">
                             <el-option label="全部" value="" :key="-1"></el-option>
-                            <el-option label="技术解读" value="技术解读" :key="1"></el-option>
-                            <el-option label="专业英语" value="专业英语" :key="2"></el-option>
-                            <el-option label="模拟训练" value="模拟训练" :key="3"></el-option>
+                            <el-option :label="item.name" :value="item.name" v-for="item in list" :key="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-form>
@@ -74,7 +72,8 @@ export default {
             isOpenAddProject: false,
             form: {
                 moduleName: ""
-            }
+            },
+            list: globalConfig.APP_DEFAULT_MODULE.map(({ id, title, Details, image }) => ({ id, name: title, desc: Details, img: image }))
         };
     },
     methods: {
